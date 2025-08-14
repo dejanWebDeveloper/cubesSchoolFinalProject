@@ -2,7 +2,7 @@
 @section('content')
 <!-- Hero Section-->
 <div id="index-slider" class="owl-carousel">
-    <section style="background: url(img/featured-pic-1.jpeg); background-size: cover; background-position: center center" class="hero">
+    <section style="background: url({{'themes/front/img/featured-pic-1.jpeg'}}); background-size: cover; background-position: center center" class="hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </section>
-    <section style="background: url(img/featured-pic-2.jpeg); background-size: cover; background-position: center center" class="hero">
+    <section style="background: url({{'themes/front/img/featured-pic-2.jpeg'}}); background-size: cover; background-position: center center" class="hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
@@ -22,7 +22,7 @@
             </div>
         </div>
     </section>
-    <section style="background: url(img/featured-pic-3.jpeg); background-size: cover; background-position: center center" class="hero">
+    <section style="background: url({{'themes/front/img/featured-pic-3.jpeg'}}); background-size: cover; background-position: center center" class="hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
@@ -245,7 +245,7 @@
         <div class="mix col-lg-3 col-md-3 col-sm-6">
             <div class="item">
                 <a href="img/gallery-1.jpg" data-fancybox="gallery" class="image">
-                    <img src="img/gallery-1.jpg" alt="gallery image alt 1" class="img-fluid" title="gallery image title 1">
+                    <img src="{{url('/themes/front/img/gallery-1.jpg')}}" alt="gallery image alt 1" class="img-fluid" title="gallery image title 1">
                     <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
                 </a>
             </div>
@@ -253,7 +253,7 @@
         <div class="mix col-lg-3 col-md-3 col-sm-6">
             <div class="item">
                 <a href="img/gallery-2.jpg" data-fancybox="gallery" class="image">
-                    <img src="img/gallery-2.jpg" alt="gallery image alt 2" class="img-fluid" title="gallery image title 2">
+                    <img src="{{url('/themes/front/img/gallery-2.jpg')}}" alt="gallery image alt 2" class="img-fluid" title="gallery image title 2">
                     <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
                 </a>
             </div>
@@ -261,7 +261,7 @@
         <div class="mix col-lg-3 col-md-3 col-sm-6">
             <div class="item">
                 <a href="img/gallery-3.jpg" data-fancybox="gallery" class="image">
-                    <img src="img/gallery-3.jpg" alt="gallery image alt 3" class="img-fluid" title="gallery image title 3">
+                    <img src="{{url('/themes/front/img/gallery-3.jpg')}}" alt="gallery image alt 3" class="img-fluid" title="gallery image title 3">
                     <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
                 </a>
             </div>
@@ -269,7 +269,7 @@
         <div class="mix col-lg-3 col-md-3 col-sm-6">
             <div class="item">
                 <a href="img/gallery-4.jpg" data-fancybox="gallery" class="image">
-                    <img src="img/gallery-4.jpg" alt="gallery image alt 4" class="img-fluid" title="gallery image title 4">
+                    <img src="{{url('/themes/front/img/gallery-4.jpg')}}" alt="gallery image alt 4" class="img-fluid" title="gallery image title 4">
                     <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
                 </a>
             </div>
