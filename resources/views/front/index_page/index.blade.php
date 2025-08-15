@@ -1,4 +1,11 @@
+@push('head_link')
+    <!-- owl carousel 2 stylesheet-->
+    <link rel="stylesheet" href="{{url('/themes/front/plugins/owl-carousel2/assets/owl.carousel.min.css')}}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{{url('/themes/front/plugins/owl-carousel2/assets/owl.theme.default.min.css')}}" id="theme-stylesheet">
+@endpush
+
 @extends('front._layouts._layout')
+
 @section('seo_title', 'Bootstrap Blog - B4 Template by Bootstrap Temple')
 @section('content')
     <!-- Hero Section-->

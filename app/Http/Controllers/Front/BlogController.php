@@ -19,4 +19,8 @@ class BlogController extends Controller
     {
         return view('front.blog_pages.blog_category_page.blog_category_page');
     }
+    public function blogPost()
+    {
+        return view('front.blog_pages.blog_post_page.blog_post_page');
+    }
 }
