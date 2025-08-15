@@ -23,4 +23,12 @@ class BlogController extends Controller
     {
         return view('front.blog_pages.blog_post_page.blog_post_page');
     }
+    public function blogSearch()
+    {
+        return view('front.blog_pages.blog_search_page.blog_search_page');
+    }
+    public function blogTag()
+    {
+        return view('front.blog_pages.blog_tag_page.blog_tag_page');
+    }
 }
