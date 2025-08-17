@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->text('text', 3000);
             $table->string('photo')->nullable();
             $table->integer('category_id');
-            $table->integer('author');
+            $table->integer('author_id');
             $table->unsignedBigInteger('views')->default(0);
             $table->boolean('enable')->default(1);
             $table->boolean('important')->default(0);
