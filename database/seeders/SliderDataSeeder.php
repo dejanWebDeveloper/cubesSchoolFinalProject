@@ -20,7 +20,7 @@ class SliderDataSeeder extends Seeder
                 'heading' => $faker->name,
                 'background' => $i.'.jpg',
                 'button_name' => 'FIND OUT MORE',
-                'url' => 'www.rts.rs',
+                'url' => 'https://www.php.net/',
                 'created_at' => now()]);
         }
     }
