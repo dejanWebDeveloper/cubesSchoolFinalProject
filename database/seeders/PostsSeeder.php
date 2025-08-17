@@ -24,10 +24,10 @@ class PostsSeeder extends Seeder
                 'text' => $faker->text,
                 'photo' => $i.'.jpg',
                 'category_id' => $categories->random()->id,
-                'author' => $authors->random()->id,
+                'author_id' => $authors->random()->id,
                 'views' => rand(100, 1000),
                 'enable' => rand(0, 1),
-                'important' => rand(0, 1),
+                'important' => 0,
                 'created_at' => now()]);
         }
     }

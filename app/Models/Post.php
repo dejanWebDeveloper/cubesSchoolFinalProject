@@ -23,6 +23,6 @@ class Post extends Model
         /*if(!is_null($this->photo)){
             return url('/storage/photo/'. $this->photo);
         }*/
-        return url('/themes/front/img/gallery-1.jpg');
+        return url('/themes/front/img/featured-pic-1.jpeg');
     }
 }
