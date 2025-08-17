@@ -22,7 +22,7 @@
 @endsection
 
 @push('footer_script')
-    <script src="{{url('themes/front/plugins/owl-carousel2/owl.carousel.min.js')}}"></script>
+    <script src="{{url('/themes/front/plugins/owl-carousel2/owl.carousel.min.js')}}"></script>
     <script>
         $("#index-slider").owlCarousel({
             "items": 1,
@@ -32,8 +32,9 @@
         });
 
         $("#latest-posts-slider").owlCarousel({
-            "items": 1,
+            "items": 3,
             "loop": true,
+            "margin": 30,
             "autoplay": true,
             "autoplayHoverPause": true
         });
