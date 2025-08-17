@@ -1,0 +1,27 @@
+<?php
+
+namespace Database\Seeders;
+
+use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class SliderDataSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        DB::table('slider_data')->truncate();
+        $faker = Faker::create();
+        for ($i = 1; $i <= 8; $i++) {
+            DB::table('slider_data')->insert([
+                'heading' => $faker->name,
+                'background' => $i.'.jpg',
+                'button_name' => 'FIND OUT MORE',
+                'url' => 'www.rts.rs',
+                'created_at' => now()]);
+        }
+    }
+}
