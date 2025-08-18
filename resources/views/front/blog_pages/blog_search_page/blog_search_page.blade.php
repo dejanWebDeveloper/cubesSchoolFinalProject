@@ -6,7 +6,7 @@
             <!-- Latest Posts -->
             <main class="posts-listing col-lg-8">
                 <div class="container">
-                    <h2 class="mb-3">Search results for "cubes"</h2>
+                    <h2 class="mb-3">Search results for "{{$query}}"</h2>
                     @include('front.blog_pages.blog_search_page.partials.found_posts')
                     <!-- Pagination -->
                     @include('front.blog_pages.blog_search_page.partials.pagination')
