@@ -14,7 +14,7 @@
                     </div>
                     <div class="post-details">
                         <div class="post-meta d-flex justify-content-between">
-                            <div class="date">{{ $latestPostSlider->created_at->format('H:i d, M Y') }}</div>
+                            <div class="date">{{ $latestPostSlider->created_at->format('d M | Y') }}</div>
                             <div class="category">
                                 <a href="blog-category.html">{{ $latestPostSlider->category->name }}</a>
                             </div>

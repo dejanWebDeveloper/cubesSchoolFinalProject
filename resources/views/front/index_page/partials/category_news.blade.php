@@ -25,7 +25,7 @@
                                         <div class="title"><span>{{ $importantPost->author->name }}</span></div>
                                     </a>
                                     <div class="date">
-                                        <i class="icon-clock"></i>{{ $importantPost->created_at->format('H:i d, M Y') }}
+                                        <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
                                         <i class="icon-comment"></i>{{ $importantPost->views }}
@@ -63,7 +63,7 @@
                                         <div class="title"><span>{{ $importantPost->author->name }}</span></div>
                                     </a>
                                     <div class="date">
-                                        <i class="icon-clock"></i>{{ $importantPost->created_at->format('H:i d, M Y') }}
+                                        <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
                                         <i class="icon-comment"></i>{{ $importantPost->views }}
@@ -95,7 +95,7 @@
                                         <div class="title"><span>{{ $importantPost->author->name }}</span></div>
                                     </a>
                                     <div class="date">
-                                        <i class="icon-clock"></i>{{ $importantPost->created_at->format('H:i d, M Y') }}
+                                        <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
                                         <i class="icon-comment"></i>{{ $importantPost->views }}
