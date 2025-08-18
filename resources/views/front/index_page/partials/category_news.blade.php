@@ -28,7 +28,7 @@
                                         <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
-                                        <i class="icon-comment"></i>{{ $importantPost->views }}
+                                        <i class="icon-comment"></i>{{$importantPost->comments_count}}
                                     </div>
                                 </footer>
                             </div>
@@ -66,7 +66,7 @@
                                         <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
-                                        <i class="icon-comment"></i>{{ $importantPost->views }}
+                                        <i class="icon-comment"></i>{{$importantPost->comments_count}}
                                     </div>
                                 </footer>
                             </div>
@@ -98,7 +98,7 @@
                                         <i class="icon-clock"></i>{{ $importantPost->created_at->diffForHumans()}}
                                     </div>
                                     <div class="comments">
-                                        <i class="icon-comment"></i>{{ $importantPost->views }}
+                                        <i class="icon-comment"></i>{{$importantPost->comments_count}}
                                     </div>
                                 </footer>
                             </div>

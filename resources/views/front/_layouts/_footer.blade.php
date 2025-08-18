@@ -10,44 +10,49 @@
                     <p>Phone: (020) 123 456 789</p>
                     <p>Email: <a href="mailto:info@company.com">Info@Company.com</a></p>
                     <ul class="social-menu">
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-behance"></i></a></li>
-                        <li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        <li class="list-inline-item"><a href="https://www.facebook.com/?locale=sr_RS"><i
+                                    class="fa fa-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="https://x.com/"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="https://www.instagram.com/"><i
+                                    class="fa fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="https://www.behance.net/"><i
+                                    class="fa fa-behance"></i></a></li>
+                        <li class="list-inline-item"><a href="https://www.pinterest.com/"><i
+                                    class="fa fa-pinterest"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="menus d-flex">
                     <ul class="list-unstyled">
-                        <li> <a href="index.html">Home</a></li>
-                        <li> <a href="blog.html">Blog</a></li>
-                        <li> <a href="contact.html">Contact</a></li>
-                        <li> <a href="#">Login</a></li>
+                        <li><a href="{{route('index_page')}}">Home</a></li>
+                        <li><a href="{{route('blog_page')}}">Blog</a></li>
+                        <li><a href="{{route('contact_page')}}">Contact</a></li>
+                        <li><a href="#">Login</a></li>
                     </ul>
                     <ul class="list-unstyled">
-                        <li> <a href="blog-category.html">Growth</a></li>
-                        <li> <a href="blog-category.html">Local</a></li>
-                        <li> <a href="blog-category.html">Sales</a></li>
-                        <li> <a href="blog-category.html">Tips</a></li>
+                        @foreach($footerCategories as $footerCategory)
+                            <li><a href="blog-category.html">{{$footerCategory->name}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="latest-posts"><a href="blog-post.html">
+                <div class="latest-posts">
+                    @foreach($latestFooterPosts as $latestFooterPost)
+                    <a href="blog-post.html">
                         <div class="post d-flex align-items-center">
-                            <div class="image"><img src="img/small-thumbnail-1.jpg" alt="..." class="img-fluid"></div>
-                            <div class="title"><strong>Hotels for all budgets</strong><span class="date last-meta">October 26, 2016</span></div>
-                        </div></a><a href="blog-post.html">
-                        <div class="post d-flex align-items-center">
-                            <div class="image"><img src="img/small-thumbnail-2.jpg" alt="..." class="img-fluid"></div>
-                            <div class="title"><strong>Great street atrs in London</strong><span class="date last-meta">October 26, 2016</span></div>
-                        </div></a><a href="blog-post.html">
-                        <div class="post d-flex align-items-center">
-                            <div class="image"><img src="img/small-thumbnail-3.jpg" alt="..." class="img-fluid"></div>
-                            <div class="title"><strong>Best coffee shops in Sydney</strong><span class="date last-meta">October 26, 2016</span></div>
-                        </div></a></div>
+                            <div class="image">
+                                <img src="{{$latestFooterPost->imageUrl()}}" alt="..." class="img-fluid">
+                            </div>
+                            <div class="title">
+                                <strong>{{$latestFooterPost->heading}}</strong>
+                                <span class="date last-meta">{{$latestFooterPost->created_at->format('F d, Y')}}</span>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

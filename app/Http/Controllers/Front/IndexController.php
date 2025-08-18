@@ -12,6 +12,7 @@ class IndexController extends Controller
     {
         $sliderData = SliderData::all();
         $importantPosts = Post::with('category', 'author', 'tags')
+            ->withCount('comments')
             ->where('important', 1)
             ->where('enable', 1)
             ->orderBy('created_at', 'desc')
