@@ -2,14 +2,10 @@
     <header>
         <h3 class="h6">Categories</h3>
     </header>
-    <div class="item d-flex justify-content-between"><a
-            href="blog-category.html">Growth</a><span>12</span></div>
-    <div class="item d-flex justify-content-between"><a
-            href="blog-category.html">Local</a><span>25</span></div>
-    <div class="item d-flex justify-content-between"><a
-            href="blog-category.html">Sales</a><span>8</span></div>
-    <div class="item d-flex justify-content-between"><a
-            href="blog-category.html">Tips</a><span>17</span></div>
-    <div class="item d-flex justify-content-between"><a
-            href="blog-category.html">Local</a><span>25</span></div>
+@foreach($allCategoriesForBlogPartial as $category)
+    <div class="item d-flex justify-content-between">
+        <a href="blog-category.html">{{$category->name}}</a>
+        <span>{{$category->posts()->count()}}</span>
+    </div>
+    @endforeach
 </div>

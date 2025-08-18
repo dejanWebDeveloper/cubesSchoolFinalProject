@@ -11,17 +11,13 @@ class IndexController extends Controller
     public function index()
     {
         $sliderData = SliderData::all();
-        $importantPosts = Post::with('category', 'author', 'tags')
+        $importantPosts = Post::standardRequest()
             ->withCount('comments')
             ->where('important', 1)
-            ->where('enable', 1)
-            ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
-        $latestPostsSlider = Post::with('category', 'author', 'tags')
+        $latestPostsSlider = Post::standardRequest()
             ->where('important', 0)
-            ->where('enable', 1)
-            ->orderBy('created_at', 'desc')
             ->limit(12)
             ->get();
         return view('front.index_page.index', compact(

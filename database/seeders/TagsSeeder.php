@@ -15,7 +15,7 @@ class TagsSeeder extends Seeder
     {
         DB::table('tags')->truncate();
         $faker = Faker::create();
-        for ($i = 1; $i <= 15; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             DB::table('tags')->insert([
                 'name' => $faker->name,
                 'created_at' => now()]);

@@ -29,4 +29,10 @@ class Post extends Model
         }*/
         return url('/themes/front/img/featured-pic-1.jpeg');
     }
+    public function scopeStandardRequest($query)
+    {
+        return $query->with('category', 'author', 'tags')
+            ->where('enable', 1)
+            ->orderBy('created_at', 'desc');
+    }
 }
