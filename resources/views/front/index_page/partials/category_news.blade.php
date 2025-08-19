@@ -17,7 +17,7 @@
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="blog-author.html" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">
@@ -55,7 +55,7 @@
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="blog-author.html" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">
@@ -87,7 +87,7 @@
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="blog-author.html" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">

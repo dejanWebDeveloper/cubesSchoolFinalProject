@@ -20,11 +20,12 @@
                     <a href="blog-post.html">
                         <h3 class="h4">{!! $highlight($post->heading, $query) !!}</h3></a>
                     <p class="text-muted">{!! $highlight(Str::limit($post->text, 120), $query) !!}</p>
-                    <footer class="post-footer d-flex align-items-center"><a href="blog-author.html"
-                                                                             class="author d-flex align-items-center flex-wrap">
+                    <footer class="post-footer d-flex align-items-center">
+                        <a href="{{route('blog_author_page', ['name'=>$post->author->name])}}" class="author d-flex align-items-center flex-wrap">
                             <div class="avatar"><img src="{{$post->author->authorImageUrl()}}" alt="..." class="img-fluid">
                             </div>
-                            <div class="title"><span>{{$post->author->name}}</span></div>
+                            <div class="title"><span>{{$post->author->name}}</span>
+                            </div>
                         </a>
                         <div class="date"><i class="icon-clock"></i>{{$post->created_at->diffForHumans()}}</div>
                         <div class="comments meta-last"><i class="icon-comment"></i>{{$post->comments_count}}</div>

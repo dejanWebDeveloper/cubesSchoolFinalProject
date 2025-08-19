@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Author;
 use App\Models\Post;
 use App\Models\PostComment;
 use Illuminate\Http\Request;
@@ -14,9 +15,19 @@ class BlogController extends Controller
         return view('front.blog_pages.blog_page.blog_page');
     }
 
-    public function blogAuthor()
+    public function blogAuthor($name)
     {
-        return view('front.blog_pages.blog_author_page.blog_author_page');
+        $author = Author::where('name', $name)->firstOrFail();
+        $authorPosts = Post::with('author')
+            ->withCount('comments')
+            ->where('author_id', $author->id)
+            ->where('enable', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
+        return view('front.blog_pages.blog_author_page.blog_author_page', compact(
+            'authorPosts',
+        'author'
+        ));
     }
 
     public function blogCategory()
