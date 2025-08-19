@@ -12,5 +12,5 @@ Route::prefix('/blog')->name('blog_')->group(function () {
     Route::get('/category/{name}', [\App\Http\Controllers\Front\BlogController::class, 'blogCategory'])->name('category_page');
     Route::get('/post', [\App\Http\Controllers\Front\BlogController::class, 'blogPost'])->name('post_page');
     Route::get('/search', [\App\Http\Controllers\Front\BlogController::class, 'blogSearch'])->name('search_page');
-    Route::get('/tag', [\App\Http\Controllers\Front\BlogController::class, 'blogTag'])->name('tag_page');
+    Route::get('/tag/{name}', [\App\Http\Controllers\Front\BlogController::class, 'blogTag'])->name('tag_page');
 });

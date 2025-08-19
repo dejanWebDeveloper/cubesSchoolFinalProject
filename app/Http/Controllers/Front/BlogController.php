@@ -7,7 +7,9 @@ use App\Models\Author;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostComment;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -59,9 +61,20 @@ class BlogController extends Controller
     {
         return view('front.blog_pages.blog_search_page.blog_search_page');
     }*/
-    public function blogTag()
+    public function blogTag($name)
     {
-        return view('front.blog_pages.blog_tag_page.blog_tag_page');
+        $tag = Tag::where('name', $name)->firstOrFail();
+        //$postIds = DB::table('post_tags')->where('tag_id', $tag->id)->get();
+        $tagPosts = $tag->posts()
+            ->with('category', 'author')
+            ->withCount('comments')
+            ->where('enable', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
+        return view('front.blog_pages.blog_tag_page.blog_tag_page', compact(
+            'tag',
+            'tagPosts'
+        ));
     }
 
     public function blogSearch(Request $request)

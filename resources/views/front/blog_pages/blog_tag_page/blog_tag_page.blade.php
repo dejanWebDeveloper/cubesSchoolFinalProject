@@ -6,7 +6,7 @@
             <!-- Latest Posts -->
             <main class="posts-listing col-lg-8">
                 <div class="container">
-                    <h2 class="mb-3">Tag "Technology"</h2>
+                    <h2 class="mb-3">Tag "{{$tag->name}}"</h2>
                     @include('front.blog_pages.blog_tag_page.partials.posts_of_tag')
                     <!-- Pagination -->
                     @include('front.blog_pages.blog_tag_page.partials.pagination')

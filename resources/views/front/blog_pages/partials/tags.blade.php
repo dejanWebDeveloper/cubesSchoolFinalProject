@@ -4,7 +4,7 @@
     </header>
     <ul class="list-inline">
      @foreach($allTagsForBlogPartial as $tag)
-        <li class="list-inline-item"><a href="blog-tag.html" class="tag">#{{$tag->name}}</a></li>
+        <li class="list-inline-item"><a href="{{route('blog_tag_page', ['name'=>$tag->name])}}" class="tag">#{{$tag->name}}</a></li>
         @endforeach
     </ul>
 </div>
