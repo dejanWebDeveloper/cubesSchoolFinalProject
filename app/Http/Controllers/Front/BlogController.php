@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostComment;
 use Illuminate\Http\Request;
@@ -30,9 +31,19 @@ class BlogController extends Controller
         ));
     }
 
-    public function blogCategory()
+    public function blogCategory($name)
     {
-        return view('front.blog_pages.blog_category_page.blog_category_page');
+        $category = Category::where('name', $name)->firstOrFail();
+        $categoryPosts = Post::with('category')
+            ->withCount('comments')
+            ->where('category_id', $category->id)
+            ->where('enable', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
+        return view('front.blog_pages.blog_category_page.blog_category_page', compact(
+            'category',
+            'categoryPosts'
+        ));
     }
 
     public function blogPost()

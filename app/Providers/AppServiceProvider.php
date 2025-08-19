@@ -42,7 +42,9 @@ class AppServiceProvider extends ServiceProvider
             ->get();
         view()->share(compact('latestPostsForBlogPartial'));
 
-        $allCategoriesForBlogPartial = Category::all();
+        $allCategoriesForBlogPartial = Category::withCount(['posts' => function ($query) {
+            $query->where('enable', 1);
+        }])->get();
         view()->share(compact('allCategoriesForBlogPartial'));
 
         $allTagsForBlogPartial = Tag::all();

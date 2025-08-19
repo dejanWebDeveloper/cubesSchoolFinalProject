@@ -6,7 +6,7 @@
             <!-- Latest Posts -->
             <main class="posts-listing col-lg-8">
                 <div class="container">
-                    <h2 class="mb-3">Category "Business"1!!!!!!!!!!!!!!!!!!!!!</h2>
+                    <h2 class="mb-3">Category "{{$category->name}}"</h2>
                     @include('front.blog_pages.blog_category_page.partials.posts')
                     <!-- Pagination -->
                     @include('front.blog_pages.blog_category_page.partials.pagination')

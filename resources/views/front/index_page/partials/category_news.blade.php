@@ -9,7 +9,7 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="blog-category.html">{{ $importantPost->category->name }}</a>
+                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
                                     </div>
                                     <a href="blog-post.html">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
@@ -47,7 +47,7 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="blog-category.html">{{ $importantPost->category->name }}</a>
+                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
                                     </div>
                                     <a href="blog-post.html">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
@@ -79,7 +79,7 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="blog-category.html">{{ $importantPost->category->name }}</a>
+                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
                                     </div>
                                     <a href="blog-post.html">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>

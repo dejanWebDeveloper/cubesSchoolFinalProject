@@ -4,8 +4,8 @@
     </header>
 @foreach($allCategoriesForBlogPartial as $category)
     <div class="item d-flex justify-content-between">
-        <a href="blog-category.html">{{$category->name}}</a>
-        <span>{{$category->posts()->count()}}</span>
+        <a href="{{route('blog_category_page', ['name'=>$category->name])}}">{{$category->name}}</a>
+        <span>{{$category->posts_count}}</span>
     </div>
     @endforeach
 </div>

@@ -9,7 +9,7 @@
             <div class="post-details">
                 <div class="post-meta d-flex justify-content-between">
                     <div class="date meta-last">{{$authorPost->created_at->format('d M | Y')}}</div>
-                    <div class="category"><a href="blog-category.html">{{$authorPost->category->name}}</a></div>
+                    <div class="category"><a href="{{route('blog_category_page', ['name'=>$authorPost->category->name])}}">{{$authorPost->category->name}}</a></div>
                 </div>
                 <a href="blog-post.html">
                     <h3 class="h4">{{$authorPost->heading}}</h3></a>
