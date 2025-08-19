@@ -13,7 +13,10 @@ class BlogController extends Controller
 {
     public function blog()
     {
-        return view('front.blog_pages.blog_page.blog_page');
+        $blogPosts = Post::standardRequest()
+            ->withCount('comments')
+            ->paginate(12);
+        return view('front.blog_pages.blog_page.blog_page', compact('blogPosts'));
     }
 
     public function blogAuthor($name)
@@ -48,6 +51,7 @@ class BlogController extends Controller
 
     public function blogPost()
     {
+
         return view('front.blog_pages.blog_post_page.blog_post_page');
     }
 
