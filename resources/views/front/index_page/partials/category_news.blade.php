@@ -11,7 +11,7 @@
                                     <div class="category">
                                         <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
                                     </div>
-                                    <a href="blog-post.html">
+                                    <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>

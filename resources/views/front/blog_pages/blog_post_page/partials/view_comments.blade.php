@@ -1,38 +1,20 @@
 <div class="post-comments" id="post-comments">
     <header>
-        <h3 class="h6">Post Comments<span class="no-of-comments">(3)</span></h3>
+        <h3 class="h6">Post Comments<span class="no-of-comments">({{$singlePost->comments_count}})</span></h3>
     </header>
+    @foreach($comments as $comment)
     <div class="comment">
         <div class="comment-header d-flex justify-content-between">
             <div class="user d-flex align-items-center">
-                <div class="image"><img src="img/user.svg" alt="..." class="img-fluid rounded-circle"></div>
-                <div class="title"><strong>Jabi Hernandiz</strong><span class="date">May 2016</span></div>
+                <div class="image">
+                    <img src="{{url('/themes/front/img/user.svg')}}" alt="..." class="img-fluid rounded-circle">
+                </div>
+                <div class="title"><strong>{{$comment->name}}</strong><span class="date">{{ $comment->created_at->format('F Y') }}</span></div>
             </div>
         </div>
         <div class="comment-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+            <p>{{ $comment->comment }}</p>
         </div>
     </div>
-    <div class="comment">
-        <div class="comment-header d-flex justify-content-between">
-            <div class="user d-flex align-items-center">
-                <div class="image"><img src="img/user.svg" alt="..." class="img-fluid rounded-circle"></div>
-                <div class="title"><strong>Nikolas</strong><span class="date">May 2016</span></div>
-            </div>
-        </div>
-        <div class="comment-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-        </div>
-    </div>
-    <div class="comment">
-        <div class="comment-header d-flex justify-content-between">
-            <div class="user d-flex align-items-center">
-                <div class="image"><img src="img/user.svg" alt="..." class="img-fluid rounded-circle"></div>
-                <div class="title"><strong>John Doe</strong><span class="date">May 2016</span></div>
-            </div>
-        </div>
-        <div class="comment-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-        </div>
-    </div>
+    @endforeach
 </div>

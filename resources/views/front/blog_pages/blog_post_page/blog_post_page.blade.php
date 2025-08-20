@@ -3,11 +3,10 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <!-- Latest Posts -->
-            <main class="posts-listing col-lg-8">
+            <main class="post blog-post col-lg-8">
                 <div class="container">
                     <div class="post-single">
-                        <div class="post-thumbnail"><img src="{{url('/themes/front/img/blog-post-3.jpeg')}}" alt="..." class="img-fluid"></div>
+                        <div class="post-thumbnail"><img src="{{$singlePost->imageUrl()}}" alt="..." class="img-fluid"></div>
                         <div class="post-details">
                             @include('front.blog_pages.blog_post_page.partials.content_of_post')
                             @include('front.blog_pages.blog_post_page.partials.tags_of_post')

@@ -32,7 +32,7 @@ class BlogController extends Controller
             ->paginate(4);
         return view('front.blog_pages.blog_author_page.blog_author_page', compact(
             'authorPosts',
-        'author'
+            'author'
         ));
     }
 
@@ -51,20 +51,32 @@ class BlogController extends Controller
         ));
     }
 
-    public function blogPost()
+    public function blogPost($heading)
     {
-
-        return view('front.blog_pages.blog_post_page.blog_post_page');
+        $singlePost = Post::withCount('comments')->where('heading', $heading)->firstOrFail();
+        $singlePostTags = $singlePost->tags()->get();
+        $prevPost = Post::where('id', '<', $singlePost->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        $nextPost = Post::where('id', '>', $singlePost->id)
+            ->orderBy('id', 'asc')
+            ->first();
+        $comments = PostComment::where('post_id', $singlePost->id)
+            ->where('enable', 1)
+            ->orderBy('created_at', 'asc')
+            ->get();
+        return view('front.blog_pages.blog_post_page.blog_post_page', compact(
+            'singlePost',
+            'singlePostTags',
+            'prevPost',
+            'nextPost',
+            'comments'
+        ));
     }
 
-    /*public function blogSearch()
-    {
-        return view('front.blog_pages.blog_search_page.blog_search_page');
-    }*/
     public function blogTag($name)
     {
         $tag = Tag::where('name', $name)->firstOrFail();
-        //$postIds = DB::table('post_tags')->where('tag_id', $tag->id)->get();
         $tagPosts = $tag->posts()
             ->with('category', 'author')
             ->withCount('comments')

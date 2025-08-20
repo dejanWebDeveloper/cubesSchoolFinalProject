@@ -1,27 +1,36 @@
 <div class="post-meta d-flex justify-content-between">
-    <div class="category"><a href="blog-category.html">Business</a></div>
+    <div class="category">
+        <a href="{{route('blog_category_page', ['name'=>$singlePost->category->name])}}">{{$singlePost->category->name}}</a>
+    </div>
 </div>
-<h1>Diversity in Engineering: The Effect on Questions<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
-<div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="blog-author.html" class="author d-flex align-items-center flex-wrap">
-        <div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid"></div>
-        <div class="title"><span>John Doe</span></div></a>
+<h1>{{$singlePost->heading}}
+    <a href="#"><i class="fa fa-bookmark-o"></i>
+    </a>
+</h1>
+<div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+    <a href="{{route('blog_author_page', ['name'=>$singlePost->author->name])}}" class="author d-flex align-items-center flex-wrap">
+        <div class="avatar"><img src="{{$singlePost->author->authorImageUrl()}}" alt="..." class="img-fluid"></div>
+        <div class="title">
+            <span>{{$singlePost->author->name}}</span>
+        </div>
+    </a>
     <div class="d-flex align-items-center flex-wrap">
-        <div class="date"><i class="icon-clock"></i> 2 months ago</div>
-        <div class="views"><i class="icon-eye"></i> 500</div>
-        <div class="comments meta-last"><a href="#post-comments"><i class="icon-comment"></i>12</a></div>
+        <div class="date"><i class="icon-clock"></i>{{$singlePost->created_at->diffForHumans()}}</div>
+        <div class="views"><i class="icon-eye"></i>{{$singlePost->views}}</div>
+        <div class="comments meta-last"><a href="#post-comments"><i class="icon-comment"></i>{{$singlePost->comments_count}}</a></div>
     </div>
 </div>
 <div class="post-body">
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <p> <img src="img/featured-pic-3.jpeg" alt="..." class="img-fluid"></p>
-    <h3>Lorem Ipsum Dolor</h3>
-    <p>div Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda temporibus iusto voluptates deleniti similique rerum ducimus sint ex odio saepe. Sapiente quae pariatur ratione quis perspiciatis deleniti accusantium</p>
+    <p class="lead"></p>
+    <p>{{$singlePost->text}}</p>
+    <p> <img src="{{$singlePost->imageUrl()}}" alt="..." class="img-fluid"></p>
+    <h3>{{$singlePost->preheading}}</h3>
+    <p><div></div>{{$singlePost->text}}</p>
     <blockquote class="blockquote">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
+        <p>{{$singlePost->text}}</p>
         <footer class="blockquote-footer">Someone famous in
             <cite title="Source Title">Source Title</cite>
         </footer>
     </blockquote>
-    <p>quasi nam. Libero dicta eum recusandae, commodi, ad, autem at ea iusto numquam veritatis, officiis. Accusantium optio minus, voluptatem? Quia reprehenderit, veniam quibusdam provident, fugit iusto ullam voluptas neque soluta adipisci ad.</p>
+    <p>{{$singlePost->text}}</p>
 </div>
