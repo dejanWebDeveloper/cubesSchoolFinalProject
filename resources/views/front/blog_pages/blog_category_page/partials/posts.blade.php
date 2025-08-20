@@ -3,7 +3,7 @@
     @foreach($categoryPosts as $categoryPost)
         <div class="post col-xl-6">
             <div class="post-thumbnail">
-                <a href="blog-post.html"><img src="{{$categoryPost->imageUrl()}}" alt="..." class="img-fluid">
+                <a href="{{route('blog_post_page', ['heading'=>$categoryPost->heading])}}"><img src="{{$categoryPost->imageUrl()}}" alt="..." class="img-fluid">
                 </a>
             </div>
             <div class="post-details">
@@ -11,7 +11,7 @@
                     <div class="date meta-last">{{$categoryPost->created_at->format('d M | Y')}}</div>
                     <div class="category"><a href="{{route('blog_category_page', ['name'=>$categoryPost->category->name])}}">{{$categoryPost->category->name}}</a></div>
                 </div>
-                <a href="blog-post.html">
+                <a href="{{route('blog_post_page', ['heading'=>$categoryPost->heading])}}">
                     <h3 class="h4">{{$categoryPost->heading}}</h3></a>
                 <p class="text-muted">{{$categoryPost->text}}</p>
                 <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['name'=>$categoryPost->author->name])}}"

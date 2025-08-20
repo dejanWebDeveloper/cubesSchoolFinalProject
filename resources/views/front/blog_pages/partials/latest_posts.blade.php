@@ -4,7 +4,7 @@
     </header>
     <div class="blog-posts">
         @foreach($latestPostsForBlogPartial as $post)
-        <a href="blog-post.html">
+        <a href="{{route('blog_post_page', ['heading'=>$post->heading])}}">
             <div class="item d-flex align-items-center">
                 <div class="image">
                     <img src="{{$post->imageUrl()}}" alt="..." class="img-fluid">

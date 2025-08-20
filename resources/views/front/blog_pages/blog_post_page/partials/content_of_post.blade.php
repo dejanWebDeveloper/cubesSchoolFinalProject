@@ -25,7 +25,7 @@
     <p>{{$singlePost->text}}</p>
     <p> <img src="{{$singlePost->imageUrl()}}" alt="..." class="img-fluid"></p>
     <h3>{{$singlePost->preheading}}</h3>
-    <p><div></div>{{$singlePost->text}}</p>
+    <p>{{$singlePost->text}}</p>
     <blockquote class="blockquote">
         <p>{{$singlePost->text}}</p>
         <footer class="blockquote-footer">Someone famous in
