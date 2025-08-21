@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\Tag;
+use App\Rules\ReCaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -73,6 +74,29 @@ class BlogController extends Controller
             'comments'
         ));
     }
+
+    public function storeComment(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:30'],
+            'email' => ['required', 'string', 'email:rfc,dns'], // stronger email validation
+            'comment' => ['required', 'string', 'min:5', 'max:500'],
+            'post_id' => ['required', 'integer', 'exists:posts,id'],
+            'g-recaptcha-response' => ['required', new ReCaptcha()]
+        ]);
+
+        $data['enable'] = 1;
+
+        $newComment = new PostComment();
+        $newComment->fill($data);
+        $newComment->save();
+
+        return response()->json([
+            'message' => 'Your comment has been submitted successfully!',
+            'comment' => $newComment // optional: return comment if you want to append it via JS
+        ], 201);
+    }
+
 
     public function blogTag($name)
     {

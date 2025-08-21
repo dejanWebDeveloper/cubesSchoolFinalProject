@@ -32,7 +32,7 @@
                     </ul>
                     <ul class="list-unstyled">
                         @foreach($footerCategories as $footerCategory)
-                            <li><a href="{{route('blog_category_name', ['name'=>$footerCategory->name])}}">{{$footerCategory->name}}</a></li>
+                            <li><a href="{{route('blog_category_page', ['name'=>$footerCategory->name])}}">{{$footerCategory->name}}</a></li>
                         @endforeach
                     </ul>
                 </div>
