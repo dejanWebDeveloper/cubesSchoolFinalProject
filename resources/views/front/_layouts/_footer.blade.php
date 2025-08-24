@@ -28,7 +28,7 @@
                         <li><a href="{{route('index_page')}}">Home</a></li>
                         <li><a href="{{route('blog_page')}}">Blog</a></li>
                         <li><a href="{{route('contact_page')}}">Contact</a></li>
-                        <li><a href="#">Login</a></li>
+                        <li><a href="{{route('admin_index_page')}}">Login</a></li>
                     </ul>
                     <ul class="list-unstyled">
                         @foreach($footerCategories as $footerCategory)

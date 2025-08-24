@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\Front\IndexController::class, 'index'])->name('index_page');
@@ -16,4 +17,15 @@ Route::prefix('/blog')->name('blog_')->group(function () {
     Route::get('/search', [\App\Http\Controllers\Front\BlogController::class, 'blogSearch'])->name('search_page');
     Route::get('/tag/{name}', [\App\Http\Controllers\Front\BlogController::class, 'blogTag'])->name('tag_page');
 });
+Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\IndexController::class, 'index'])->name('index_page');
+
+    Route::prefix('/categories')->name('categories_')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('page');
+        Route::get('/add-category', [\App\Http\Controllers\Admin\CategoryController::class, 'addCategory'])->name('add_category');
+    });
+});
+
+
+Auth::routes();
 
