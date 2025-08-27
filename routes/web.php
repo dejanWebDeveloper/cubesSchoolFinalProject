@@ -24,6 +24,11 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('page');
         Route::get('/add-category', [\App\Http\Controllers\Admin\CategoryController::class, 'addCategory'])->name('add_category');
     });
+
+    Route::prefix('/users')->name('users_')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('page');
+        Route::get('/add-user', [\App\Http\Controllers\Admin\UserController::class, 'addUser'])->name('add_user');
+    });
 });
 
 

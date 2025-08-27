@@ -18,6 +18,29 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p>
+                            Users
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin_users_page')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin_users_add_user')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add User</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-plus-square"></i>
+                        <p>
                             Post Categories
                             <i class="right fas fa-angle-left"></i>
                         </p>
@@ -26,17 +49,18 @@
                         <li class="nav-item">
                             <a href="{{route('admin_categories_page')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Post Categories List</p>
+                                <p>Categories List</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{route('admin_categories_add_category')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add Post Category</p>
+                                <p>Add Category</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
