@@ -41,6 +41,29 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p>
+                            Post Authors
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin_authors_page')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Authors List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin_authors_add_author')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Author</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-plus-square"></i>
+                        <p>
                             Post Categories
                             <i class="right fas fa-angle-left"></i>
                         </p>

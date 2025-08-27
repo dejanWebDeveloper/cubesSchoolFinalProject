@@ -34,6 +34,11 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\TagController::class, 'index'])->name('page');
         Route::get('/add-tag', [\App\Http\Controllers\Admin\TagController::class, 'addTag'])->name('add_tag');
     });
+
+    Route::prefix('/authors')->name('authors_')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\AuthorController::class, 'index'])->name('page');
+        Route::get('/add-author', [\App\Http\Controllers\Admin\AuthorController::class, 'addAuthor'])->name('add_author');
+    });
 });
 
 
