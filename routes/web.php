@@ -29,6 +29,11 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('page');
         Route::get('/add-user', [\App\Http\Controllers\Admin\UserController::class, 'addUser'])->name('add_user');
     });
+
+    Route::prefix('/tags')->name('tags_')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\TagController::class, 'index'])->name('page');
+        Route::get('/add-tag', [\App\Http\Controllers\Admin\TagController::class, 'addTag'])->name('add_tag');
+    });
 });
 
 

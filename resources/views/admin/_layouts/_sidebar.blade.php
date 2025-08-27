@@ -60,7 +60,29 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-plus-square"></i>
+                        <p>
+                            Post Tags
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin_tags_page')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tags List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin_tags_add_tag')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Tag</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
