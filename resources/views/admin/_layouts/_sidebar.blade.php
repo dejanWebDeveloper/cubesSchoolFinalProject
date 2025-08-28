@@ -41,6 +41,29 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p>
+                            Posts
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin_posts_page')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Posts List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin_posts_add_post')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Post</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-plus-square"></i>
+                        <p>
                             Post Authors
                             <i class="right fas fa-angle-left"></i>
                         </p>
