@@ -44,6 +44,7 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\PostController::class, 'index'])->name('page');
         Route::get('/add-author', [\App\Http\Controllers\Admin\PostController::class, 'addPost'])->name('add_post');
         Route::post('/ajax-post-datatable', [\App\Http\Controllers\Admin\PostController::class, 'datatable'])->name('datatable');
+        Route::post('/store-post', [\App\Http\Controllers\Admin\PostController::class, 'storePost'])->name('store_post');
     });
 });
 

@@ -29,6 +29,13 @@ class Post extends Model
         }*/
         return url('/themes/front/img/featured-pic-1.jpeg');
     }
+    public function additionalImageUrl()
+    {
+        /*if(!is_null($this->photo)){
+            return url('/storage/photo/'. $this->photo);
+        }*/
+        return url('/themes/front/img/featured-pic-2.jpeg');
+    }
     public function scopeStandardRequest($query)
     {
         return $query->with('category', 'author', 'tags')

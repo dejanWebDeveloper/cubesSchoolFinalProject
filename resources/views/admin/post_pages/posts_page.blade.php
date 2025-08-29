@@ -156,13 +156,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Product</h4>
+                    <h4 class="modal-title">Delete Post</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete product?</p>
+                    <p>Are you sure you want to delete post?</p>
                     <strong></strong>
                 </div>
                 <div class="modal-footer justify-content-between">

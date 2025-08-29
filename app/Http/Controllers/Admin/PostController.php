@@ -21,7 +21,10 @@ class PostController extends Controller
     }
     public function addPost()
     {
-        return view('admin.post_pages.add_post_form');
+        $categories = Category::all();
+        $authors = Author::all();
+        $tags = Tag::all();
+        return view('admin.post_pages.add_post_form', compact('categories' , 'authors','tags'));
     }
     public function datatable(Request $request)
     {

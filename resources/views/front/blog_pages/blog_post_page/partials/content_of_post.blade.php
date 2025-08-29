@@ -23,7 +23,7 @@
 <div class="post-body">
     <p class="lead"></p>
     <p>{{$singlePost->text}}</p>
-    <p> <img src="{{$singlePost->imageUrl()}}" alt="..." class="img-fluid"></p>
+    <p> <img src="{{$singlePost->additionalImageUrl()}}" alt="..." class="img-fluid"></p>
     <h3>{{$singlePost->preheading}}</h3>
     <p>{{$singlePost->text}}</p>
     <blockquote class="blockquote">
