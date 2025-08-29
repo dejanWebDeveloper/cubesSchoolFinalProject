@@ -5,3 +5,4 @@
 <!-- AdminLTE App -->
 <script src="{{uri('/themes/admin/dist/js/adminlte.min.js')}}"></script>
 <script src="{{uri('/themes/admin/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+@stack('footer_script')

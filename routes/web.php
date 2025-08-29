@@ -43,6 +43,7 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::prefix('/posts')->name('posts_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\PostController::class, 'index'])->name('page');
         Route::get('/add-author', [\App\Http\Controllers\Admin\PostController::class, 'addPost'])->name('add_post');
+        Route::post('/ajax-post-datatable', [\App\Http\Controllers\Admin\PostController::class, 'datatable'])->name('datatable');
     });
 });
 
