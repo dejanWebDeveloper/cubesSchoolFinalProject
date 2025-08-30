@@ -9,6 +9,7 @@
         .select2-container--default .select2-selection--single {
             height: 40px;
         }
+
         .select2-container--default .select2-selection--multiple {
             min-height: 40px;
             font-size: 16px;
@@ -156,24 +157,27 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Post</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete post?</p>
-                    <strong></strong>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
+                <form id="delete-post" method="post" action="{{route('admin_posts_delete_post')}}">
+                    @csrf
+                    <input type="hidden" name="post_for_delete_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Post</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete post?</p>
+                        <strong><p id="post_for_delete_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -251,6 +255,37 @@
             // reload tabele kada se promeni filter
             $('#entities-filter-form input, #entities-filter-form select').on('change keyup', function () {
                 $('#posts-table').DataTable().ajax.reload();
+            });
+            //delete post
+            // Open modal and enter data
+            $('#posts-table').on('click', "[data-action='delete']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#delete-modal [name='post_for_delete_id']").val(id);
+                $('#delete-modal p#post_for_delete_name').html(name);
+            });
+
+            // Click on button for delete
+            $('#delete-post').on('submit', function (e) {
+                e.preventDefault();
+                let postId = $("#delete-modal [name='post_for_delete_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_posts_delete_post') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_for_delete_id: postId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#delete-modal').modal('hide');
+                        toastr.success('Post Successfully Deleted.');
+                        // Reload celog DataTables umesto ručnog uklanjanja reda
+                        $('#posts-table').DataTable().ajax.reload(null, false);
+                    }
+                });
             });
         });
     </script>

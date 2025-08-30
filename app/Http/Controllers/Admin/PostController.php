@@ -131,6 +131,17 @@ class PostController extends Controller
         }
         $newPost->save();
     }
+    public function deletePost()
+    {
+        $data =  request()->validate([
+            'post_for_delete_id' => ['required', 'numeric', 'exists:posts,id'],
+        ]);
+        $post = Post::findOrFail($data['post_for_delete_id']);
+        $post->delete();
+        //deleting from post_tags table
+        $post->tags()->sync([]);
+        return response()->json(['success' => 'Post Deleted Successfully']);
+    }
 
 
 }
