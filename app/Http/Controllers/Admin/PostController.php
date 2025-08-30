@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 
@@ -89,6 +90,7 @@ class PostController extends Controller
             'second-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
+        $data['slug'] = Str::slug($data['heading']);
         $data['enable'] = 1;
         $data['important'] = 0;
         $data['created_at'] = now();

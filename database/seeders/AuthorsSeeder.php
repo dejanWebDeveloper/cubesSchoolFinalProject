@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AuthorsSeeder extends Seeder
 {
@@ -16,10 +17,11 @@ class AuthorsSeeder extends Seeder
         DB::table('authors')->truncate();
         $faker = Faker::create();
         for ($i = 1; $i <= 7; $i++) {
+            $name = $faker->name;
             DB::table('authors')->insert([
-                'name' => $faker->name,
+                'name' => $name,
+                'slug' => Str::slug($name),
                 'email' => $faker->email,
-                'profile_photo' => $i.'.jpg',
                 'created_at' => now()]);
         }
     }

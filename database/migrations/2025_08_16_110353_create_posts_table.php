@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('heading', 255);
             $table->string('preheading', 500);
             $table->text('text');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->integer('category_id');
             $table->integer('author_id');
             $table->unsignedBigInteger('views')->default(0);

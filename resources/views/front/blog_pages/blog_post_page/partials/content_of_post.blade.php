@@ -14,7 +14,7 @@
     </a>
 </h1>
 <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
-    <a href="{{route('blog_author_page', ['name'=>$singlePost->author->name])}}" class="author d-flex align-items-center flex-wrap">
+    <a href="{{route('blog_author_page', ['slug'=>$singlePost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
         <div class="avatar"><img src="{{$singlePost->author->authorImageUrl()}}" alt="..." class="img-fluid"></div>
         <div class="title">
             <span>{{$singlePost->author->name}}</span>

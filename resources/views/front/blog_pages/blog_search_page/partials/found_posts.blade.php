@@ -9,7 +9,7 @@
         @foreach($results as $post)
             <div class="post col-xl-6">
                 <div class="post-thumbnail">
-                    <a href="{{route('blog_post_page', ['heading'=>$post->heading])}}"><img src="{{$post->imageUrl()}}" alt="..." class="img-fluid">
+                    <a href="{{route('blog_post_page', ['slug'=>$post->slug])}}"><img src="{{$post->imageUrl()}}" alt="..." class="img-fluid">
                     </a>
                 </div>
                 <div class="post-details">
@@ -25,11 +25,11 @@
                             @endif
                         </div>
                     </div>
-                    <a href="{{route('blog_post_page', ['heading'=>$post->heading])}}">
+                    <a href="{{route('blog_post_page', ['slug'=>$post->slug])}}">
                         <h3 class="h4">{!! $highlight($post->heading, $query) !!}</h3></a>
                     <p class="text-muted">{!! $highlight(Str::limit($post->text, 120), $query) !!}</p>
                     <footer class="post-footer d-flex align-items-center">
-                        <a href="{{route('blog_author_page', ['name'=>$post->author->name])}}" class="author d-flex align-items-center flex-wrap">
+                        <a href="{{route('blog_author_page', ['slug'=>$post->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                             <div class="avatar"><img src="{{$post->author->authorImageUrl()}}" alt="..." class="img-fluid">
                             </div>
                             <div class="title"><span>{{$post->author->name}}</span>

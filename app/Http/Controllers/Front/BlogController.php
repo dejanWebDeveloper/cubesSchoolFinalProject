@@ -22,9 +22,9 @@ class BlogController extends Controller
         return view('front.blog_pages.blog_page.blog_page', compact('blogPosts'));
     }
 
-    public function blogAuthor($name)
+    public function blogAuthor($slug)
     {
-        $author = Author::where('name', $name)->firstOrFail();
+        $author = Author::where('slug', $slug)->firstOrFail();
         $authorPosts = Post::with('author')
             ->withCount('comments')
             ->where('author_id', $author->id)
@@ -52,9 +52,9 @@ class BlogController extends Controller
         ));
     }
 
-    public function blogPost($heading)
+    public function blogPost($slug)
     {
-        $singlePost = Post::withCount('comments')->where('heading', $heading)->firstOrFail();
+        $singlePost = Post::withCount('comments')->where('slug', $slug)->firstOrFail();
         //increment views
         $sessionKey = 'post_' . $singlePost->id . '_viewed';
         if (!session()->has($sessionKey)) {
@@ -104,9 +104,9 @@ class BlogController extends Controller
     }
 
 
-    public function blogTag($name)
+    public function blogTag($slug)
     {
-        $tag = Tag::where('name', $name)->firstOrFail();
+        $tag = Tag::where('slug', $slug)->firstOrFail();
         $tagPosts = $tag->posts()
             ->with('category', 'author')
             ->withCount('comments')

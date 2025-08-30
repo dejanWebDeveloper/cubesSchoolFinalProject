@@ -3,7 +3,7 @@
     @foreach($blogPosts as $blogPost)
         <div class="post col-xl-6">
             <div class="post-thumbnail">
-                <a href="{{route('blog_post_page', ['heading'=>$blogPost->heading])}}"><img src="{{$blogPost->imageUrl()}}" alt="..." class="img-fluid">
+                <a href="{{route('blog_post_page', ['slug'=>$blogPost->slug])}}"><img src="{{$blogPost->imageUrl()}}" alt="..." class="img-fluid">
                 </a>
             </div>
             <div class="post-details">
@@ -19,10 +19,10 @@
                         @endif
                     </div>
                 </div>
-                <a href="{{route('blog_post_page', ['heading'=>$blogPost->heading])}}">
+                <a href="{{route('blog_post_page', ['slug'=>$blogPost->slug])}}">
                     <h3 class="h4">{{$blogPost->heading}}</h3></a>
                 <p class="text-muted">{{$blogPost->text}}</p>
-                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['name'=>$blogPost->author->name])}}"
+                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['slug'=>$blogPost->author->slug])}}"
                                                                          class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{$blogPost->author->authorImageUrl()}}" alt="..." class="img-fluid">
                         </div>

@@ -3,7 +3,7 @@
     @foreach($categoryPosts as $categoryPost)
         <div class="post col-xl-6">
             <div class="post-thumbnail">
-                <a href="{{route('blog_post_page', ['heading'=>$categoryPost->heading])}}"><img src="{{$categoryPost->imageUrl()}}" alt="..." class="img-fluid">
+                <a href="{{route('blog_post_page', ['slug'=>$categoryPost->slug])}}"><img src="{{$categoryPost->imageUrl()}}" alt="..." class="img-fluid">
                 </a>
             </div>
             <div class="post-details">
@@ -19,10 +19,10 @@
                         @endif
                     </div>
                 </div>
-                <a href="{{route('blog_post_page', ['heading'=>$categoryPost->heading])}}">
+                <a href="{{route('blog_post_page', ['slug'=>$categoryPost->slug])}}">
                     <h3 class="h4">{{$categoryPost->heading}}</h3></a>
                 <p class="text-muted">{{$categoryPost->text}}</p>
-                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['name'=>$categoryPost->author->name])}}"
+                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['slug'=>$categoryPost->author->slug])}}"
                                                                          class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{$categoryPost->author->authorImageUrl()}}" alt="..." class="img-fluid">
                         </div>

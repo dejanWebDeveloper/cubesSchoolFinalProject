@@ -17,13 +17,13 @@
                                             <a>Uncategorized</a>
                                         @endif
                                     </div>
-                                    <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
+                                    <a href="{{route('blog_post_page', ['slug'=>$importantPost->slug])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">
@@ -61,13 +61,13 @@
                                             <a>Uncategorized</a>
                                         @endif
                                     </div>
-                                    <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
+                                    <a href="{{route('blog_post_page', ['slug'=>$importantPost->slug])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">
@@ -99,13 +99,13 @@
                                             <a>Uncategorized</a>
                                         @endif
                                     </div>
-                                    <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
+                                    <a href="{{route('blog_post_page', ['slug'=>$importantPost->slug])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
                                 <p>{{ $importantPost->text }}</p>
                                 <footer class="post-footer d-flex align-items-center">
-                                    <a href="{{route('blog_author_page', ['name'=>$importantPost->author->name])}}" class="author d-flex align-items-center flex-wrap">
+                                    <a href="{{route('blog_author_page', ['slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
                                             <img src="{{ $importantPost->author->authorImageUrl() }}" alt="..."
                                                  class="img-fluid">

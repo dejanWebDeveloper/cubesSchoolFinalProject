@@ -40,7 +40,7 @@
             <div class="col-md-4">
                 <div class="latest-posts">
                     @foreach($latestFooterPosts as $latestFooterPost)
-                    <a href="{{route('blog_post_page', ['heading'=>$latestFooterPost->heading])}}">
+                    <a href="{{route('blog_post_page', ['slug'=>$latestFooterPost->slug])}}">
                         <div class="post d-flex align-items-center">
                             <div class="image">
                                 <img src="{{$latestFooterPost->imageUrl()}}" alt="..." class="img-fluid">

@@ -8,7 +8,7 @@
             @foreach($latestPostsSlider as $latestPostSlider)
                 <div class="post">
                     <div class="post-thumbnail">
-                        <a href="{{route('blog_post_page', ['heading'=>$latestPostSlider->heading])}}">
+                        <a href="{{route('blog_post_page', ['slug'=>$latestPostSlider->slug])}}">
                             <img src="{{ $latestPostSlider->imageUrl() }}" alt="..." class="img-fluid">
                         </a>
                     </div>
@@ -25,7 +25,7 @@
                                 @endif
                             </div>
                         </div>
-                        <a href="{{route('blog_post_page', ['heading'=>$latestPostSlider->heading])}}">
+                        <a href="{{route('blog_post_page', ['slug'=>$latestPostSlider->slug])}}">
                             <h3 class="h4">{{ $latestPostSlider->heading }}</h3>
                         </a>
                         <p class="text-muted">{{ $latestPostSlider->text }}</p>
