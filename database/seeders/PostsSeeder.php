@@ -22,7 +22,6 @@ class PostsSeeder extends Seeder
                 'heading' => $faker->name,
                 'preheading' => $faker->address,
                 'text' => $faker->text,
-                'photo' => $i.'.jpg',
                 'category_id' => $categories->random()->id,
                 'author_id' => $authors->random()->id,
                 'views' => rand(100, 1000),

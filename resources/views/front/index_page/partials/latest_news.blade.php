@@ -16,7 +16,7 @@
                         <div class="post-meta d-flex justify-content-between">
                             <div class="date">{{ $latestPostSlider->created_at->format('d M | Y') }}</div>
                             <div class="category">
-                                <a href="{{route('blog_category_page', ['name'=>$latestPostSlider->category->name])}}">{{ $latestPostSlider->category->name }}</a>
+                                <a href="{{route('blog_category_page', ['name'=>$latestPostSlider->category->name])}}">{{ $latestPostSlider->category->name}}</a>
                             </div>
                         </div>
                         <a href="{{route('blog_post_page', ['heading'=>$latestPostSlider->heading])}}">

@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Post Category</label>
-                                            <select id="select-category" class="form-control">
+                                            <select id="select-category" class="form-control" name="category_id">
                                                 <option></option>
                                                 @foreach($categories as $category)
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -77,7 +77,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Author</label>
-                                            <select id="select-author" name="author" class="form-control @error('author') is-invalid @enderror">
+                                            <select id="select-author" name="author_id" class="form-control @error('author') is-invalid @enderror">
                                                 <option></option>
                                                 @foreach($authors as $author)
                                                     <option value="{{$author->id}}">{{$author->name}}</option>
@@ -259,13 +259,13 @@
                         "ignore" : [],
                         "heading": {
                             "required": true,
-                            "minlength": 3,
-                            "maxlength": 100
+                            "minlength": 20,
+                            "maxlength": 255
                         },
                         "preheading": {
                             "required": true,
-                            "minlength": 5,
-                            "maxlength": 200
+                            "minlength": 50,
+                            "maxlength": 500
                         },
                         //"category": {
                           //  "required": true
@@ -282,13 +282,13 @@
                     "messages": {
                         "heading": {
                             "required": "Please enter post heading",
-                            "minlength": "Your heading must be over 3 characters",
-                            "maxlength": "Enter no more than 100 characters"
+                            "minlength": "Your heading must be over 20 characters",
+                            "maxlength": "Enter no more than 255 characters"
                         },
                         "preheading": {
                             "required": "Please enter post preheading",
-                            "minlength": "Your description must be longer than 5 characters",
-                            "maxlength": "Your description cannot be longer than 200 characters"
+                            "minlength": "Your description must be longer than 50 characters",
+                            "maxlength": "Your description cannot be longer than 500 characters"
                         },
                         //"category": {
                           //  "required": "Please enter some category"

@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('heading', 200);
+            $table->string('heading', 255);
             $table->string('preheading', 500);
-            $table->text('text', 3000);
-            $table->string('photo')->nullable();
+            $table->text('text');
+            $table->string('photo');
             $table->integer('category_id');
             $table->integer('author_id');
             $table->unsignedBigInteger('views')->default(0);

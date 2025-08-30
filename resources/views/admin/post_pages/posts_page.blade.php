@@ -51,6 +51,11 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            @if(session()->has('system_message'))
+                                <div class="alert alert-success" role="alert">
+                                    {{session()->pull('system_message')}}
+                                </div>
+                            @endif
                             <form id="entities-filter-form">
                                 <div class="row">
                                     <div class="col-md-3 form-group">

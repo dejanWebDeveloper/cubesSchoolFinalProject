@@ -1,5 +1,5 @@
 <div class="btn-group">
-    <a href="#" class="btn btn-info" target="_blank">
+    <a href="{{route('blog_post_page', ['heading'=>$row->heading])}}" class="btn btn-info" target="_blank">
         <i class="fas fa-eye"></i>
     </a>
     <a href="#" class="btn btn-info">

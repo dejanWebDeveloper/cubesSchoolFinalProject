@@ -16,7 +16,7 @@ Route::prefix('/blog')->name('blog_')->group(function () {
     Route::post('/store-comment', [\App\Http\Controllers\Front\BlogController::class, 'storeComment'])->name('store_comment');
     Route::get('/search', [\App\Http\Controllers\Front\BlogController::class, 'blogSearch'])->name('search_page');
     Route::get('/tag/{name}', [\App\Http\Controllers\Front\BlogController::class, 'blogTag'])->name('tag_page');
-});
+    });
 Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\IndexController::class, 'index'])->name('index_page');
 
@@ -45,6 +45,8 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::get('/add-author', [\App\Http\Controllers\Admin\PostController::class, 'addPost'])->name('add_post');
         Route::post('/ajax-post-datatable', [\App\Http\Controllers\Admin\PostController::class, 'datatable'])->name('datatable');
         Route::post('/store-post', [\App\Http\Controllers\Admin\PostController::class, 'storePost'])->name('store_post');
+
+
     });
 });
 

@@ -55,6 +55,12 @@ class BlogController extends Controller
     public function blogPost($heading)
     {
         $singlePost = Post::withCount('comments')->where('heading', $heading)->firstOrFail();
+        //increment views
+        $sessionKey = 'post_' . $singlePost->id . '_viewed';
+        if (!session()->has($sessionKey)) {
+            $singlePost->increment('views');
+            session([$sessionKey => true]);
+        }
         $singlePostTags = $singlePost->tags()->get();
         $prevPost = Post::where('id', '<', $singlePost->id)
             ->orderBy('id', 'desc')

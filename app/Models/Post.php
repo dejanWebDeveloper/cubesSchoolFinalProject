@@ -6,6 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $fillable = [
+        'heading',
+        'preheading',
+        'text',
+        'photo',
+        'additional_photo',
+        'category_id',
+        'author_id',
+        'views',
+        'enable',
+        'important'
+    ];
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
@@ -24,17 +36,19 @@ class Post extends Model
     }
     public function imageUrl()
     {
-        /*if(!is_null($this->photo)){
-            return url('/storage/photo/'. $this->photo);
-        }*/
-        return url('/themes/front/img/featured-pic-1.jpeg');
+        if (!is_null($this->photo)) {
+            return asset('storage/photo/' . $this->photo);
+        }
+
+        // Default slika ako post nema sliku
+        return asset('themes/front/img/featured-pic-1.jpeg');
     }
     public function additionalImageUrl()
     {
-        /*if(!is_null($this->photo)){
-            return url('/storage/photo/'. $this->photo);
-        }*/
-        return url('/themes/front/img/featured-pic-2.jpeg');
+        if (!is_null($this->additional_photo)) {
+            return asset('storage/photo/' . $this->additional_photo);
+        }
+        return asset('themes/front/img/featured-pic-2.jpeg');
     }
     public function scopeStandardRequest($query)
     {
