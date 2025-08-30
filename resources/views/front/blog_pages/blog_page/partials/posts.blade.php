@@ -9,7 +9,15 @@
             <div class="post-details">
                 <div class="post-meta d-flex justify-content-between">
                     <div class="date meta-last">{{$blogPost->created_at->format('d M | Y')}}</div>
-                    <div class="category"><a href="{{route('blog_category_page', ['name'=>$blogPost->category->name])}}">{{$blogPost->category->name}}</a></div>
+                    <div class="category">
+                        @if($blogPost->category)
+                            <a href="{{ route('blog_category_page', ['slug' => $blogPost->category->slug]) }}">
+                                {{ $blogPost->category->name }}
+                            </a>
+                        @else
+                            <a>Uncategorized</a>
+                        @endif
+                    </div>
                 </div>
                 <a href="{{route('blog_post_page', ['heading'=>$blogPost->heading])}}">
                     <h3 class="h4">{{$blogPost->heading}}</h3></a>

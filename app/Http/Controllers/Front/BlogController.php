@@ -37,9 +37,9 @@ class BlogController extends Controller
         ));
     }
 
-    public function blogCategory($name)
+    public function blogCategory($slug)
     {
-        $category = Category::where('name', $name)->firstOrFail();
+        $category = Category::where('slug', $slug)->firstOrFail();
         $categoryPosts = Post::with('category')
             ->withCount('comments')
             ->where('category_id', $category->id)

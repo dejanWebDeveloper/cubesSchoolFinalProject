@@ -9,7 +9,13 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
+                                        @if($importantPost->category)
+                                            <a href="{{ route('blog_category_page', ['slug' => $importantPost->category->slug]) }}">
+                                                {{ $importantPost->category->name }}
+                                            </a>
+                                        @else
+                                            <a>Uncategorized</a>
+                                        @endif
                                     </div>
                                     <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
@@ -47,7 +53,13 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
+                                        @if($importantPost->category)
+                                            <a href="{{ route('blog_category_page', ['slug' => $importantPost->category->slug]) }}">
+                                                {{ $importantPost->category->name }}
+                                            </a>
+                                        @else
+                                            <a>Uncategorized</a>
+                                        @endif
                                     </div>
                                     <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
@@ -79,7 +91,13 @@
                             <div class="content">
                                 <header class="post-header">
                                     <div class="category">
-                                        <a href="{{route('blog_category_page', ['name'=>$importantPost->category->name])}}">{{ $importantPost->category->name }}</a>
+                                        @if($importantPost->category)
+                                            <a href="{{ route('blog_category_page', ['slug' => $importantPost->category->slug]) }}">
+                                                {{ $importantPost->category->name }}
+                                            </a>
+                                        @else
+                                            <a>Uncategorized</a>
+                                        @endif
                                     </div>
                                     <a href="{{route('blog_post_page', ['heading'=>$importantPost->heading])}}">
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>

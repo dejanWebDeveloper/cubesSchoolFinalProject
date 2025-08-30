@@ -40,7 +40,7 @@ class Post extends Model
             return asset('storage/photo/' . $this->photo);
         }
 
-        // Default slika ako post nema sliku
+        // Default photo
         return asset('themes/front/img/featured-pic-1.jpeg');
     }
     public function additionalImageUrl()

@@ -1,6 +1,12 @@
 <div class="post-meta d-flex justify-content-between">
     <div class="category">
-        <a href="{{route('blog_category_page', ['name'=>$singlePost->category->name])}}">{{$singlePost->category->name}}</a>
+        @if($singlePost->category)
+            <a href="{{ route('blog_category_page', ['slug' => $singlePost->category->slug]) }}">
+                {{ $singlePost->category->name }}
+            </a>
+        @else
+            <a>Uncategorized</a>
+        @endif
     </div>
 </div>
 <h1>{{$singlePost->heading}}
