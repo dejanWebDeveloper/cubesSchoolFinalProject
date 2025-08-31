@@ -138,7 +138,7 @@ class PostController extends Controller
         ]);
         $post = Post::findOrFail($data['post_for_delete_id']);
         $post->delete();
-        //deleting from post_tags table
+        //delete data from post_tags table
         $post->tags()->sync([]);
         return response()->json(['success' => 'Post Deleted Successfully']);
     }
