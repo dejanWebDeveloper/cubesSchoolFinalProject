@@ -71,7 +71,7 @@ class PostController extends Controller
             ->addColumn('author', fn($row) => $row->author?->name)
             ->editColumn('created_at', fn($row) => $row->created_at?->format('d/m/Y H:i:s')
             )
-            ->addColumn('actions', fn($row) => view('admin.post_pages.actions', compact('row'))
+            ->addColumn('actions', fn($row) => view('admin.post_pages.partials.actions', compact('row'))
             )
             ->rawColumns(['photo', 'actions', 'important'])
             ->toJson();
@@ -82,7 +82,7 @@ class PostController extends Controller
         $data = request()->validate([
             'heading' => ['required', 'string', 'min:20', 'max:255'],
             'preheading' => ['required', 'string', 'min:50', 'max:500'],
-            'category_id' => ['nullable', 'numeric', 'exists:categories,id'],
+            'category_id' => ['numeric', 'exists:categories,id'],
             'author_id' => ['required', 'numeric', 'exists:authors,id'],
             'tags' => ['required', 'array', 'min:2'],
             'tags.*' => ['required', 'numeric', 'exists:tags,id'],
@@ -116,24 +116,46 @@ class PostController extends Controller
         return redirect()->route('admin_posts_page');
     }
 
-    public function savePhoto($photo, $newPost)
+    public function savePhoto($photo, $post, $field)
     {
-        $photoName = $newPost->id . '_' . time() . '.' . $photo->getClientOriginalExtension();
+        // Generate unique filename
+        $photoName = $post->id . '_' . $field . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
 
-        // save file to storage/app/public/photo
+        // Delete old photo if exists
+        if ($post->$field) {
+            $oldPath = 'photo/' . $post->$field;
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+
+        // Save new photo to storage
         $path = $photo->storeAs('photo', $photoName, 'public');
 
-        // snimi ime fajla u bazu
-        if (!$newPost->photo) {
-            $newPost->photo = basename($path);
-        } else {
-            $newPost->additional_photo = basename($path);
-        }
-        $newPost->save();
+        // Update DB
+        $post->$field = basename($path);
+        $post->save();
     }
+
+    public function deletePhoto($post, $field)
+    {
+        if (!$post->$field) return false;
+
+        $path = 'photo/' . $post->$field;
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+
+        $post->$field = null;
+        $post->save();
+
+        return true;
+    }
+
+
     public function deletePost()
     {
-        $data =  request()->validate([
+        $data = request()->validate([
             'post_for_delete_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
         $post = Post::findOrFail($data['post_for_delete_id']);
@@ -143,5 +165,69 @@ class PostController extends Controller
         return response()->json(['success' => 'Post Deleted Successfully']);
     }
 
+    public function editPost($slug)
+    {
+        $postForEdit = Post::where('slug', $slug)->firstOrFail();
+        $categories = Category::all();
+        $authors = Author::all();
+        $tags = Tag::all();
+        return view('admin.post_pages.edit_post_page', compact(
+            'postForEdit',
+            'categories',
+            'authors',
+            'tags'
+        ));
+    }
+
+    public function storeEditedPost(Post $postForEdit, Request $request)
+    {
+        $data = request()->validate([
+            'heading' => ['required', 'string', 'min:20', 'max:255'],
+            'preheading' => ['required', 'string', 'min:50', 'max:500'],
+            'category_id' => ['numeric', 'exists:categories,id'],
+            'author_id' => ['required', 'numeric', 'exists:authors,id'],
+            'tags' => ['required', 'array', 'min:2'],
+            'tags.*' => ['required', 'numeric', 'exists:tags,id'],
+            'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
+            'second-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000'],
+            'text' => ['required', 'string', 'min:20', 'max:1000']
+        ]);
+        $data['slug'] = Str::slug($data['heading']);
+        $data['enable'] = 1;
+        $data['important'] = 0;
+        $data['created_at'] = now();
+        $data['text'] = strip_tags($data['text']);
+        $postForEdit->fill($data)->save();
+        //table tags
+        $postForEdit->tags()->sync($data['tags']);
+
+        //saving photo
+        if ($request->hasFile('first-photo')) {
+            $this->deletePhoto($postForEdit, 'photo');
+            $this->savePhoto($request->file('first-photo'), $postForEdit, 'photo');
+        }
+
+        if ($request->hasFile('second-photo')) {
+            $this->deletePhoto($postForEdit, 'additional_photo');
+            $this->savePhoto($request->file('second-photo'), $postForEdit, 'additional_photo');
+        }
+        if ($request->has('delete_photo1') && $request->delete_photo1) {
+            if ($postForEdit->photo) {
+                Storage::disk('public')->delete('photo/' . $postForEdit->photo);
+                $postForEdit->photo = null;
+                $postForEdit->save();
+            }
+        }
+        if ($request->has('delete_photo2') && $request->delete_photo2) {
+            if ($postForEdit->additional_photo) {
+                Storage::disk('public')->delete('photo/' . $postForEdit->additional_photo);
+                $postForEdit->additional_photo = null;
+                $postForEdit->save();
+            }
+        }
+
+        session()->put('system_message', 'Post Edited Successfully');
+        return redirect()->route('admin_posts_page');
+    }
 
 }

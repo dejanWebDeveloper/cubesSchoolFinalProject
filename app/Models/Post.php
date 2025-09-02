@@ -49,7 +49,7 @@ class Post extends Model
         if (!is_null($this->additional_photo)) {
             return asset('storage/photo/' . $this->additional_photo);
         }
-        return asset('themes/front/img/featured-pic-2.jpeg');
+        //return asset('themes/front/img/featured-pic-2.jpeg');
     }
     public function scopeStandardRequest($query)
     {

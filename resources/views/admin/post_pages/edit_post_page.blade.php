@@ -1,9 +1,10 @@
 @push('head_link')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         .select2-container--default .select2-selection--single {
             height: 35px;
         }
+
         .select2-container--default .select2-selection--multiple {
             min-height: 35px;
             font-size: 16px;
@@ -41,15 +42,18 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" id="store-post" enctype="multipart/form-data" action="{{route('admin_posts_store_post')}}" method="post">
+                        <form role="form" id="edit-post" enctype="multipart/form-data"
+                              action="{{route('admin_posts_edit_post', ['postForEdit'=>$postForEdit])}}" method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Heading</label>
-                                            <input name="heading" type="text" class="form-control @error('heading') is-invalid @enderror"
-                                                   placeholder="Heading of Post" value="{{old('heading')}}">
+                                            <input name="heading" type="text"
+                                                   class="form-control @error('heading') is-invalid @enderror"
+                                                   placeholder="Heading of Post"
+                                                   value="{{old('heading', $postForEdit->heading)}}">
                                             <div>
                                                 @error('heading')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -58,8 +62,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Preheading</label>
-                                            <input name="preheading" type="text" class="form-control @error('preheading') is-invalid @enderror"
-                                                   placeholder="Preheading of Post" value="{{old('preheading')}}">
+                                            <input name="preheading" type="text"
+                                                   class="form-control @error('preheading') is-invalid @enderror"
+                                                   placeholder="Preheading of Post"
+                                                   value="{{old('preheading', $postForEdit->preheading)}}">
                                             <div>
                                                 @error('preheading')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -69,11 +75,15 @@
                                         <div class="form-group">
                                             <label>Post Category</label>
                                             <select id="select-category" class="form-control" name="category_id">
-                                                <option></option>
+                                                <option value="">-- Select Category --</option>
                                                 @foreach($categories as $category)
-                                                <option @if($category->id == old('category')) selected @endif value="{{$category->id}}">{{$category->name}}</option>
+                                                    <option value="{{ $category->id }}"
+                                                        {{ old('category_id', $postForEdit->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
+
                                             <div>
                                                 @error('category_id')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -82,12 +92,18 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Author</label>
-                                            <select id="select-author" name="author_id" class="form-control @error('author') is-invalid @enderror">
-                                                <option></option>
+                                            <select id="select-author"
+                                                    name="author_id"
+                                                    class="form-control @error('author_id') is-invalid @enderror">
+                                                <option value="">-- Select Author --</option>
                                                 @foreach($authors as $author)
-                                                    <option @if($author->id == old('author')) selected @endif value="{{$author->id}}">{{$author->name}}</option>
+                                                    <option value="{{ $author->id }}"
+                                                        {{ old('author_id', $postForEdit->author_id ?? '') == $author->id ? 'selected' : '' }}>
+                                                        {{ $author->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
+
                                             <div>
                                                 @error('author_id')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -102,11 +118,12 @@
                                                     multiple>
                                                 @foreach($tags as $tag)
                                                     <option value="{{ $tag->id }}"
-                                                        {{ collect(old('tags', []))->contains($tag->id) ? 'selected' : '' }}>
+                                                        {{ in_array($tag->id, old('tags', $postForEdit->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
                                                         {{ $tag->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
+
                                             <div>
                                                 @error('tags')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -115,18 +132,30 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Choose New Photo 1</label>
-                                            <input id="photo-input1" name="first-photo" type="file" class="form-control @error('first-photo') is-invalid @enderror"
-                                                   placeholder="Article photo" value="{{old('first-photo')}}">
-                                            <div>
-                                                @error('first-photo')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+
+                                            {{-- Show existing photo if available --}}
+
+
+                                            {{-- File input for uploading new photo --}}
+                                            <input type="hidden" id="delete_photo1" name="delete_photo1" value="0">
+                                            <input id="photo-input1"
+                                                   name="first-photo"
+                                                   type="file"
+                                                   class="form-control @error('first-photo') is-invalid @enderror">
+
+                                            {{-- Validation error message --}}
+                                            @error('first-photo')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
+
                                         <div class="form-group">
                                             <label>Choose New Photo 2</label>
-                                            <input id="photo-input2" name="second-photo" type="file" class="form-control @error('second-photo') is-invalid @enderror"
-                                                   placeholder="Article photo" value="{{old('second-photo')}}">
+                                            <input type="hidden" id="delete_photo2" name="delete_photo2" value="0">
+                                            <input id="photo-input2" name="second-photo" type="file"
+                                                   class="form-control @error('second-photo') is-invalid @enderror"
+                                                   placeholder="Article photo"
+                                                   value="{{old('second-photo', $postForEdit->additional_photo ?? '')}}">
                                             <div>
                                                 @error('second-photo')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -135,8 +164,10 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="post-text" class="form-label">Input Text</label>
-                                            <textarea type="text" class="form-control @error('text') is-invalid @enderror"
-                                                      name="text" id="post-text">{{old('text')}}</textarea>
+                                            <textarea type="text"
+                                                      class="form-control @error('text') is-invalid @enderror"
+                                                      name="text"
+                                                      id="post-text">{{old('text', $postForEdit->text ?? '')}}</textarea>
                                             <div>
                                                 @error('text')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -149,15 +180,20 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Photo 1</label>
-
                                                     <div class="text-right">
-                                                        <button type="button" onclick="clearImage1()" class="btn btn-sm btn-outline-danger">
+                                                        <button type="button" onclick="clearImage1()"
+                                                                class="btn btn-sm btn-outline-danger">
                                                             <i class="fas fa-remove"></i>
                                                             Delete Photo
                                                         </button>
                                                     </div>
                                                     <div class="text-center">
-                                                        <img id="photoPreview1" src="#" alt="Preview" style="padding-top: 10px; display: none; max-width: 305px;">
+
+                                                            <div class="text-center">
+                                                                <img id="photoPreview1"
+                                                                     src="{{ $postForEdit->imageUrl() }}" alt="Preview"
+                                                                     style="padding-top: 10px; max-width: 305px;">
+                                                            </div>
 
                                                     </div>
                                                 </div>
@@ -166,15 +202,22 @@
                                                 <div class="form-group">
                                                     <label>Photo 2</label>
 
+
                                                     <div class="text-right">
-                                                        <button type="button" onclick="clearImage2()" class="btn btn-sm btn-outline-danger">
+                                                        <button type="button" onclick="clearImage2()"
+                                                                class="btn btn-sm btn-outline-danger">
                                                             <i class="fas fa-remove"></i>
                                                             Delete Photo
                                                         </button>
                                                     </div>
-                                                    <div class="text-center">
-                                                        <img id="photoPreview2" src="#" alt="Preview" style="padding-top: 10px; display: none; max-width: 305px;">
-                                                    </div>
+
+                                                        <div class="text-center">
+                                                            <img id="photoPreview2"
+                                                                 src="{{ $postForEdit->additionalImageUrl() }}"
+                                                                 alt="Preview"
+                                                                 style="padding-top: 10px; max-width: 305px;">
+                                                        </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -206,14 +249,14 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
         <script>
-            document.getElementById('photo-input1').addEventListener('change', function(event) {
+            document.getElementById('photo-input1').addEventListener('change', function (event) {
                 const input = event.target;
                 const preview1 = document.getElementById('photoPreview1');
 
                 if (input.files && input.files[0]) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         preview1.src = e.target.result;
                         preview1.style.display = 'block';
 
@@ -221,14 +264,15 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             });
-            document.getElementById('photo-input2').addEventListener('change', function(event) {
+
+            document.getElementById('photo-input2').addEventListener('change', function (event) {
                 const input = event.target;
                 const preview2 = document.getElementById('photoPreview2');
 
                 if (input.files && input.files[0]) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         preview2.src = e.target.result;
                         preview2.style.display = 'block';
 
@@ -236,16 +280,47 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             });
-                function clearImage1() {
+
+            /*function clearImage1() {
                 document.getElementById("photo-input1").value = "";  // reset file input
                 document.getElementById("photoPreview1").src = "#"; // reset src
                 document.getElementById("photoPreview1").style.display = "none"; // sakrij preview
+            }*/
+            function clearImage1() {
+                const input = document.getElementById("photo-input1");
+                const preview = document.getElementById("photoPreview1");
+                const deleteField = document.getElementById("delete_photo1");
+
+                // Clear file input
+                input.value = "";
+
+                // Hide preview
+                preview.src = "#";
+                preview.style.display = "none";
+
+                // Tell server to delete the existing photo
+                deleteField.value = 1;
             }
 
-                function clearImage2() {
+            /*function clearImage2() {
                 document.getElementById("photo-input2").value = "";
                 document.getElementById("photoPreview2").src = "#";
                 document.getElementById("photoPreview2").style.display = "none";
+            }*/
+            function clearImage2() {
+                const input = document.getElementById("photo-input2");
+                const preview = document.getElementById("photoPreview2");
+                const deleteField = document.getElementById("delete_photo2");
+
+                // Clear file input
+                input.value = "";
+
+                // Hide preview
+                preview.src = "#";
+                preview.style.display = "none";
+
+                // Tell server to delete the existing photo
+                deleteField.value = 1;
             }
 
             $(document).ready(function () {
@@ -265,9 +340,9 @@
                 CKEDITOR.replace('text');
                 CKEDITOR.config.height = 600;
 
-                $('#store-post').validate({
+                $('#edit-post').validate({
                     "rules": {
-                        "ignore" : [],
+                        "ignore": [],
                         "heading": {
                             "required": true,
                             "minlength": 20,

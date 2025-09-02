@@ -42,10 +42,12 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
 
     Route::prefix('/posts')->name('posts_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\PostController::class, 'index'])->name('page');
-        Route::get('/add-author', [\App\Http\Controllers\Admin\PostController::class, 'addPost'])->name('add_post');
+        Route::get('/add-post', [\App\Http\Controllers\Admin\PostController::class, 'addPost'])->name('add_post');
         Route::post('/ajax-post-datatable', [\App\Http\Controllers\Admin\PostController::class, 'datatable'])->name('datatable');
         Route::post('/store-post', [\App\Http\Controllers\Admin\PostController::class, 'storePost'])->name('store_post');
         Route::post('/delete-post', [\App\Http\Controllers\Admin\PostController::class, 'deletePost'])->name('delete_post');
+        Route::get('/edit-post/{slug}', [\App\Http\Controllers\Admin\PostController::class, 'editPost'])->name('edit_post_page');
+        Route::post('/store-edited-post/{postForEdit}', [\App\Http\Controllers\Admin\PostController::class, 'storeEditedPost'])->name('edit_post');
 
     });
 });
