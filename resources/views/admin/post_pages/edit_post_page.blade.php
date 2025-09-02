@@ -4,7 +4,6 @@
         .select2-container--default .select2-selection--single {
             height: 35px;
         }
-
         .select2-container--default .select2-selection--multiple {
             min-height: 35px;
             font-size: 16px;
@@ -30,7 +29,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -123,7 +121,6 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-
                                             <div>
                                                 @error('tags')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -132,18 +129,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Choose New Photo 1</label>
-
-                                            {{-- Show existing photo if available --}}
-
-
-                                            {{-- File input for uploading new photo --}}
                                             <input type="hidden" id="delete_photo1" name="delete_photo1" value="0">
                                             <input id="photo-input1"
                                                    name="first-photo"
                                                    type="file"
                                                    class="form-control @error('first-photo') is-invalid @enderror">
-
-                                            {{-- Validation error message --}}
                                             @error('first-photo')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
@@ -188,21 +178,17 @@
                                                         </button>
                                                     </div>
                                                     <div class="text-center">
-
-                                                            <div class="text-center">
-                                                                <img id="photoPreview1"
-                                                                     src="{{ $postForEdit->imageUrl() }}" alt="Preview"
-                                                                     style="padding-top: 10px; max-width: 305px;">
-                                                            </div>
-
+                                                        <div class="text-center">
+                                                            <img id="photoPreview1"
+                                                                 src="{{ $postForEdit->imageUrl() }}" alt="Preview"
+                                                                 style="padding-top: 10px; max-width: 305px;">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Photo 2</label>
-
-
                                                     <div class="text-right">
                                                         <button type="button" onclick="clearImage2()"
                                                                 class="btn btn-sm btn-outline-danger">
@@ -210,14 +196,12 @@
                                                             Delete Photo
                                                         </button>
                                                     </div>
-
-                                                        <div class="text-center">
-                                                            <img id="photoPreview2"
-                                                                 src="{{ $postForEdit->additionalImageUrl() }}"
-                                                                 alt="Preview"
-                                                                 style="padding-top: 10px; max-width: 305px;">
-                                                        </div>
-
+                                                    <div class="text-center">
+                                                        <img id="photoPreview2"
+                                                             src="{{ $postForEdit->additionalImageUrl() }}"
+                                                             alt="Preview"
+                                                             style="padding-top: 10px; max-width: 305px;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
