@@ -252,7 +252,7 @@
                 lengthMenu: [5, 10, 15, 40, 100]
             });
 
-            // reload tabele kada se promeni filter
+            // reload table when filter was changed
             $('#entities-filter-form input, #entities-filter-form select').on('change keyup', function () {
                 $('#posts-table').DataTable().ajax.reload();
             });

@@ -104,12 +104,12 @@ class PostController extends Controller
         if (request()->hasFile('first-photo')) { //if has file
             $photo = request()->file('first-photo'); //save file to $photo
             //helper methode
-            $this->savePhoto($photo, $newPost);
+            $this->savePhoto($photo, $newPost, 'photo');
         }
         if (request()->hasFile('second-photo')) { //if has file
             $additionalPhoto = request()->file('second-photo'); //save file to $photo
             //helper methode
-            $this->savePhoto($additionalPhoto, $newPost);
+            $this->savePhoto($additionalPhoto, $newPost, 'additional_photo');
         }
 
         session()->put('system_message', 'Post Added Successfully');

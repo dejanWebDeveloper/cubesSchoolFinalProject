@@ -38,6 +38,12 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::prefix('/authors')->name('authors_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\AuthorController::class, 'index'])->name('page');
         Route::get('/add-author', [\App\Http\Controllers\Admin\AuthorController::class, 'addAuthor'])->name('add_author');
+        Route::post('/ajax-author-datatable', [\App\Http\Controllers\Admin\AuthorController::class, 'datatable'])->name('datatable');
+        Route::post('/store-author', [\App\Http\Controllers\Admin\AuthorController::class, 'storeAuthor'])->name('store_author');
+        Route::post('/delete-author', [\App\Http\Controllers\Admin\AuthorController::class, 'deleteAuthor'])->name('delete_author');
+        Route::get('/edit-author/{slug}', [\App\Http\Controllers\Admin\AuthorController::class, 'editAuthor'])->name('edit_author_page');
+        Route::post('/store-edited-author/{authorForEdit}', [\App\Http\Controllers\Admin\AuthorController::class, 'storeEditedAuthor'])->name('edit_author');
+
     });
 
     Route::prefix('/posts')->name('posts_')->group(function () {

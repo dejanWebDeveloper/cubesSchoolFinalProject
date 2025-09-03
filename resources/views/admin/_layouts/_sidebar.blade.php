@@ -64,7 +64,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p>
-                            Post Authors
+                            Posts Author
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
