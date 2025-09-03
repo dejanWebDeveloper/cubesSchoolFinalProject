@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Search Users</h3>
+                            <h3 class="card-title">Search Authors</h3>
                             <div class="card-tools">
                                 <a href="{{route('admin_authors_add_author')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
