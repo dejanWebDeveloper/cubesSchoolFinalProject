@@ -5,40 +5,52 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Product Categories Form</h1>
+                    <h1>Tags Form</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Product Categories</a></li>
-                        <li class="breadcrumb-item active">Product Categories Form</li>
+                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin_tags_page')}}">Tags</a></li>
+                        <li class="breadcrumb-item active">Tags Form</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
+
+    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Product Categories Form</h3>
+                            <h3 class="card-title">Tag Form</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form">
+                        <form role="form" id="store-tag" enctype="multipart/form-data" action="{{route('admin_tags_store_tag')}}" method="post">
+                            @csrf
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter name">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                                   placeholder="Name of Tag" value="{{old('name')}}">
+                                            <div>
+                                                @error('name')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
-
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
+                                <a href="{{route('admin_tags_page')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -50,3 +62,34 @@
         </div><!-- /.container-fluid -->
     </section>
 @endsection
+@push('footer_script')
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#store-tag').validate({
+                ignore: [],
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 30
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Please enter a tag name",
+                        minlength: "Name must be at least 5 characters",
+                        maxlength: "Enter no more than 30 characters"
+                    }
+                },
+                errorClass: "is-invalid",
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                }
+            });
+        });
+    </script>
+@endpush

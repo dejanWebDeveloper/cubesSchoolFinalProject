@@ -39,6 +39,12 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::prefix('/tags')->name('tags_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\TagController::class, 'index'])->name('page');
         Route::get('/add-tag', [\App\Http\Controllers\Admin\TagController::class, 'addTag'])->name('add_tag');
+        Route::post('/ajax-tag-datatable', [\App\Http\Controllers\Admin\TagController::class, 'datatable'])->name('datatable');
+        Route::post('/store-tag', [\App\Http\Controllers\Admin\TagController::class, 'storeTag'])->name('store_tag');
+        Route::post('/delete-tag', [\App\Http\Controllers\Admin\TagController::class, 'deleteTag'])->name('delete_tag');
+        Route::get('/edit-tag/{slug}', [\App\Http\Controllers\Admin\TagController::class, 'editTag'])->name('edit_tag_page');
+        Route::post('/store-edited-tag/{tagForEdit}', [\App\Http\Controllers\Admin\TagController::class, 'storeEditedTag'])->name('edit_tag');
+
     });
 
     Route::prefix('/authors')->name('authors_')->group(function () {
