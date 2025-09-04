@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Users Form</h1>
+                    <h1>Authors Form</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -142,7 +142,7 @@
                 },
                 "messages": {
                     "name": {
-                        "required": "Please enter authors name",
+                        "required": "Please enter author's name",
                         "minlength": "Name must be over 5 characters",
                         "maxlength": "Enter no more than 50 characters"
                     },

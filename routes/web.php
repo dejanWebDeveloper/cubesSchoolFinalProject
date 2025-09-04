@@ -23,6 +23,12 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::prefix('/categories')->name('categories_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('page');
         Route::get('/add-category', [\App\Http\Controllers\Admin\CategoryController::class, 'addCategory'])->name('add_category');
+        Route::post('/ajax-category-datatable', [\App\Http\Controllers\Admin\CategoryController::class, 'datatable'])->name('datatable');
+        Route::post('/store-category', [\App\Http\Controllers\Admin\CategoryController::class, 'storeCategory'])->name('store_category');
+        Route::post('/delete-category', [\App\Http\Controllers\Admin\CategoryController::class, 'deleteCategory'])->name('delete_category');
+        Route::get('/edit-category/{slug}', [\App\Http\Controllers\Admin\CategoryController::class, 'editCategory'])->name('edit_category_page');
+        Route::post('/store-edited-category/{categoryForEdit}', [\App\Http\Controllers\Admin\CategoryController::class, 'storeEditedCategory'])->name('edit_category');
+
     });
 
     Route::prefix('/users')->name('users_')->group(function () {

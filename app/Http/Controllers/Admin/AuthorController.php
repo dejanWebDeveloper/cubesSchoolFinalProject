@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -29,14 +26,14 @@ class AuthorController extends Controller
         if ($request->name) {
             $query->where('name', 'like', "%{$request->name}%");
         }
-        if ($request->email) {
-            $query->where('email', $request->email);
+        if ($request->name) {
+            $query->where('email', 'like', "%{$request->email}%");
         }
         return DataTables::of($query)
             ->addColumn('profile_photo', fn($row) => "<img src='" . e($row->authorImageUrl()) . "' width='100' class='img-rounded' />"
             )
             ->addColumn('name', fn($row) => $row->name)
-            ->editColumn('email', fn($row) => $row->email)
+            ->addColumn('email', fn($row) => $row->email)
             ->editColumn('created_at', fn($row) => $row->created_at?->format('d/m/Y H:i:s')
             )
             ->addColumn('actions', fn($row) => view('admin.author_pages.partials.actions', compact('row'))

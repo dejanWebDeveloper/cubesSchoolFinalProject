@@ -4,16 +4,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
           integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <style>
-        .select2-container--default .select2-selection--single {
-            height: 40px;
-        }
-
-        .select2-container--default .select2-selection--multiple {
-            min-height: 40px;
-            font-size: 16px;
-        }
-    </style>
 @endpush
 @extends('admin._layouts._layout')
 
@@ -45,6 +35,11 @@
                                             <label>Name</label>
                                             <input style="height: 40px;" type="text" name="name" class="form-control"
                                                    placeholder="Search by name">
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Email</label>
+                                            <input style="height: 40px;" type="email" name="email" class="form-control"
+                                                   placeholder="Search by email">
                                         </div>
                                     </div>
                                 </form>
@@ -143,6 +138,7 @@
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
                         d.name = $('input[name=name]').val();
+                        d.email = $('input[name=email]').val();
                     }
                 },
                 order: [[4, "desc"]],
