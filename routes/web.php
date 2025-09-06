@@ -34,6 +34,13 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     Route::prefix('/users')->name('users_')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('page');
         Route::get('/add-user', [\App\Http\Controllers\Admin\UserController::class, 'addUser'])->name('add_user');
+        Route::post('/ajax-user-datatable', [\App\Http\Controllers\Admin\UserController::class, 'datatable'])->name('datatable');
+        Route::post('/store-user', [\App\Http\Controllers\Admin\UserController::class, 'storeUser'])->name('store_user');
+        Route::post('/enable-user', [\App\Http\Controllers\Admin\UserController::class, 'enableUser'])->name('enable_user');
+        Route::post('/disable-user', [\App\Http\Controllers\Admin\UserController::class, 'disableUser'])->name('disable_user');
+        Route::get('/edit-user/{id}', [\App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('edit_user_page');
+        Route::post('/store-edited-user/{userForEdit}', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUser'])->name('edit_user');
+
     });
 
     Route::prefix('/tags')->name('tags_')->group(function () {

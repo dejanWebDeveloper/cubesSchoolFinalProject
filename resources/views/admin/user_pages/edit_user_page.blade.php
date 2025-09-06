@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Users Form</h1>
+                    <h1>User Form</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{route('admin_users_page')}}">Users</a></li>
-                        <li class="breadcrumb-item active">Users Form</li>
+                        <li class="breadcrumb-item active">User Form</li>
                     </ol>
                 </div>
             </div>
@@ -28,8 +28,9 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" id="store-user" enctype="multipart/form-data"
-                              action="{{route('admin_users_store_user')}}" method="post">
+                        <form role="form" id="edit-user" enctype="multipart/form-data"
+                              action="{{route('admin_users_edit_user', ['userForEdit'=>$userForEdit])}}"
+                              method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -38,7 +39,8 @@
                                             <label>Name</label>
                                             <input name="name" type="text"
                                                    class="form-control @error('name') is-invalid @enderror"
-                                                   placeholder="Name of User" value="{{old('name')}}">
+                                                   placeholder="Name of User"
+                                                   value="{{old('name', $userForEdit->name)}}">
                                             <div>
                                                 @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -49,7 +51,8 @@
                                             <label>Email</label>
                                             <input name="email" type="email"
                                                    class="form-control @error('email') is-invalid @enderror"
-                                                   placeholder="Email Adress of User" value="{{old('email')}}">
+                                                   placeholder="Email of User"
+                                                   value="{{old('email', $userForEdit->email)}}">
                                             <div>
                                                 @error('email')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -79,7 +82,8 @@
                                             <label>Phone</label>
                                             <input name="phone" type="text"
                                                    class="form-control @error('phone') is-invalid @enderror"
-                                                   placeholder="Phone of User" value="{{old('phone')}}">
+                                                   placeholder="Phone of Author"
+                                                   value="{{old('phone', $userForEdit->phone)}}">
                                             <div>
                                                 @error('phone')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -88,14 +92,14 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Choose New Photo</label>
-                                            <input id="photo-input1" name="first-photo" type="file"
-                                                   class="form-control @error('first-photo') is-invalid @enderror"
-                                                   placeholder="User photo" value="{{old('first-photo')}}">
-                                            <div>
-                                                @error('first-photo')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+                                            <input type="hidden" id="delete_photo1" name="delete_photo1" value="0">
+                                            <input id="photo-input1"
+                                                   name="first-photo"
+                                                   type="file"
+                                                   class="form-control @error('first-photo') is-invalid @enderror">
+                                            @error('first-photo')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="offset-md-1 col-md-5">
@@ -111,20 +115,25 @@
                                                         </button>
                                                     </div>
                                                     <div class="text-center">
-                                                        <img id="photoPreview1" src="#" alt="Preview"
-                                                             style="padding-top: 10px; display: none; width: 305px;">
+                                                        <div class="text-center">
+                                                            <img id="photoPreview1"
+                                                                 src="{{ $userForEdit->userImageUrl() }}"
+                                                                 alt="Preview"
+                                                                 style="padding-top: 10px; width: 305px;">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <!-- /.card-body -->
+
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_users_page')}}"
-                                   class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin_users_page')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -159,13 +168,23 @@
         });
 
         function clearImage1() {
-            document.getElementById("photo-input1").value = "";  // reset file input
-            document.getElementById("photoPreview1").src = "#"; // reset src
-            document.getElementById("photoPreview1").style.display = "none"; // sakrij preview
+            const input = document.getElementById("photo-input1");
+            const preview = document.getElementById("photoPreview1");
+            const deleteField = document.getElementById("delete_photo1");
+
+            // Clear file input
+            input.value = "";
+
+            // Hide preview
+            preview.src = "#";
+            preview.style.display = "none";
+
+            // Tell server to delete the existing photo
+            deleteField.value = 1;
         }
 
         $(document).ready(function () {
-            $('#store-user').validate({
+            $('#edit-author').validate({
                 "rules": {
                     "ignore": [],
                     "name": {
@@ -199,7 +218,7 @@
                         "maxlength": "Enter no more than 50 characters"
                     },
                     "email": {
-                        "required": "Please enter user email",
+                        "required": "Please enter authors email",
                         "email": "Please enter valide email"
                     },
                     "password": {
@@ -230,3 +249,4 @@
         });
     </script>
 @endpush
+

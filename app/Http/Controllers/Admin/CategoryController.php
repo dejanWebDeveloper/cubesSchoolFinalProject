@@ -48,7 +48,7 @@ class CategoryController extends Controller
             'priority' => ['nullable', 'integer', 'between:1,10']
         ]);
         $data['slug'] = Str::slug($data['name']);
-        $lastCategory = Category::orderByDesc('priority')->FirstOrFail();
+        $lastCategory = Category::orderByDesc('priority')->firstOrFail();
         if (!$data['priority']){
             $data['priority'] = $lastCategory->priority + 1;
         }else{
@@ -107,7 +107,7 @@ class CategoryController extends Controller
             'priority' => ['nullable', 'integer', 'between:1,10']
         ]);
         $data['slug'] = Str::slug($data['name']);
-        $lastCategory = Category::orderByDesc('priority')->FirstOrFail();
+        $lastCategory = Category::orderByDesc('priority')->firstOrFail();
         if (!$data['priority']){
             $data['priority'] = $lastCategory->priority + 1;
         }else {

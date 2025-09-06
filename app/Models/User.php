@@ -17,22 +17,6 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
     /**
      * Get the attributes that should be cast.
      *
@@ -44,5 +28,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'status',
+        'phone',
+        'profile_photo'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+    public function userImageUrl()
+    {
+        if (!is_null($this->profile_photo)) {
+            return asset('storage/photo/user/' . $this->profile_photo);
+        }
+
+        // Default photo
+        return asset('themes/front/img/avatar-1.jpg');
     }
 }

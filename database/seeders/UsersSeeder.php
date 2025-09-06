@@ -19,6 +19,8 @@ class UsersSeeder extends Seeder
                 [
                     'name' => 'Admin '.$i,
                     'password' => Hash::make('admin555'),
+                    'phone' => 064/1234-567,
+                    'status' => 1
                 ]
             );
         }
