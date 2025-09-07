@@ -15,20 +15,22 @@
                 <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="#" class="dropdown-item">
+                <a href="{{route('admin_users_user_profile')}}" class="dropdown-item">
                     <!-- Message Start -->
+                    @auth()
                     <div class="media align-items-center">
-                        <img src="{{url('/themes/admin/dist/img/user1-128x128.jpg')}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                        <img src="{{Auth::user()->userImageUrl()}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
-                                Brad Diesel
+                                {{Auth::user()->name}}
                             </h3>
                         </div>
                     </div>
+                    @endauth
                     <!-- Message End -->
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
+                <a href="{{route('admin_users_user_profile')}}" class="dropdown-item">
                     <i class="fas fa-user"></i> Your Profile
                 </a>
                 <div class="dropdown-divider"></div>

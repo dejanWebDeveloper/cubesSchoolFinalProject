@@ -3,7 +3,7 @@
 @section('content')
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{route('index_page')}}"><b>Cubes</b>BLOG</a>
+            <a class="text-decoration-none" href="{{route('index_page')}}"><b>Cubes</b>BLOG</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
@@ -62,8 +62,7 @@
                 </form>
                 @if (Route::has('password.request'))
                     <p class="mb-1">
-                        <a class="btn btn-link"
-                           href="{{ route('password.request') }}">{{ __('I forgot my password') }}</a>
+                        <a class="text-decoration-none" href="{{ route('password.request') }}">{{ __('I forgot my password') }}</a>
                     </p>
                 @endif
             </div>

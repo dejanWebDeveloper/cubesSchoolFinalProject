@@ -1,6 +1,6 @@
 <div class="btn-group">
     @if ($row->id == Auth::id())
-    <a href="{{route('admin_users_edit_user_page', ['id'=>$row->id])}}" class="btn btn-info">
+    <a href="{{route('admin_users_edit_user_page')}}" class="btn btn-info">
         <i class="fas fa-edit"></i>
     </a>
     @endif

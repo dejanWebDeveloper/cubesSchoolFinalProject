@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" name="password" id="password" required>
+                                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
                                             <div>
                                                 @error('password')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="password_confirmation">Confirm Password</label>
-                                            <input type="password" name="password_confirmation"
+                                            <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation"
                                                    id="password_confirmation" required>
                                             <div>
                                                 @error('password_confirmation')
@@ -205,7 +205,7 @@
                     "password": {
                         "required": "Please enter valide password",
                         "minlength": "Password must be over 5 characters",
-                        "pwcheck": "Password must has one uppercase, number and special character"
+                        "pwcheck": "Password must contain one uppercase letter, one number, and one special character"
                     },
                     "password_confirmation": {
                         "required": "Please confirm entered password",

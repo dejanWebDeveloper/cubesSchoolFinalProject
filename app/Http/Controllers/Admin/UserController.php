@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -16,6 +17,11 @@ class UserController extends Controller
     public function index()
     {
         return view('admin.user_pages.users_page');
+    }
+    public function userProfile()
+    {
+        $user = auth()->user();
+        return view('admin.user_pages.user_profile', compact('user'));
     }
     public function addUser()
     {
@@ -111,25 +117,23 @@ class UserController extends Controller
 
         return true;
     }
-    public function editUser($id)
+    public function editUser()
     {
-        $userForEdit = User::where('id', $id)->firstOrFail();
-        return view('admin.user_pages.edit_user_page', compact(
-            'userForEdit'
-        ));
+        return view('admin.user_pages.edit_user_page');
     }
-    public function storeEditedUser(User $userForEdit, Request $request)
+    public function editUserPassword()
+    {
+        return view('admin.user_pages.user_change_password');
+    }
+    public function storeEditedUser(Request $request)
     {
         $data = request()->validate([
             'name' => ['required', 'string', 'min:5', 'max:50'],
-            'email' => ['required', 'email'],
             'phone' => ['required', 'string', 'max:20'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'first-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['password'] = Hash::make($data['password']);
-        $data['status'] = 1;
         $data['updated_at'] = now();
+        $userForEdit = Auth::user();
         $userForEdit->fill($data)->save();
         //saving photo
         if ($request->hasFile('first-photo')) {
@@ -138,13 +142,30 @@ class UserController extends Controller
         }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
             $this->deletePhoto($userForEdit, 'profile_photo');
-            /*if ($authorForEdit->profile_photo) {
-                Storage::disk('public')->delete('photo/author' . $authorForEdit->profile_photo);
-                $authorForEdit->profile_photo = null;
-                $authorForEdit->save();
-            }*/
+            if ($userForEdit->profile_photo) {
+                Storage::disk('public')->delete('photo/user' . $userForEdit->profile_photo);
+                $userForEdit->profile_photo = null;
+                $userForEdit->save();
+            }
         }
         session()->put('system_message', 'User Data Edited Successfully');
+        return redirect()->route('admin_users_page');
+    }
+    public function storeEditedUserPassword(Request $request)
+    {
+        $data = request()->validate([
+            'old_password' => ['required'],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
+        ]);
+        if (!Hash::check($request->old_password, auth()->user()->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+        $data['password'] = Hash::make($data['password']);
+        $data['updated_at'] = now();
+        $userForEdit = Auth::user();
+        $userForEdit->fill($data)->save();
+
+        session()->put('system_message', 'User Password Edited Successfully');
         return redirect()->route('admin_users_page');
     }
     public function disableUser()

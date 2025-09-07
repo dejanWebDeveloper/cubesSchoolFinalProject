@@ -22,58 +22,39 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary">
+                    <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">User Form</h3>
+                            <h3 class="card-title">Change your profile info</h3>
+                            <div class="card-tools">
+                                <a href="{{route('admin_users_edit_user_password_page')}}" class="btn btn-outline-warning">
+                                    <i class="fas fa-lock-open"></i>
+                                    Change Password
+                                </a>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="edit-user" enctype="multipart/form-data"
-                              action="{{route('admin_users_edit_user', ['userForEdit'=>$userForEdit])}}"
+                              action="{{route('admin_users_edit_user_data')}}"
                               method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label>Email</label>
+                                            <div>
+                                               <strong>{{Auth::user()->email}}</strong>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Name</label>
                                             <input name="name" type="text"
                                                    class="form-control @error('name') is-invalid @enderror"
                                                    placeholder="Name of User"
-                                                   value="{{old('name', $userForEdit->name)}}">
+                                                   value="{{old('name', Auth::user())}}">
                                             <div>
                                                 @error('name')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input name="email" type="email"
-                                                   class="form-control @error('email') is-invalid @enderror"
-                                                   placeholder="Email of User"
-                                                   value="{{old('email', $userForEdit->email)}}">
-                                            <div>
-                                                @error('email')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input type="password" name="password" id="password" required>
-                                            <div>
-                                                @error('password')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password_confirmation">Confirm Password</label>
-                                            <input type="password" name="password_confirmation"
-                                                   id="password_confirmation" required>
-                                            <div>
-                                                @error('password_confirmation')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -83,7 +64,7 @@
                                             <input name="phone" type="text"
                                                    class="form-control @error('phone') is-invalid @enderror"
                                                    placeholder="Phone of Author"
-                                                   value="{{old('phone', $userForEdit->phone)}}">
+                                                   value="{{old('phone', Auth::user())}}">
                                             <div>
                                                 @error('phone')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -117,7 +98,7 @@
                                                     <div class="text-center">
                                                         <div class="text-center">
                                                             <img id="photoPreview1"
-                                                                 src="{{ $userForEdit->userImageUrl() }}"
+                                                                 src="{{ Auth::user()->userImageUrl() }}"
                                                                  alt="Preview"
                                                                  style="padding-top: 10px; width: 305px;">
                                                         </div>
@@ -184,7 +165,7 @@
         }
 
         $(document).ready(function () {
-            $('#edit-author').validate({
+            $('#edit-user').validate({
                 "rules": {
                     "ignore": [],
                     "name": {
@@ -224,7 +205,7 @@
                     "password": {
                         "required": "Please enter valide password",
                         "minlength": "Password must be over 5 characters",
-                        "pwcheck": "Password must has one uppercase, number and special character"
+                        "pwcheck": "Password must contain one uppercase letter, one number, and one special character."
                     },
                     "password_confirmation": {
                         "required": "Please confirm entered password",

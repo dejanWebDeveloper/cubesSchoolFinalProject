@@ -38,8 +38,13 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::post('/store-user', [\App\Http\Controllers\Admin\UserController::class, 'storeUser'])->name('store_user');
         Route::post('/enable-user', [\App\Http\Controllers\Admin\UserController::class, 'enableUser'])->name('enable_user');
         Route::post('/disable-user', [\App\Http\Controllers\Admin\UserController::class, 'disableUser'])->name('disable_user');
-        Route::get('/edit-user/{id}', [\App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('edit_user_page');
-        Route::post('/store-edited-user/{userForEdit}', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUser'])->name('edit_user');
+        Route::prefix('/edit-user')->name('edit_user_')->group(function (){
+            Route::get('/',[\App\Http\Controllers\Admin\UserController::class, 'editUser'])->name('page');
+            Route::get('/password', [\App\Http\Controllers\Admin\UserController::class, 'editUserPassword'])->name('password_page');
+            Route::post('/store-edited-user', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUser'])->name('data');
+            Route::post('/store-edited-user-password', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUserPassword'])->name('password');
+        });
+        Route::get('/profile', [\App\Http\Controllers\Admin\UserController::class, 'userProfile'])->name('user_profile');
 
     });
 
