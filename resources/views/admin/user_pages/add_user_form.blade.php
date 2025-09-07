@@ -38,7 +38,7 @@
                                             <label>Name</label>
                                             <input name="name" type="text"
                                                    class="form-control @error('name') is-invalid @enderror"
-                                                   placeholder="Name of User" value="{{old('name')}}">
+                                                   placeholder="Enter Name" value="{{old('name')}}">
                                             <div>
                                                 @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -47,9 +47,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input name="email" type="email"
-                                                   class="form-control @error('email') is-invalid @enderror"
-                                                   placeholder="Email Adress of User" value="{{old('email')}}">
+                                            <div class="input-group">
+                                                <input name="email" type="email"
+                                                       class="form-control @error('email') is-invalid @enderror"
+                                                       placeholder="Enter Email" value="{{old('email')}}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                     @
+                                                     </span>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @error('email')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -58,7 +65,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
+                                            <div class="input-group">
+                                                <input class="form-control @error('password') is-invalid @enderror"
+                                                       type="password" name="password" id="password"
+                                                       placeholder="Enter Password" required>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fas fa-lock"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @error('password')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -67,8 +83,18 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="password_confirmation">Confirm Password</label>
-                                            <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation"
-                                                   id="password_confirmation" required>
+                                            <div class="input-group">
+                                                <input
+                                                    class="form-control @error('password_confirmation') is-invalid @enderror"
+                                                    type="password" name="password_confirmation"
+                                                    placeholder="Confirm Password"
+                                                    id="password_confirmation" required>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fas fa-lock"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @error('password_confirmation')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -77,9 +103,16 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Phone</label>
-                                            <input name="phone" type="text"
-                                                   class="form-control @error('phone') is-invalid @enderror"
-                                                   placeholder="Phone of User" value="{{old('phone')}}">
+                                            <div class="input-group">
+                                                <input name="phone" type="text"
+                                                       class="form-control @error('phone') is-invalid @enderror"
+                                                       placeholder="Enter phone" value="{{old('phone')}}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                     <i class="fas fa-phone"></i>
+                                                     </span>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @error('phone')
                                                 <div class="alert alert-danger">{{ $message }}</div>

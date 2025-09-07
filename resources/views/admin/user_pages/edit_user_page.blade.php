@@ -26,7 +26,8 @@
                         <div class="card-header">
                             <h3 class="card-title">Change your profile info</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_users_edit_user_password_page')}}" class="btn btn-outline-warning">
+                                <a href="{{route('admin_users_edit_user_password_page')}}"
+                                   class="btn btn-outline-warning">
                                     <i class="fas fa-lock-open"></i>
                                     Change Password
                                 </a>
@@ -44,7 +45,7 @@
                                         <div class="form-group">
                                             <label>Email</label>
                                             <div>
-                                               <strong>{{Auth::user()->email}}</strong>
+                                                <strong>{{Auth::user()->email}}</strong>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -59,12 +60,20 @@
                                                 @enderror
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <label>Phone</label>
-                                            <input name="phone" type="text"
-                                                   class="form-control @error('phone') is-invalid @enderror"
-                                                   placeholder="Phone of Author"
-                                                   value="{{old('phone', Auth::user())}}">
+                                            <div class="input-group">
+                                                <input name="phone" type="text"
+                                                       class="form-control @error('phone') is-invalid @enderror"
+                                                       placeholder="Phone of Author"
+                                                       value="{{old('phone', Auth::user())}}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                     <i class="fas fa-phone"></i>
+                                                     </span>
+                                                </div>
+                                            </div>
                                             <div>
                                                 @error('phone')
                                                 <div class="alert alert-danger">{{ $message }}</div>
