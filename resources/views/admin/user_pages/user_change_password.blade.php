@@ -84,15 +84,6 @@
             $('#edit-user-password').validate({
                 "rules": {
                     "ignore": [],
-                    /*"name": {
-                        "required": true,
-                        "minlength": 5,
-                        "maxlength": 50
-                    },
-                    "email": {
-                        "required": true,
-                        "email": true
-                    },*/
                     "password": {
                         "required": true,
                         "minlength": 8,
@@ -101,23 +92,9 @@
                     "password_confirmation": {
                         "required": true,
                         "equalTo": "#password"
-                    }/*,
-                    "phone": {
-                        "required": true,
-                        "minlength": 8,
-                        "maxlength": 20
-                    }*/
+                    }
                 },
                 "messages": {
-                    /*"name": {
-                        "required": "Please enter user name",
-                        "minlength": "Name must be over 5 characters",
-                        "maxlength": "Enter no more than 50 characters"
-                    },
-                    "email": {
-                        "required": "Please enter authors email",
-                        "email": "Please enter valide email"
-                    },*/
                     "password": {
                         "required": "Please enter valide password",
                         "minlength": "Password must be over 5 characters",
@@ -126,12 +103,7 @@
                     "password_confirmation": {
                         "required": "Please confirm entered password",
                         "equalTo": "Please confirm entered password"
-                    }/*,
-                    "phone": {
-                        "required": "Please enter user phone",
-                        "minlength": "Value must be over 8 characters",
-                        "maxlength": "Enter no more than 20 characters"
-                    }*/
+                    }
                 },
                 "errorClass": "is-invalid",
                 errorPlacement: function (error, element) {

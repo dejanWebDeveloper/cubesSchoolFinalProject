@@ -182,19 +182,6 @@
                         "minlength": 5,
                         "maxlength": 50
                     },
-                    "email": {
-                        "required": true,
-                        "email": true
-                    },
-                    "password": {
-                        "required": true,
-                        "minlength": 8,
-                        "pwcheck": true
-                    },
-                    "password_confirmation": {
-                        "required": true,
-                        "equalTo": "#password"
-                    },
                     "phone": {
                         "required": true,
                         "minlength": 8,
@@ -206,19 +193,6 @@
                         "required": "Please enter user name",
                         "minlength": "Name must be over 5 characters",
                         "maxlength": "Enter no more than 50 characters"
-                    },
-                    "email": {
-                        "required": "Please enter authors email",
-                        "email": "Please enter valide email"
-                    },
-                    "password": {
-                        "required": "Please enter valide password",
-                        "minlength": "Password must be over 5 characters",
-                        "pwcheck": "Password must contain one uppercase letter, one number, and one special character."
-                    },
-                    "password_confirmation": {
-                        "required": "Please confirm entered password",
-                        "equalTo": "Please confirm entered password"
                     },
                     "phone": {
                         "required": "Please enter user phone",
@@ -232,9 +206,9 @@
                 }
             });
             $.validator.addMethod("pwcheck", function (value) {
-                return /[A-Z]/.test(value)   // veliko slovo
-                    && /[0-9]/.test(value)   // broj
-                    && /[!@#$%^&*]/.test(value); // specijalni znak
+                return /[A-Z]/.test(value)
+                    && /[0-9]/.test(value)
+                    && /[!@#$%^&*]/.test(value);
             });
         });
     </script>
