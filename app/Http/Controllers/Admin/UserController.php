@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -187,5 +188,21 @@ class UserController extends Controller
         $user->status = 1;
         $user->save();
         return response()->json(['success' => 'User Enabled Successfully']);
+    }
+    public function resetPasswordPage()
+    {
+        return view('admin.user_pages.reset_password_page');
+    }
+    public function resetUserPassword()
+    {
+        $data = request()->validate([
+            'email' => ['required', 'email', 'exists:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        $userForResetPassword = User::where('email', $data['email'])->firstOrFail();
+        $data['password'] = Hash::make($data['password']);
+        $data['updated_at'] = now();
+        $userForResetPassword->fill($data)->save();
+        return redirect()->route('login');
     }
 }

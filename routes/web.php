@@ -32,6 +32,7 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
     });
 
     Route::prefix('/users')->name('users_')->group(function () {
+        Route::get('/profile', [\App\Http\Controllers\Admin\UserController::class, 'userProfile'])->name('user_profile');
         Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('page');
         Route::get('/add-user', [\App\Http\Controllers\Admin\UserController::class, 'addUser'])->name('add_user');
         Route::post('/ajax-user-datatable', [\App\Http\Controllers\Admin\UserController::class, 'datatable'])->name('datatable');
@@ -43,8 +44,9 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
             Route::get('/password', [\App\Http\Controllers\Admin\UserController::class, 'editUserPassword'])->name('password_page');
             Route::post('/store-edited-user', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUser'])->name('data');
             Route::post('/store-edited-user-password', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUserPassword'])->name('password');
+            Route::get('/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPasswordPage'])->name('reset_password_page');
+            Route::post('/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetUserPassword'])->name('reset_user_password');
         });
-        Route::get('/profile', [\App\Http\Controllers\Admin\UserController::class, 'userProfile'])->name('user_profile');
 
     });
 

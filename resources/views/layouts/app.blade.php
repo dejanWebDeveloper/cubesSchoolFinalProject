@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{url('/themes/admin/dist/css/adminlte.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-        <!-- CSRF Token -->
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Fonts -->
@@ -26,14 +26,13 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="hold-transition login-page">
-        <main>
-            @yield('content')
-        </main>
-    <!-- jQuery -->
-    <script src="{{url('/themes/admin/plugins/jquery/jquery.min.js')}}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{url('/themes/admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{url('/themes/admin/dist/js/adminlte.js')}}"></script>
+@yield('content')
+<!-- jQuery -->
+<script src="{{url('/themes/admin/plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{url('/themes/admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{url('/themes/admin/dist/js/adminlte.js')}}"></script>
+@stack('app_script')
 </body>
 </html>
