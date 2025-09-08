@@ -82,6 +82,17 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::post('/store-edited-post/{postForEdit}', [\App\Http\Controllers\Admin\PostController::class, 'storeEditedPost'])->name('edit_post');
 
     });
+
+    Route::prefix('/homepage-slider')->name('sliders_')->group(function (){
+        Route::get('/', [\App\Http\Controllers\Admin\IndexController::class, 'sliderHomepage'])->name('page');
+        Route::get('/add-slider-data', [\App\Http\Controllers\Admin\IndexController::class, 'addSliderData'])->name('add_slider');
+        Route::post('/ajax-slider-datatable', [\App\Http\Controllers\Admin\IndexController::class, 'datatable'])->name('datatable');
+        Route::post('/store-slider', [\App\Http\Controllers\Admin\IndexController::class, 'storeSlider'])->name('store_slider');
+        Route::post('/delete-slider', [\App\Http\Controllers\Admin\IndexController::class, 'deleteSlider'])->name('delete_slider');
+        Route::get('/edit-slider/{id}', [\App\Http\Controllers\Admin\IndexController::class, 'editSlider'])->name('edit_slider_page');
+        Route::post('/store-edited-slider/{sliderForEdit}', [\App\Http\Controllers\Admin\IndexController::class, 'storeEditedSlider'])->name('edit_slider');
+
+    });
 });
 
 

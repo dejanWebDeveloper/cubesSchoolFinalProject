@@ -18,7 +18,6 @@ class SliderDataSeeder extends Seeder
         for ($i = 1; $i <= 8; $i++) {
             DB::table('slider_data')->insert([
                 'heading' => $faker->name,
-                'background' => $i.'.jpg',
                 'button_name' => 'FIND OUT MORE',
                 'url' => 'https://www.php.net/',
                 'created_at' => now()]);

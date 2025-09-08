@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('slider_data', function (Blueprint $table) {
             $table->id();
             $table->string('heading', 100);
-            $table->string('background');
+            $table->string('background')->nullable();
             $table->string('button_name', 20);
             $table->string('url');
             $table->timestamps();
