@@ -9,6 +9,7 @@ class SliderData extends Model
     protected $fillable = [
         'background',
         'heading',
+        'slug',
         'button_name',
         'url'
     ];

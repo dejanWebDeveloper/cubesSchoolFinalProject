@@ -48,7 +48,7 @@ class IndexController extends Controller
             'button_name' => ['required', 'string', 'min:3', 'max:15'],
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        //$data['slug'] = Str::slug($data['name']);
+        $data['slug'] = Str::slug($data['heading']);
         $data['created_at'] = now();
         $newSlider = new SliderData();
         $newSlider->fill($data)->save();
@@ -107,9 +107,9 @@ class IndexController extends Controller
         //delete data from post_tags table
         return response()->json(['success' => 'Slider Deleted Successfully']);
     }
-    public function editSlider($id)
+    public function editSlider($slug)
     {
-        $sliderForEdit = SliderData::where('id', $id)->firstOrFail();
+        $sliderForEdit = SliderData::where('slug', $slug)->firstOrFail();
         return view('admin.slider_pages.edit_slider_page', compact(
             'sliderForEdit'
         ));
@@ -122,7 +122,7 @@ class IndexController extends Controller
             'button_name' => ['required', 'string', 'min:3', 'max:15'],
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        //$data['slug'] = Str::slug($data['name']);
+        $data['slug'] = Str::slug($data['heading']);
         $data['updated_at'] = now();
         $sliderForEdit->fill($data)->save();
         //saving photo
