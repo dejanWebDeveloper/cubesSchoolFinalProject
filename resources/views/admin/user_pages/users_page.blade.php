@@ -187,6 +187,7 @@
         $(document).ready(function () {
             $('#select-status').select2({
                 placeholder: "Status",
+                allowClear: true
             });
             //plugin za data tables
             $('#users-table').DataTable({

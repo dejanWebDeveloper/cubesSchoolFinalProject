@@ -1,5 +1,9 @@
 @extends('front._layouts._layout')
-@section('seo_title', 'Bootstrap Blog - B4 Template by Bootstrap Temple')
+@section('seo_title', $singlePost->heading)
+@section('seo_description', Str::limit(strip_tags($singlePost->text), 160))
+@if($singlePost->photo)
+    @section('seo_image', $singlePost->imageUrl())
+@endif
 @section('content')
     <div class="container">
         <div class="row">

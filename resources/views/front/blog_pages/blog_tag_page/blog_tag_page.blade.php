@@ -1,5 +1,6 @@
 @extends('front._layouts._layout')
-@section('seo_title', 'Bootstrap Blog - B4 Template by Bootstrap Temple')
+@section('seo_title', $tag->name)
+
 @section('content')
     <div class="container">
         <div class="row">

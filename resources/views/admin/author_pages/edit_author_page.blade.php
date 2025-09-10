@@ -144,7 +144,7 @@
                 input.value = "";
 
                 // Hide preview
-                preview.src = "#";
+                preview.src = "";
                 preview.style.display = "none";
 
                 // Tell server to delete the existing photo

@@ -5,8 +5,8 @@
 @endpush
 
 @extends('front._layouts._layout')
+@section('seo_title', 'Cubes Blog - homepage')
 
-@section('seo_title', 'Bootstrap Blog - B4 Template by Bootstrap Temple')
 @section('content')
     <!-- Hero Section-->
     @include('front.index_page.partials.slider')

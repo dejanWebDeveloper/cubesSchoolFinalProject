@@ -1,5 +1,8 @@
 @extends('front._layouts._layout')
-@section('seo_title', 'Bootstrap Blog - B4 Template by Bootstrap Temple')
+@section('seo_title', $author->name)
+@if($author->profile_photo)
+    @section('seo_image', $author->authorImageUrl())
+@endif
 @section('content')
     <div class="container">
         <div class="row">

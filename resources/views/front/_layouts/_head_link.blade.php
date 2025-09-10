@@ -2,9 +2,33 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('seo_title')</title>
-    <meta name="description" content="">
+    @if(View::hasSection('seo_description'))
+        <meta name="description" content="@yield('seo_description')">
+    @endif
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
+
+    <!-- Open Graph (Facebook) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('seo_title')">
+    @if(View::hasSection('seo_description'))
+        <meta property="og:description" content="@yield('seo_description')">
+    @endif
+    @if(View::hasSection('seo_image'))
+        <meta property="og:image" content="@yield('seo_image')">
+    @endif
+    <meta property="og:url" content="{{ url()->current() }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('seo_title')">
+    @if(View::hasSection('seo_description'))
+        <meta name="twitter:description" content="@yield('seo_description')">
+    @endif
+    @if(View::hasSection('seo_image'))
+        <meta name="twitter:image" content="@yield('seo_image')">
+    @endif
+
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{url('/themes/front/vendor/bootstrap/css/bootstrap.css')}}">
     <!-- Font Awesome CSS-->
