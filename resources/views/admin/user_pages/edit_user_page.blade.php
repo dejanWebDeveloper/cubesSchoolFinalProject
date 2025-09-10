@@ -144,6 +144,7 @@
         document.getElementById('photo-input1').addEventListener('change', function (event) {
             const input = event.target;
             const preview1 = document.getElementById('photoPreview1');
+            const deleteField = document.getElementById("delete_photo1");
 
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -151,7 +152,7 @@
                 reader.onload = function (e) {
                     preview1.src = e.target.result;
                     preview1.style.display = 'block';
-
+                    deleteField.value = 1;
                 }
                 reader.readAsDataURL(input.files[0]);
             }
