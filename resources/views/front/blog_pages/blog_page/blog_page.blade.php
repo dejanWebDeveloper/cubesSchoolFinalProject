@@ -1,5 +1,5 @@
 @extends('front._layouts._layout')
-@section('seo_title', 'Cubes Blog - all posts')
+@section('seo_title', 'Cubes Blog Posts')
 @section('content')
     <div class="container">
         <div class="row">

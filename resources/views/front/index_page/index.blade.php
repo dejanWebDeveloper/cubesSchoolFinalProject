@@ -5,7 +5,7 @@
 @endpush
 
 @extends('front._layouts._layout')
-@section('seo_title', 'Cubes Blog - homepage')
+@section('seo_title', 'Cubes Blog')
 
 @section('content')
     <!-- Hero Section-->
