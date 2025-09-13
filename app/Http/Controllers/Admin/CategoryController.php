@@ -92,9 +92,9 @@ class CategoryController extends Controller
         }
         return response()->json(['success' => 'Category Deleted Successfully']);
     }
-    public function editCategory($slug)
+    public function editCategory($id, $slug)
     {
-        $categoryForEdit = Category::where('slug', $slug)->firstOrFail();
+        $categoryForEdit = Category::where('slug', $slug)->where('id', $id)->firstOrFail();
         return view('admin.category_pages.edit_category_page', compact(
             'categoryForEdit'
         ));

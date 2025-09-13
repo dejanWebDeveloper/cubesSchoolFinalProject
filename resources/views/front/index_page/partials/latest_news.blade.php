@@ -8,7 +8,7 @@
             @foreach($latestPostsSlider as $latestPostSlider)
                 <div class="post">
                     <div class="post-thumbnail">
-                        <a href="{{route('blog_post_page', ['slug'=>$latestPostSlider->slug])}}">
+                        <a href="{{route('blog_post_page', ['id'=>$latestPostSlider->id, 'slug'=>$latestPostSlider->slug])}}">
                             <img src="{{ $latestPostSlider->imageUrl() }}" alt="..." class="img-fluid">
                         </a>
                     </div>
@@ -17,7 +17,7 @@
                             <div class="date">{{ $latestPostSlider->created_at->format('d M | Y') }}</div>
                             <div class="category">
                                 @if($latestPostSlider->category)
-                                    <a href="{{ route('blog_category_page', ['slug' => $latestPostSlider->category->slug]) }}">
+                                    <a href="{{ route('blog_category_page', ['id' => $latestPostSlider->category->id, 'slug' => $latestPostSlider->category->slug]) }}">
                                         {{ $latestPostSlider->category->name }}
                                     </a>
                                 @else
@@ -25,7 +25,7 @@
                                 @endif
                             </div>
                         </div>
-                        <a href="{{route('blog_post_page', ['slug'=>$latestPostSlider->slug])}}">
+                        <a href="{{route('blog_post_page', ['id'=>$latestPostSlider->id, 'slug'=>$latestPostSlider->slug])}}">
                             <h3 class="h4">{{ $latestPostSlider->heading }}</h3>
                         </a>
                         <p class="text-muted">{{ $latestPostSlider->text }}</p>

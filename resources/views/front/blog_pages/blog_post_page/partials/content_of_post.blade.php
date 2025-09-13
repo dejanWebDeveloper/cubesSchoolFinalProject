@@ -1,7 +1,7 @@
 <div class="post-meta d-flex justify-content-between">
     <div class="category">
         @if($singlePost->category)
-            <a href="{{ route('blog_category_page', ['slug' => $singlePost->category->slug]) }}">
+            <a href="{{ route('blog_category_page', ['id' => $singlePost->category->id, 'slug' => $singlePost->category->slug]) }}">
                 {{ $singlePost->category->name }}
             </a>
         @else
@@ -14,7 +14,7 @@
     </a>
 </h1>
 <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
-    <a href="{{route('blog_author_page', ['slug'=>$singlePost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
+    <a href="{{route('blog_author_page', ['id'=>$singlePost->author->id, 'slug'=>$singlePost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
         <div class="avatar"><img src="{{$singlePost->author->authorImageUrl()}}" alt="..." class="img-fluid"></div>
         <div class="title">
             <span>{{$singlePost->author->name}}</span>

@@ -1,8 +1,8 @@
 <div class="btn-group">
-    <a href="{{route('blog_author_page', ['slug'=>$row->slug])}}" class="btn btn-info" target="_blank">
+    <a href="{{route('blog_author_page', ['id'=>$row->id, 'slug'=>$row->slug])}}" class="btn btn-info" target="_blank">
         <i class="fas fa-eye"></i>
     </a>
-    <a href="{{route('admin_authors_edit_author_page', ['slug'=>$row->slug])}}" class="btn btn-info">
+    <a href="{{route('admin_authors_edit_author_page', ['id'=>$row->id, 'slug'=>$row->slug])}}" class="btn btn-info">
         <i class="fas fa-edit"></i>
     </a>
     <button data-id="{{$row->id}}" data-name="{{$row->name}}" data-action="delete"

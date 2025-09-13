@@ -165,9 +165,9 @@ class PostController extends Controller
         return response()->json(['success' => 'Post Deleted Successfully']);
     }
 
-    public function editPost($slug)
+    public function editPost($id, $slug)
     {
-        $postForEdit = Post::where('slug', $slug)->firstOrFail();
+        $postForEdit = Post::where('slug', $slug)->where('id', $id)->firstOrFail();
         $categories = Category::all();
         $authors = Author::all();
         $tags = Tag::all();

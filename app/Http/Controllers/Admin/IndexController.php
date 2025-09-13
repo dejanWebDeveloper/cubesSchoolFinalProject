@@ -107,9 +107,9 @@ class IndexController extends Controller
         //delete data from post_tags table
         return response()->json(['success' => 'Slider Deleted Successfully']);
     }
-    public function editSlider($slug)
+    public function editSlider($id, $slug)
     {
-        $sliderForEdit = SliderData::where('slug', $slug)->firstOrFail();
+        $sliderForEdit = SliderData::where('slug', $slug)->where('id', $id)->firstOrFail();
         return view('admin.slider_pages.edit_slider_page', compact(
             'sliderForEdit'
         ));

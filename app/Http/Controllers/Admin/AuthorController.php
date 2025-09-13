@@ -107,9 +107,9 @@ class AuthorController extends Controller
         //delete data from post_tags table
         return response()->json(['success' => 'Author Deleted Successfully']);
     }
-    public function editAuthor($slug)
+    public function editAuthor($id, $slug)
     {
-        $authorForEdit = Author::where('slug', $slug)->firstOrFail();
+        $authorForEdit = Author::where('slug', $slug)->where('id', $id)->firstOrFail();
         return view('admin.author_pages.edit_author_page', compact(
             'authorForEdit'
         ));

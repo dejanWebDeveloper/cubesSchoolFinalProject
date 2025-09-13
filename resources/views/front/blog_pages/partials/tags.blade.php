@@ -5,7 +5,7 @@
     <ul class="list-inline">
      @foreach($allTagsForBlogPartial as $tag)
         <li class="list-inline-item">
-            <a href="{{route('blog_tag_page', ['slug'=>$tag->slug])}}" class="tag">#{{ $tag->name }}</a></li>
+            <a href="{{route('blog_tag_page', ['id'=>$tag->id, 'slug'=>$tag->slug])}}" class="tag">#{{ $tag->name }}</a></li>
         @endforeach
     </ul>
 </div>

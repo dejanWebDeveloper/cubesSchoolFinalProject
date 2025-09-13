@@ -1,6 +1,6 @@
 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
         @if($prevPost)
-            <a href="{{route('blog_post_page', ['slug'=>$prevPost->slug])}}"
+            <a href="{{route('blog_post_page', ['id'=>$prevPost->id, 'slug'=>$prevPost->slug])}}"
                class="prev-post text-left d-flex align-items-center">
                 <div class="icon prev">
                     <i class="fa fa-angle-left"></i>
@@ -14,7 +14,7 @@
             <strong class="text-primary">There is no previous post</strong>
         @endif
         @if($nextPost)
-                <a href="{{route('blog_post_page', ['slug'=>$nextPost->slug])}}"
+                <a href="{{route('blog_post_page', ['id'=>$nextPost->id, 'slug'=>$nextPost->slug])}}"
                    class="next-post text-right d-flex align-items-center justify-content-end">
                     <div class="text">
                         <strong class="text-primary">Next Post </strong>

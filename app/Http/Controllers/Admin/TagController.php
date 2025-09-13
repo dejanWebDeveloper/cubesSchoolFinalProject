@@ -52,9 +52,9 @@ class TagController extends Controller
         $tag->delete();
         return response()->json(['success' => 'Tag Deleted Successfully']);
     }
-    public function editTag($slug)
+    public function editTag($id, $slug)
     {
-        $tagForEdit = Tag::where('slug', $slug)->firstOrFail();
+        $tagForEdit = Tag::where('slug', $slug)->where('id', $id)->firstOrFail();
         return view('admin.tag_pages.edit_tag_page', compact(
             'tagForEdit'
         ));

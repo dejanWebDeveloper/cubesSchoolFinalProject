@@ -1,5 +1,5 @@
 <div class="btn-group">
-    <a href="{{route('admin_sliders_edit_slider_page', ['slug'=>$row->slug])}}" class="btn btn-info">
+    <a href="{{route('admin_sliders_edit_slider_page', ['id'=>$row->id, 'slug'=>$row->slug])}}" class="btn btn-info">
         <i class="fas fa-edit"></i>
     </a>
     <button data-id="{{$row->id}}" data-name="{{$row->heading}}" data-action="delete"

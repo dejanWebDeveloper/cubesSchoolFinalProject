@@ -3,7 +3,7 @@
     @foreach($authorPosts as $authorPost)
         <div class="post col-xl-6">
             <div class="post-thumbnail">
-                <a href="{{route('blog_post_page', ['slug'=>$authorPost->slug])}}"><img src="{{$authorPost->imageUrl()}}" alt="..." class="img-fluid">
+                <a href="{{route('blog_post_page', ['id'=>$authorPost->id, 'slug'=>$authorPost->slug])}}"><img src="{{$authorPost->imageUrl()}}" alt="..." class="img-fluid">
                 </a>
             </div>
             <div class="post-details">
@@ -11,7 +11,7 @@
                     <div class="date meta-last">{{$authorPost->created_at->format('d M | Y')}}</div>
                     <div class="category">
                         @if($authorPost->category)
-                            <a href="{{ route('blog_category_page', ['slug' => $authorPost->category->slug]) }}">
+                            <a href="{{ route('blog_category_page', ['id' => $authorPost->category->id, 'slug' => $authorPost->category->slug]) }}">
                                 {{ $authorPost->category->name }}
                             </a>
                         @else
@@ -19,10 +19,10 @@
                         @endif
                     </div>
                 </div>
-                <a href="{{route('blog_post_page', ['slug'=>$authorPost->slug])}}">
+                <a href="{{route('blog_post_page', ['id'=>$authorPost->id, 'slug'=>$authorPost->slug])}}">
                     <h3 class="h4">{{$authorPost->heading}}</h3></a>
                 <p class="text-muted">{{$authorPost->text}}</p>
-                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['slug'=>$authorPost->author->slug])}}"
+                <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['id'=>$authorPost->author->id, 'slug'=>$authorPost->author->slug])}}"
                                                                          class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{$authorPost->author->authorImageUrl()}}" alt="..." class="img-fluid">
                         </div>

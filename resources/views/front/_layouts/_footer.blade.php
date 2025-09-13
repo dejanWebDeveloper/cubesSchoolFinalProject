@@ -32,7 +32,7 @@
                     </ul>
                     <ul class="list-unstyled">
                         @foreach($footerCategories as $footerCategory)
-                            <li><a href="{{route('blog_category_page', ['slug'=>$footerCategory->slug])}}">{{$footerCategory->name}}</a></li>
+                            <li><a href="{{route('blog_category_page', ['id'=>$footerCategory->id ,'slug'=>$footerCategory->slug])}}">{{$footerCategory->name}}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -40,7 +40,7 @@
             <div class="col-md-4">
                 <div class="latest-posts">
                     @foreach($latestFooterPosts as $latestFooterPost)
-                    <a href="{{route('blog_post_page', ['slug'=>$latestFooterPost->slug])}}">
+                    <a href="{{route('blog_post_page', ['id'=>$latestFooterPost->id ,'slug'=>$latestFooterPost->slug])}}">
                         <div class="post d-flex align-items-center">
                             <div class="image">
                                 <img src="{{$latestFooterPost->imageUrl()}}" alt="..." class="img-fluid">
