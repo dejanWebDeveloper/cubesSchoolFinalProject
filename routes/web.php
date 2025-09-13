@@ -94,7 +94,4 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
 
     });
 });
-
-
 Auth::routes();
-
