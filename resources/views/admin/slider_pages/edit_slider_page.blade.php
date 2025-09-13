@@ -200,6 +200,9 @@
                     },
                     "errorClass": "is-invalid"
                 });
+                $.validator.addMethod("url", function(value, element) {
+                    return this.optional(element) || /^(https?:\/\/)(localhost(:[0-9]+)?|[a-z0-9.-]+\.[a-z]{2,})(\/.*)?$/i.test(value);
+                }, "Please enter valide url");
             });
         </script>
     @endpush
