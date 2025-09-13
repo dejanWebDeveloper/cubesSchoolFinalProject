@@ -91,6 +91,8 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::post('/delete-slider', [\App\Http\Controllers\Admin\IndexController::class, 'deleteSlider'])->name('delete_slider');
         Route::get('/edit-slider/{id}/{slug}', [\App\Http\Controllers\Admin\IndexController::class, 'editSlider'])->name('edit_slider_page');
         Route::post('/store-edited-slider/{sliderForEdit}', [\App\Http\Controllers\Admin\IndexController::class, 'storeEditedSlider'])->name('edit_slider');
+        Route::post('/enable-slider', [\App\Http\Controllers\Admin\IndexController::class, 'enableUser'])->name('enable_slider');
+        Route::post('/disable-slider', [\App\Http\Controllers\Admin\IndexController::class, 'disableUser'])->name('disable_slider');
 
     });
 });

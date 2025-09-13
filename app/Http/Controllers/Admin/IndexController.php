@@ -141,4 +141,24 @@ class IndexController extends Controller
         session()->put('system_message', 'Slider Data Edited Successfully');
         return redirect()->route('admin_sliders_page');
     }
+    public function disableUser()
+    {
+        $data = request()->validate([
+            'slider_for_disable_id' => ['required', 'numeric', 'exists:slider_data,id'],
+        ]);
+        $slider = SliderData::findOrFail($data['slider_for_disable_id']);
+        $slider->status = 0;
+        $slider->save();
+        return response()->json(['success' => 'Slider Disabled Successfully']);
+    }
+    public function enableUser()
+    {
+        $data = request()->validate([
+            'slider_for_enable_id' => ['required', 'numeric', 'exists:slider_data,id'],
+        ]);
+        $slider = SliderData::findOrFail($data['slider_for_enable_id']);
+        $slider->status = 1;
+        $slider->save();
+        return response()->json(['success' => 'Slider Enabled Successfully']);
+    }
 }

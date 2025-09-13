@@ -236,7 +236,7 @@
                 $('#disable-modal p#user_for_disable_name').html(name);
             });
 
-            // Click on button for delete
+            // Click on button for disable
             $('#disable-user').on('submit', function (e) {
                 e.preventDefault();
                 let userId = $("#disable-modal [name='user_for_disable_id']").val(); // take ID from hidden modal input
@@ -266,7 +266,7 @@
                 $('#enable-modal p#user_for_enable_name').html(name);
             });
 
-            // Click on button for delete
+            // Click on button for enable
             $('#enable-user').on('submit', function (e) {
                 e.preventDefault();
                 let userId = $("#enable-modal [name='user_for_enable_id']").val(); // take ID from hidden modal input

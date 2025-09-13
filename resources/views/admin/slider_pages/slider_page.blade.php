@@ -63,7 +63,66 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    <div class="modal fade" id="disable-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="disable-slider" method="post" action="{{route('admin_sliders_disable_slider')}}">
+                    @csrf
+                    <input type="hidden" name="slider_for_disable_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Disable Slide</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to disable slide?</p>
+                        <strong><p id="slider_for_disable_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-minus-circle"></i>
+                            Disable
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
+    <div class="modal fade" id="enable-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="enable-slider" method="post" action="{{route('admin_sliders_enable_slider')}}">
+                    @csrf
+                    <input type="hidden" name="slider_for_enable_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Enable Slide</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to enable slide?</p>
+                        <strong><p id="slider_for_enable_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>
+                            Enable
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -129,6 +188,62 @@
                 ],
                 pageLength: 5,
                 lengthMenu: [5, 10, 20]
+            });
+            //disable slider
+            $('#sliders-table').on('click', "[data-action='disable']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#disable-modal [name='slider_for_disable_id']").val(id);
+                $('#disable-modal p#slider_for_disable_name').html(name);
+            });
+            $('#disable-slider').on('submit', function (e) {
+                e.preventDefault();
+                let sliderId = $("#disable-modal [name='slider_for_disable_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_sliders_disable_slider') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        slider_for_disable_id: sliderId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#disable-modal').modal('hide');
+                        toastr.success('Slider Successfully Disabled.');
+                        // Reload all DataTables
+                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                    }
+                });
+            });
+            //enable user
+            $('#sliders-table').on('click', "[data-action='enable']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#enable-modal [name='slider_for_enable_id']").val(id);
+                $('#enable-modal p#slider_for_enable_name').html(name);
+            });
+            $('#enable-slider').on('submit', function (e) {
+                e.preventDefault();
+                let sliderId = $("#enable-modal [name='slider_for_enable_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_sliders_enable_slider') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        slider_for_enable_id: sliderId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#enable-modal').modal('hide');
+                        toastr.success('Slider Successfully Enabled.');
+                        // Reload dataTables
+                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                    }
+                });
             });
             //delete slider
             // Open modal and enter data
