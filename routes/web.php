@@ -80,6 +80,10 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::post('/delete-post', [\App\Http\Controllers\Admin\PostController::class, 'deletePost'])->name('delete_post');
         Route::get('/edit-post/{id}/{slug}', [\App\Http\Controllers\Admin\PostController::class, 'editPost'])->name('edit_post_page');
         Route::post('/store-edited-post/{postForEdit}', [\App\Http\Controllers\Admin\PostController::class, 'storeEditedPost'])->name('edit_post');
+        Route::post('/enable-post', [\App\Http\Controllers\Admin\PostController::class, 'enablePost'])->name('enable_post');
+        Route::post('/disable-post', [\App\Http\Controllers\Admin\PostController::class, 'disablePost'])->name('disable_post');
+        Route::post('/important-post', [\App\Http\Controllers\Admin\PostController::class, 'importantPost'])->name('be_important_post');
+        Route::post('/unimportant-post', [\App\Http\Controllers\Admin\PostController::class, 'unimportantPost'])->name('be_unimportant_post');
 
     });
 
