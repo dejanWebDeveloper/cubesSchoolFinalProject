@@ -99,5 +99,13 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
         Route::post('/disable-slider', [\App\Http\Controllers\Admin\IndexController::class, 'disableUser'])->name('disable_slider');
 
     });
+
+    Route::prefix('/comments')->name('comments_')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\PostController::class, 'displayComments'])->name('page');
+        Route::post('/ajax-comment-datatable', [\App\Http\Controllers\Admin\PostController::class, 'datatableComments'])->name('datatable_comments');
+        Route::post('/disable-comment', [\App\Http\Controllers\Admin\PostController::class, 'disableComment'])->name('disable_comment');
+        Route::post('/enable-comment', [\App\Http\Controllers\Admin\PostController::class, 'enableComment'])->name('enable_comment');
+
+    });
 });
 Auth::routes();

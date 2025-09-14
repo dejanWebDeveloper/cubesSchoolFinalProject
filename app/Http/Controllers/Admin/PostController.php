@@ -278,4 +278,41 @@ class PostController extends Controller
     {
         $query = PostComment::query();
 
+        if ($request->post_id) {
+            $query->where('post_id', $request->post_id);
+        }
+
+        return DataTables::of($query)
+            ->addColumn('comment', fn($row) => $row->comment)
+            ->addColumn('post', fn($row) => $row->post->heading)
+            ->addColumn('post_id', fn($row) => $row->post_id)
+            ->editColumn('enable', fn($row) => $row->enable
+                ? '<span class="badge badge-success">Enabled</span>'
+                : '<span class="badge badge-danger">Disabled</span>')
+            ->editColumn('created_at', fn($row) => $row->created_at?->format('d/m/Y H:i:s'))
+            ->addColumn('actions', fn($row) => view('admin.comment_pages.partials.actions', compact('row'))
+            )
+            ->rawColumns(['enable', 'actions'])
+            ->toJson();
+    }
+    public function disableComment()
+    {
+        $data = request()->validate([
+            'comment_for_disable_id' => ['required', 'numeric', 'exists:post_comments,id'],
+        ]);
+        $postComment = PostComment::findOrFail($data['comment_for_disable_id']);
+        $postComment->enable = 0;
+        $postComment->save();
+        return response()->json(['success' => 'Comment Disabled Successfully']);
+    }
+    public function enableComment()
+    {
+        $data = request()->validate([
+            'comment_for_enable_id' => ['required', 'numeric', 'exists:post_comments,id'],
+        ]);
+        $postComment = PostComment::findOrFail($data['comment_for_enable_id']);
+        $postComment->enable = 1;
+        $postComment->save();
+        return response()->json(['success' => 'Comment Enabled Successfully']);
+    }
 }

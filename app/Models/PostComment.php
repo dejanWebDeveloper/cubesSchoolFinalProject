@@ -14,4 +14,9 @@ protected $fillable = [
     'enable',
     'created_at'
 ];
+public function post()
+{
+    return $this->belongsTo(Post::class, 'post_id', 'id');
 }
+}
+
