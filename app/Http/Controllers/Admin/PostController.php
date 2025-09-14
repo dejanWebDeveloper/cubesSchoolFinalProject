@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -229,5 +230,52 @@ class PostController extends Controller
         session()->put('system_message', 'Post Edited Successfully');
         return redirect()->route('admin_posts_page');
     }
+    public function disablePost()
+    {
+        $data = request()->validate([
+            'post_for_disable_id' => ['required', 'numeric', 'exists:posts,id'],
+        ]);
+        $post = Post::findOrFail($data['post_for_disable_id']);
+        $post->enable = 0;
+        $post->save();
+        return response()->json(['success' => 'Post Disabled Successfully']);
+    }
+    public function enablePost()
+    {
+        $data = request()->validate([
+            'post_for_enable_id' => ['required', 'numeric', 'exists:posts,id'],
+        ]);
+        $post = Post::findOrFail($data['post_for_enable_id']);
+        $post->enable = 1;
+        $post->save();
+        return response()->json(['success' => 'Post Enabled Successfully']);
+    }
+    public function unimportantPost()
+    {
+        $data = request()->validate([
+            'post_be_unimportant_id' => ['required', 'numeric', 'exists:posts,id'],
+        ]);
+        $post = Post::findOrFail($data['post_be_unimportant_id']);
+        $post->important = 0;
+        $post->save();
+        return response()->json(['success' => 'Post Change Status Successfully']);
+    }
+    public function importantPost()
+    {
+        $data = request()->validate([
+            'post_be_important_id' => ['required', 'numeric', 'exists:posts,id'],
+        ]);
+        $post = Post::findOrFail($data['post_be_important_id']);
+        $post->important = 1;
+        $post->save();
+        return response()->json(['success' => 'Post Change Status Successfully']);
+    }
+    public function displayComments()
+    {
+        return view('admin.comment_pages.comments_page');
+    }
+    public function datatableComments(Request $request)
+    {
+        $query = PostComment::query();
 
 }
