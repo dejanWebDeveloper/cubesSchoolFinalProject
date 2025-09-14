@@ -156,6 +156,131 @@
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </section>
+
+    <!-- enable/disable -->
+    <div class="modal fade" id="disable-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="disable-post" method="post" action="{{route('admin_posts_disable_post')}}">
+                    @csrf
+                    <input type="hidden" name="post_for_disable_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Disable Post</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to disable post?</p>
+                        <strong><p id="post_for_disable_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-minus-circle"></i>
+                            Disable
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="enable-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="enable-post" method="post" action="{{route('admin_posts_enable_post')}}">
+                    @csrf
+                    <input type="hidden" name="post_for_enable_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Enable Post</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to enable post?</p>
+                        <strong><p id="post_for_enable_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>
+                            Enable
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <!-- important/unimportant -->
+    <div class="modal fade" id="unimportant-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="be_unimportant-post" method="post" action="{{route('admin_posts_be_unimportant_post')}}">
+                    @csrf
+                    <input type="hidden" name="post_be_unimportant_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Post Be Unimportant</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to change status to unimportant?</p>
+                        <strong><p id="post_be_unimportant_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-minus-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal fade" id="important-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="be_important-post" method="post" action="{{route('admin_posts_be_important_post')}}">
+                    @csrf
+                    <input type="hidden" name="post_be_important_id" value="">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Post Be Important</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to change status to important?</p>
+                        <strong><p id="post_be_important_name"></p></strong>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-minus-circle"></i>
+                            Yes
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
     <!-- /.content -->
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
@@ -255,6 +380,120 @@
             // reload table when filter was changed
             $('#entities-filter-form input, #entities-filter-form select').on('change keyup', function () {
                 $('#posts-table').DataTable().ajax.reload();
+            });
+
+            //enable/disable
+            //disable slider
+            $('#posts-table').on('click', "[data-action='disable']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#disable-modal [name='post_for_disable_id']").val(id);
+                $('#disable-modal p#post_for_disable_name').html(name);
+            });
+            $('#disable-post').on('submit', function (e) {
+                e.preventDefault();
+                let postId = $("#disable-modal [name='post_for_disable_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_posts_disable_post') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_for_disable_id: postId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#disable-modal').modal('hide');
+                        toastr.success('Post Successfully Disabled.');
+                        // Reload all DataTables
+                        $('#posts-table').DataTable().ajax.reload(null, false);
+                    }
+                });
+            });
+            //enable user
+            $('#posts-table').on('click', "[data-action='enable']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#enable-modal [name='post_for_enable_id']").val(id);
+                $('#enable-modal p#post_for_enable_name').html(name);
+            });
+            $('#enable-post').on('submit', function (e) {
+                e.preventDefault();
+                let postId = $("#enable-modal [name='post_for_enable_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_posts_enable_post') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_for_enable_id: postId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#enable-modal').modal('hide');
+                        toastr.success('Post Successfully Enabled.');
+                        // Reload dataTables
+                        $('#posts-table').DataTable().ajax.reload(null, false);
+                    }
+                });
+            });
+            //important/unimportant
+            $('#posts-table').on('click', "[data-action='unimportant']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#unimportant-modal [name='post_be_unimportant_id']").val(id);
+                $('#unimportant-modal p#post_be_unimportant_name').html(name);
+            });
+            $('#be_unimportant-post').on('submit', function (e) {
+                e.preventDefault();
+                let postId = $("#unimportant-modal [name='post_be_unimportant_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_posts_be_unimportant_post') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_be_unimportant_id: postId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#unimportant-modal').modal('hide');
+                        toastr.success('Post Successfully Change Status to Unimportant.');
+                        // Reload all DataTables
+                        $('#posts-table').DataTable().ajax.reload(null, false);
+                    }
+                });
+            });
+            //be important post
+            $('#posts-table').on('click', "[data-action='important']", function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+
+                $("#important-modal [name='post_be_important_id']").val(id);
+                $('#important-modal p#post_be_important_name').html(name);
+            });
+            $('#be_important-post').on('submit', function (e) {
+                e.preventDefault();
+                let postId = $("#important-modal [name='post_be_important_id']").val(); // take ID from hidden modal input
+
+                $.ajax({
+                    url: "{{ route('admin_posts_be_important_post') }}",
+                    type: "post",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_be_important_id: postId
+                    },
+                    success: function () {
+                        // hide modal
+                        $('#important-modal').modal('hide');
+                        toastr.success('Post Successfully Change Status to Important.');
+                        // Reload all DataTables
+                        $('#posts-table').DataTable().ajax.reload(null, false);
+                    }
+                });
             });
             //delete post
             // Open modal and enter data
