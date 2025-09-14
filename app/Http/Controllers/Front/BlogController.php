@@ -54,7 +54,11 @@ class BlogController extends Controller
 
     public function blogPost($id, $slug)
     {
-        $singlePost = Post::withCount('comments')->where('slug', $slug)->where('id', $id)->firstOrFail();
+        $singlePost = Post::withCount('comments')
+            ->where('slug', $slug)
+            ->where('id', $id)
+            ->where('enable', 1)
+            ->firstOrFail();
         //increment views
         $sessionKey = 'post_' . $singlePost->id . '_viewed';
         if (!session()->has($sessionKey)) {
@@ -63,9 +67,11 @@ class BlogController extends Controller
         }
         $singlePostTags = $singlePost->tags()->get();
         $prevPost = Post::where('id', '<', $singlePost->id)
+            ->where('enable', 1)
             ->orderBy('id', 'desc')
             ->first();
         $nextPost = Post::where('id', '>', $singlePost->id)
+            ->where('enable', 1)
             ->orderBy('id', 'asc')
             ->first();
         $comments = PostComment::where('post_id', $singlePost->id)

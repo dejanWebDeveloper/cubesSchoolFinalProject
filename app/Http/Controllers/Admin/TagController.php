@@ -48,10 +48,16 @@ class TagController extends Controller
         $data = request()->validate([
             'tag_for_delete_id' => ['required', 'integer', 'exists:tags,id']
         ]);
+
         $tag = Tag::findOrFail($data['tag_for_delete_id']);
+
+        // Detach all related posts first
+        $tag->posts()->detach();
         $tag->delete();
+
         return response()->json(['success' => 'Tag Deleted Successfully']);
     }
+
     public function editTag($id, $slug)
     {
         $tagForEdit = Tag::where('slug', $slug)->where('id', $id)->firstOrFail();
