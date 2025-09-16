@@ -7,6 +7,7 @@ use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class AuthorController extends Controller
@@ -65,21 +66,27 @@ class AuthorController extends Controller
     public function savePhoto($photo, $author, $field)
     {
         // Generate unique filename
-        $photoName = $author->id . '_' . $field . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+        $photoName = $author->id . '_' . $field . '_' . uniqid() . '.jpg'; // force jpg
+        $relativePath = 'photo/author/' . $photoName;
 
         // Delete old photo if exists
-        if ($author->$field) {
-            $oldPath = 'photo/author' . $author->$field;
+        if (!empty($author->$field)) {
+            $oldPath = 'photo/author/' . $author->$field;
             if (Storage::disk('public')->exists($oldPath)) {
                 Storage::disk('public')->delete($oldPath);
             }
         }
 
-        // Save new photo to storage
-        $path = $photo->storeAs('photo/author', $photoName, 'public');
+        // Read + crop + resize + encode
+        $image = Image::read($photo)
+            ->cover(256, 256)
+            ->toJpeg(90);
 
-        // Update DB
-        $author->$field = basename($path);
+        // Save new photo to storage
+        Storage::disk('public')->put($relativePath, (string) $image);
+
+        // Update DB (store only filename if you prefer)
+        $author->$field = $photoName;
         $author->save();
     }
 
