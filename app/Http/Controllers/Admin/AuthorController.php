@@ -66,7 +66,7 @@ class AuthorController extends Controller
     public function savePhoto($photo, $author, $field)
     {
         // Generate unique filename
-        $photoName = $author->id . '_' . $field . '_' . uniqid() . '.jpg'; // force jpg
+        $photoName = $author->id . '_' . $field . '_' . Str::uuid();
         $relativePath = 'photo/author/' . $photoName;
 
         // Delete old photo if exists

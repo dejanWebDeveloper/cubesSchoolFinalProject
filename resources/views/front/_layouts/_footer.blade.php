@@ -43,7 +43,7 @@
                     <a href="{{route('blog_post_page', ['id'=>$latestFooterPost->id ,'slug'=>$latestFooterPost->slug])}}">
                         <div class="post d-flex align-items-center">
                             <div class="image">
-                                <img src="{{$latestFooterPost->imageUrl()}}" alt="..." class="img-fluid">
+                                <img src="{{$latestFooterPost->additionalImageUrl()}}" alt="..." class="img-fluid">
                             </div>
                             <div class="title">
                                 <strong>{{$latestFooterPost->heading}}</strong>

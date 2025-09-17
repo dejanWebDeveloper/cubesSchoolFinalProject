@@ -138,20 +138,6 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        <div class="form-group">
-                                            <label>Choose New Photo 2</label>
-                                            <input type="hidden" id="delete_photo2" name="delete_photo2" value="0">
-                                            <input id="photo-input2" name="second-photo" type="file"
-                                                   class="form-control @error('second-photo') is-invalid @enderror"
-                                                   placeholder="Article photo"
-                                                   value="{{old('second-photo', $postForEdit->additional_photo ?? '')}}">
-                                            <div>
-                                                @error('second-photo')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
                                         <div class="form-group">
                                             <label for="post-text" class="form-label">Input Text</label>
                                             <textarea type="text"
@@ -183,24 +169,6 @@
                                                                  src="{{ $postForEdit->imageUrl() }}" alt="Preview"
                                                                  style="padding-top: 10px; max-width: 305px;">
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Photo 2</label>
-                                                    <div class="text-right">
-                                                        <button type="button" onclick="clearImage2()"
-                                                                class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-remove"></i>
-                                                            Delete Photo
-                                                        </button>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <img id="photoPreview2"
-                                                             src="{{ $postForEdit->additionalImageUrl() }}"
-                                                             alt="Preview"
-                                                             style="padding-top: 10px; max-width: 305px;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,28 +216,6 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             });
-
-            document.getElementById('photo-input2').addEventListener('change', function (event) {
-                const input = event.target;
-                const preview2 = document.getElementById('photoPreview2');
-                const deleteField = document.getElementById("delete_photo1");
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        preview2.src = e.target.result;
-                        preview2.style.display = 'block';
-                        deleteField.value = 0;
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            });
-
-            /*function clearImage1() {
-                document.getElementById("photo-input1").value = "";  // reset file input
-                document.getElementById("photoPreview1").src = "#"; // reset src
-                document.getElementById("photoPreview1").style.display = "none"; // sakrij preview
-            }*/
             function clearImage1() {
                 const input = document.getElementById("photo-input1");
                 const preview = document.getElementById("photoPreview1");
@@ -285,28 +231,6 @@
                 // Tell server to delete the existing photo
                 deleteField.value = 1;
             }
-
-            /*function clearImage2() {
-                document.getElementById("photo-input2").value = "";
-                document.getElementById("photoPreview2").src = "#";
-                document.getElementById("photoPreview2").style.display = "none";
-            }*/
-            function clearImage2() {
-                const input = document.getElementById("photo-input2");
-                const preview = document.getElementById("photoPreview2");
-                const deleteField = document.getElementById("delete_photo2");
-
-                // Clear file input
-                input.value = "";
-
-                // Hide preview
-                preview.src = "#";
-                preview.style.display = "none";
-
-                // Tell server to delete the existing photo
-                deleteField.value = 1;
-            }
-
             $(document).ready(function () {
                 $('#select-author').select2({
                     placeholder: "Select Author",

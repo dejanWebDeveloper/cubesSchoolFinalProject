@@ -28,15 +28,12 @@
 </div>
 <div class="post-body">
     <p class="lead"></p>
-    <p>{{$singlePost->text}}</p>
-    <p> <img src="{{$singlePost->additionalImageUrl()}}" alt="..." class="img-fluid"></p>
-    <h3>{{$singlePost->preheading}}</h3>
+    <p>{{$singlePost->preheading}}</p>
     <p>{{$singlePost->text}}</p>
     <blockquote class="blockquote">
-        <p>{{$singlePost->text}}</p>
+        <p>{{$singlePost->preheading}}</p>
         <footer class="blockquote-footer">Someone famous in
             <cite title="Source Title">Source Title</cite>
         </footer>
     </blockquote>
-    <p>{{$singlePost->text}}</p>
 </div>

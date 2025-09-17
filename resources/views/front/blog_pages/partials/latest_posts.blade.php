@@ -7,7 +7,7 @@
         <a href="{{route('blog_post_page', ['id'=>$post->id, 'slug'=>$post->slug])}}">
             <div class="item d-flex align-items-center">
                 <div class="image">
-                    <img src="{{$post->imageUrl()}}" alt="..." class="img-fluid">
+                    <img src="{{$post->additionalImageUrl()}}" alt="..." class="img-fluid">
                 </div>
                 <div class="title"><strong>{{$post->heading}}</strong>
                     <div class="d-flex align-items-center">

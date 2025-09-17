@@ -10,6 +10,7 @@ use App\Models\PostComment;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 
@@ -88,7 +89,6 @@ class PostController extends Controller
             'tags' => ['required', 'array', 'min:2'],
             'tags.*' => ['required', 'numeric', 'exists:tags,id'],
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
-            'second-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
         $data['slug'] = Str::slug($data['heading']);
@@ -107,52 +107,76 @@ class PostController extends Controller
             //helper methode
             $this->savePhoto($photo, $newPost, 'photo');
         }
-        if (request()->hasFile('second-photo')) { //if has file
-            $additionalPhoto = request()->file('second-photo'); //save file to $photo
-            //helper methode
-            $this->savePhoto($additionalPhoto, $newPost, 'additional_photo');
-        }
 
         session()->put('system_message', 'Post Added Successfully');
         return redirect()->route('admin_posts_page');
     }
-
     public function savePhoto($photo, $post, $field)
     {
-        // Generate unique filename
-        $photoName = $post->id . '_' . $field . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
+        // Generate unique filenames
+        $baseName = $post->id . '_' . $field . '_' . Str::uuid();
+        $extension = $photo->getClientOriginalExtension();
 
-        // Delete old photo if exists
+        $photoName = $baseName . '.' . $extension;
+        $photoThumbName = $baseName . '_thumb.' . $extension;
+
+        // Delete old photo + thumb if they exist
         if ($post->$field) {
             $oldPath = 'photo/' . $post->$field;
             if (Storage::disk('public')->exists($oldPath)) {
                 Storage::disk('public')->delete($oldPath);
             }
         }
+        if ($post->additional_photo) {
+            $oldThumbPath = 'photo/' . $post->additional_photo;
+            if (Storage::disk('public')->exists($oldThumbPath)) {
+                Storage::disk('public')->delete($oldThumbPath);
+            }
+        }
 
-        // Save new photo to storage
-        $path = $photo->storeAs('photo', $photoName, 'public');
+        // Save normal photo
+        $photo->storeAs('photo', $photoName, 'public');
 
-        // Update DB
-        $post->$field = basename($path);
+        // Create + save thumbnail
+        $thumbPath = 'photo/' . $photoThumbName;
+        $image = Image::read($photo)
+            ->cover(256, 256)   // crop + resize
+            ->toJpeg(90);       // compress
+        Storage::disk('public')->put($thumbPath, (string) $image);
+
+        // Update DB with relative paths
+        $post->$field = $photoName;
+        $post->additional_photo = $photoThumbName;
         $post->save();
     }
 
     public function deletePhoto($post, $field)
     {
-        if (!$post->$field) return false;
+        if (!$post->$field) {
+            return false;
+        }
 
+        // Delete main photo
         $path = 'photo/' . $post->$field;
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
 
+        // Delete thumbnail if exists
+        if ($post->additional_photo) {
+            $thumbPath = 'photo/' . $post->additional_photo;
+            if (Storage::disk('public')->exists($thumbPath)) {
+                Storage::disk('public')->delete($thumbPath);
+            }
+        }
+
+        // Clear DB fields
         $post->$field = null;
+        $post->additional_photo = null;
         $post->save();
 
         return true;
     }
-
 
     public function deletePost()
     {
@@ -160,12 +184,14 @@ class PostController extends Controller
             'post_for_delete_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
         $post = Post::findOrFail($data['post_for_delete_id']);
-        $post->delete();
-        //delete data from post_tags table
+        // Delete associated photos before removing DB record
+        $this->deletePhoto($post, 'photo');
+        // Detach tags
         $post->tags()->sync([]);
+        // Finally delete the post
+        $post->delete();
         return response()->json(['success' => 'Post Deleted Successfully']);
     }
-
     public function editPost($id, $slug)
     {
         $postForEdit = Post::where('slug', $slug)->where('id', $id)->firstOrFail();
@@ -190,7 +216,6 @@ class PostController extends Controller
             'tags' => ['required', 'array', 'min:2'],
             'tags.*' => ['required', 'numeric', 'exists:tags,id'],
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
-            'second-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
         $data['slug'] = Str::slug($data['heading']);
@@ -208,21 +233,10 @@ class PostController extends Controller
             $this->savePhoto($request->file('first-photo'), $postForEdit, 'photo');
         }
 
-        if ($request->hasFile('second-photo')) {
-            $this->deletePhoto($postForEdit, 'additional_photo');
-            $this->savePhoto($request->file('second-photo'), $postForEdit, 'additional_photo');
-        }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
             if ($postForEdit->photo) {
                 Storage::disk('public')->delete('photo/' . $postForEdit->photo);
                 $postForEdit->photo = null;
-                $postForEdit->save();
-            }
-        }
-        if ($request->has('delete_photo2') && $request->delete_photo2) {
-            if ($postForEdit->additional_photo) {
-                Storage::disk('public')->delete('photo/' . $postForEdit->additional_photo);
-                $postForEdit->additional_photo = null;
                 $postForEdit->save();
             }
         }
