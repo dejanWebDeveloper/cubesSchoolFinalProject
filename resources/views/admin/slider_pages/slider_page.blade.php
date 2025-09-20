@@ -1,6 +1,8 @@
 @push('head_link')
     <!--css link za dataTable plugin-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.4.1/css/rowReorder.dataTables.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
           integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -38,9 +40,11 @@
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th class="text-center">Background</th>
-                                    <th>Heading</th>
-                                    <th>Url</th>
-                                    <th>Button Name</th>
+                                    <th class="text-center">Heading</th>
+                                    <th class="text-center">Url</th>
+                                    <th class="text-center">Button Name</th>
+                                    <th class="text-center">Position</th>
+                                    <th class="text-center">Status</th>
                                     <th class="text-center">Created At</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -155,7 +159,11 @@
     <!-- /.modal -->
 @endsection
 @push('footer_script')
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-/xUj+3OJ+Y1WZjhoVQbtELJ2x3coVh+IkT6XZz3j4Ek="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.4.1/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script type="text/javascript"
@@ -166,28 +174,59 @@
     <script>
         $(document).ready(function () {
             //plugin za data tables
-            $('#sliders-table').DataTable({
+            let table = $('#sliders-table').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: {
                     url: "{{ route('admin_sliders_datatable') }}",
-                    type: "post",
+                    type: "POST",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
                     }
                 },
-                order: [[5, "desc"]],
+                rowReorder: {
+                    dataSrc: 'position' // use column position for reorder
+                },
                 columns: [
                     {data: "id", name: "id"},
-                    {data: "background", name: "Background", orderable: false, searchable: false},
-                    {data: "heading", name: "Heading"},
-                    {data: "url", name: "URL", orderable: false, searchable: false},
-                    {data: "button_name", name: "Button Name", orderable: false, searchable: false},
-                    {data: "created_at", name: "Created_at", searchable: false},
-                    {data: "actions", name: "Actions", orderable: false, searchable: false}
+                    {data: "background", orderable: false, searchable: false, className: 'text-center'},
+                    {data: "heading", name: "heading", className: 'text-center'},
+                    {data: "url", orderable: false, searchable: false, className: 'text-center'},
+                    {data: "button_name", orderable: false, searchable: false, className: 'text-center'},
+                    {data: "position", name: "position", searchable: false, visible:false}, // hiden
+                    {data: "status", name:"status", orderable: false, searchable: false, className: 'text-center'},
+                    {data: "created_at", searchable: false, className: 'text-center'},
+                    {data: "actions", orderable: false, searchable: false, className: 'text-center'}
                 ],
                 pageLength: 5,
                 lengthMenu: [5, 10, 20]
+            });
+
+            // Create new order
+            table.on('row-reorder', function (e, diff) {
+                if (!diff.length) return; // if isn't reorder
+
+                let order = [];
+                for (let i = 0; i < diff.length; i++) {
+                    order.push({
+                        id: $(diff[i].node).attr('id'),   // <tr id="...">
+                        position: diff[i].newData         // nova pozicija
+                    });
+                }
+
+                // Send new position to server
+                $.ajax({
+                    url: "{{ route('admin_sliders_slider_sort') }}",
+                    method: "POST",
+                    data: {
+                        order: order,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (res) {
+                        console.log('New order saved:', res);
+                        table.ajax.reload(null, false); // refresh DataTable
+                    }
+                });
             });
             //disable slider
             $('#sliders-table').on('click', "[data-action='disable']", function () {
@@ -209,11 +248,9 @@
                         slider_for_disable_id: sliderId
                     },
                     success: function () {
-                        // hide modal
                         $('#disable-modal').modal('hide');
                         toastr.success('Slider Successfully Disabled.');
-                        // Reload all DataTables
-                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                        table.ajax.reload(null, false);
                     }
                 });
             });
@@ -237,12 +274,11 @@
                         slider_for_enable_id: sliderId
                     },
                     success: function () {
-                        // hide modal
                         $('#enable-modal').modal('hide');
                         toastr.success('Slider Successfully Enabled.');
-                        // Reload dataTables
-                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                        table.ajax.reload(null, false);
                     }
+
                 });
             });
             //delete slider
@@ -268,12 +304,11 @@
                         slider_for_delete_id: sliderId
                     },
                     success: function () {
-                        // hide modal
                         $('#delete-modal').modal('hide');
                         toastr.success('Slider Successfully Deleted.');
-                        // Reload DataTables
-                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                        table.ajax.reload(null, false);
                     }
+
                 });
             });
         });

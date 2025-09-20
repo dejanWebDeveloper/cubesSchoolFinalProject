@@ -22,6 +22,8 @@ class SliderDataSeeder extends Seeder
                 'heading' => $heading,
                 'slug' => Str::slug($heading),
                 'button_name' => 'FIND OUT MORE',
+                'position' => $i,
+                'status' => 1,
                 'url' => 'https://www.php.net/',
                 'created_at' => now()]);
         }

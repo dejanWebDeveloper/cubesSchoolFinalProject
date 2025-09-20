@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
 use App\Models\SliderData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,19 +25,32 @@ class IndexController extends Controller
     }
     public function datatable(Request $request)
     {
-        $query = SliderData::query();
+        //$query = SliderData::query();
+        $query = SliderData::select(['id', 'heading', 'slug', 'background', 'url', 'button_name', 'status', 'position', 'created_at'])
+            ->orderBy('position', 'asc');
+
 
         return DataTables::of($query)
-            ->addColumn('background', fn($row) => "<img src='" . e($row->sliderImageUrl()) . "' width='100' class='img-rounded' />"
+            ->addColumn('background', fn($row) =>
+                "<img src='" . e($row->sliderImageUrl()) . "' width='100' class='img-rounded' />"
             )
             ->addColumn('heading', fn($row) => $row->heading)
             ->addColumn('url', fn($row) => $row->url)
             ->addColumn('button_name', fn($row) => $row->button_name)
-            ->editColumn('created_at', fn($row) => $row->created_at?->format('d/m/Y H:i:s'))
-            ->addColumn('actions', fn($row) => view('admin.slider_pages.partials.actions', compact('row'))
+            ->addColumn('position', fn($row) => $row->position) // ovo RowReorder koristi
+            ->addColumn('status', fn($row) => $row->status
+                ? '<span class="badge badge-success">Enabled</span>'
+                : '<span class="badge badge-danger">Disabled</span>')
+            ->editColumn('created_at', fn($row) =>
+            $row->created_at?->format('d/m/Y H:i:s')
             )
-            ->rawColumns(['background', 'actions'])
+            ->addColumn('actions', fn($row) =>
+            view('admin.slider_pages.partials.actions', compact('row'))
+            )
+            ->rawColumns(['background', 'actions', 'status'])
+            ->setRowId('id') // <tr id="5">
             ->toJson();
+
     }
     public function storeSlider()
     {
@@ -49,6 +61,8 @@ class IndexController extends Controller
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
         $data['slug'] = Str::slug($data['heading']);
+        $data['position'] = 1;
+        $data['status'] = 1;
         $data['created_at'] = now();
         $newSlider = new SliderData();
         $newSlider->fill($data)->save();
@@ -103,6 +117,7 @@ class IndexController extends Controller
             'slider_for_delete_id' => ['required', 'numeric', 'exists:slider_data,id'],
         ]);
         $slider = SliderData::findOrFail($data['slider_for_delete_id']);
+        $this->deletePhoto($slider, 'background');
         $slider->delete();
         //delete data from post_tags table
         return response()->json(['success' => 'Slider Deleted Successfully']);
@@ -123,6 +138,8 @@ class IndexController extends Controller
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
         $data['slug'] = Str::slug($data['heading']);
+        $data['status'] = $sliderForEdit->status;
+        $data['position'] = $sliderForEdit->position;
         $data['updated_at'] = now();
         $sliderForEdit->fill($data)->save();
         //saving photo
@@ -132,16 +149,11 @@ class IndexController extends Controller
         }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
             $this->deletePhoto($sliderForEdit, 'background');
-            /*if ($authorForEdit->profile_photo) {
-                Storage::disk('public')->delete('photo/author' . $authorForEdit->profile_photo);
-                $authorForEdit->profile_photo = null;
-                $authorForEdit->save();
-            }*/
         }
         session()->put('system_message', 'Slider Data Edited Successfully');
         return redirect()->route('admin_sliders_page');
     }
-    public function disableUser()
+    public function disableSlider()
     {
         $data = request()->validate([
             'slider_for_disable_id' => ['required', 'numeric', 'exists:slider_data,id'],
@@ -151,7 +163,7 @@ class IndexController extends Controller
         $slider->save();
         return response()->json(['success' => 'Slider Disabled Successfully']);
     }
-    public function enableUser()
+    public function enableSlider()
     {
         $data = request()->validate([
             'slider_for_enable_id' => ['required', 'numeric', 'exists:slider_data,id'],
@@ -161,4 +173,18 @@ class IndexController extends Controller
         $slider->save();
         return response()->json(['success' => 'Slider Enabled Successfully']);
     }
+
+    public function sort(Request $request)
+    {
+        foreach ($request->order as $item) {
+            SliderData::where('id', $item['id'])
+                ->update(['position' => $item['position']]);
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
+
+
+
 }

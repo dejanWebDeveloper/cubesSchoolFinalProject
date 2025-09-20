@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $sliderData = SliderData::where('status', 1)->get();
+        $sliderData = SliderData::where('status', 1)->orderBy('position', 'asc')->get();
         $importantPosts = Post::standardRequest()
             ->withCount('comments')
             ->where('important', 1)

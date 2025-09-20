@@ -11,7 +11,9 @@ class SliderData extends Model
         'heading',
         'slug',
         'button_name',
-        'url'
+        'url',
+        'status',
+        'position'
     ];
     public function sliderImageUrl()
     {
