@@ -110,8 +110,9 @@ class AuthorController extends Controller
             'author_for_delete_id' => ['required', 'numeric', 'exists:authors,id'],
         ]);
         $author = Author::findOrFail($data['author_for_delete_id']);
+        $this->deletePhoto($author, 'profile_photo');
         $author->delete();
-        //delete data from post_tags table
+
         return response()->json(['success' => 'Author Deleted Successfully']);
     }
     public function editAuthor($id, $slug)

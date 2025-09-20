@@ -51,7 +51,8 @@ class AppServiceProvider extends ServiceProvider
         }
         if (Schema::hasTable('categories')) {
             $allCategoriesForBlogPartial = Category::withCount(['posts' => function ($query) {
-                $query->orderBy('priority', 'asc');
+                $query->orderBy('priority', 'asc')
+                ->where('enable', 1);
             }])->get();
             view()->share(compact('allCategoriesForBlogPartial'));
         }

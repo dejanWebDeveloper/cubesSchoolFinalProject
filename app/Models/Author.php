@@ -21,4 +21,18 @@ class Author extends Model
         // Default photo
         return asset('themes/front/img/avatar-1.jpg');
     }
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($author) {
+            // delete all posts of author
+            $author->posts()->delete();
+        });
+    }
+
 }

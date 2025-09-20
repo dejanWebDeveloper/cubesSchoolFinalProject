@@ -54,8 +54,9 @@ class BlogController extends Controller
 
     public function blogPost($id, $slug)
     {
-        $singlePost = Post::withCount('comments')
-            ->where('slug', $slug)
+        $singlePost = Post::withCount(['comments'=>function ($query) {
+            $query->where('enable', 1);
+        }])->where('slug', $slug)
             ->where('id', $id)
             ->where('enable', 1)
             ->firstOrFail();

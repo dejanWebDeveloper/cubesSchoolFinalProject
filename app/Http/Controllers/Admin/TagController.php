@@ -57,23 +57,4 @@ class TagController extends Controller
 
         return response()->json(['success' => 'Tag Deleted Successfully']);
     }
-
-    public function editTag($id, $slug)
-    {
-        $tagForEdit = Tag::where('slug', $slug)->where('id', $id)->firstOrFail();
-        return view('admin.tag_pages.edit_tag_page', compact(
-            'tagForEdit'
-        ));
-    }
-    public function storeEditedTag(Tag $tagForEdit)
-    {
-        $data = request()->validate([
-            'name' => ['required', 'string', 'between:5,30']
-        ]);
-        $data['slug'] = Str::slug($data['name']);
-        $data['updated_at'] = now();
-        $tagForEdit->fill($data)->save();
-        session()->put('system_message', 'Tag Edited Successfully');
-        return redirect()->route('admin_tags_page');
-    }
 }
