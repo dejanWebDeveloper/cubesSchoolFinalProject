@@ -29,7 +29,7 @@
 <div class="post-body">
     <p class="lead"></p>
     <p>{{$singlePost->preheading}}</p>
-    <p>{{$singlePost->text}}</p>
+    <p>{!! $singlePost->text !!}</p>
     <blockquote class="blockquote">
         <p>{{$singlePost->preheading}}</p>
         <footer class="blockquote-footer">Someone famous in

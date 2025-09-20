@@ -62,10 +62,12 @@ class PostController extends Controller
             ->addColumn('photo', fn($row) => "<img src='" . e($row->imageUrl()) . "' width='100' class='img-rounded' />"
             )
             ->addColumn('heading', fn($row) => $row->heading)
-            ->editColumn('enable', fn($row) => $row->enable ? 'Active' : 'Disable')
+            ->editColumn('enable', fn($row) => $row->enable
+                ? '<span class="badge badge-success">Yes</span>'
+                : '<span class="badge badge-danger">No</span>')
             ->editColumn('important', fn($row) => $row->important
-                ? 'Yes'
-                : 'No'
+                ? '<span class="badge badge-success">Yes</span>'
+                : '<span class="badge badge-danger">No</span>'
             )
             ->addColumn('category', fn($row) => $row->category?->name)
             ->addColumn('comments', fn($row) => $row->comments_count)
@@ -75,7 +77,7 @@ class PostController extends Controller
             )
             ->addColumn('actions', fn($row) => view('admin.post_pages.partials.actions', compact('row'))
             )
-            ->rawColumns(['photo', 'actions', 'important'])
+            ->rawColumns(['photo', 'actions', 'important', 'enable'])
             ->toJson();
     }
 
@@ -95,7 +97,8 @@ class PostController extends Controller
         $data['enable'] = 1;
         $data['important'] = 0;
         $data['created_at'] = now();
-        $data['text'] = strip_tags($data['text']);
+        //comment this because upload picture with ckEDITOR can't work
+        //$data['text'] = strip_tags($data['text']);
         $newPost = new Post();
         $newPost->fill($data)->save();
         //table tags
@@ -222,7 +225,8 @@ class PostController extends Controller
         $data['enable'] = 1;
         $data['important'] = 0;
         $data['created_at'] = now();
-        $data['text'] = strip_tags($data['text']);
+        //comment this because upload picture with ckEDITOR can't work
+        //$data['text'] = strip_tags($data['text']);
         $postForEdit->fill($data)->save();
         //table tags
         $postForEdit->tags()->sync($data['tags']);
@@ -301,8 +305,8 @@ class PostController extends Controller
             ->addColumn('post', fn($row) => $row->post->heading)
             ->addColumn('post_id', fn($row) => $row->post_id)
             ->editColumn('enable', fn($row) => $row->enable
-                ? '<span class="badge badge-success">Enabled</span>'
-                : '<span class="badge badge-danger">Disabled</span>')
+                ? '<span class="badge badge-success">Yes</span>'
+                : '<span class="badge badge-danger">No</span>')
             ->editColumn('created_at', fn($row) => $row->created_at?->format('d/m/Y H:i:s'))
             ->addColumn('actions', fn($row) => view('admin.comment_pages.partials.actions', compact('row'))
             )
