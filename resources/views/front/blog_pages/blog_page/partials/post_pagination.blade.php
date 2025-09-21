@@ -1,3 +1,3 @@
-<div class="mt-4 flex justify-center">
-    {{ $blogPosts->withQueryString()->links() }}
-</div>
+<nav aria-label="Page navigation example">
+    {{ $blogPosts->withQueryString()->links('pagination::bootstrap-4') }}
+</nav>
