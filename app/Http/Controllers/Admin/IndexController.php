@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\PostComment;
 use App\Models\SliderData;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -13,7 +19,20 @@ class IndexController extends Controller
 {
     public function index()
     {
-        return view('admin.index_page.index_page');
+        $numberOfPosts = Post::count();
+        $numberOfCategories = Category::count();
+        $numberOfTags = Tag::count();
+        $numberOfUsers = User::count();
+        $numberOfAuthors = Author::count();
+        $numberOfComments = PostComment::count();
+        return view('admin.index_page.index_page', compact(
+            'numberOfPosts',
+            'numberOfCategories',
+            'numberOfTags',
+            'numberOfUsers',
+            'numberOfAuthors',
+            'numberOfComments'
+        ));
     }
     public function sliderHomepage()
     {
