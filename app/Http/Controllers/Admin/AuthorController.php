@@ -94,7 +94,7 @@ class AuthorController extends Controller
     {
         if (!$author->$field) return false;
 
-        $path = 'photo/author' . $author->$field;
+        $path = 'photo/author/' . $author->$field;
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
@@ -125,25 +125,21 @@ class AuthorController extends Controller
     public function storeEditedAuthor(Author $authorForEdit, Request $request)
     {
         $data = request()->validate([
-            'name' => ['required', 'string', 'min:20', 'max:255'],
+            'name' => ['required', 'string', 'min:5', 'max:50'],
             'email' => ['required', 'email'],
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
         $data['slug'] = Str::slug($data['name']);
         $data['updated_at'] = now();
+
         $authorForEdit->fill($data)->save();
-        //saving photo
+        //saving photo and delete old photo
         if ($request->hasFile('first-photo')) {
             $this->deletePhoto($authorForEdit, 'profile_photo');
             $this->savePhoto($request->file('first-photo'), $authorForEdit, 'profile_photo');
         }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
             $this->deletePhoto($authorForEdit, 'profile_photo');
-            /*if ($authorForEdit->profile_photo) {
-                Storage::disk('public')->delete('photo/author' . $authorForEdit->profile_photo);
-                $authorForEdit->profile_photo = null;
-                $authorForEdit->save();
-            }*/
         }
         session()->put('system_message', 'Authors data Edited Successfully');
         return redirect()->route('admin_authors_page');
