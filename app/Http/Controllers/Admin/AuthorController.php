@@ -23,7 +23,7 @@ class AuthorController extends Controller
     public function datatable(Request $request)
     {
         $query = Author::query();
-
+        //search entry on the page
         if ($request->name) {
             $query->where('name', 'like', "%{$request->name}%");
         }
@@ -49,7 +49,13 @@ class AuthorController extends Controller
             'email' => ['required', 'email', 'unique:authors,email'],
             'first-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['name']);
+        $slug = Str::slug($data['name']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Author::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['created_at'] = now();
         $newAuthor = new Author();
         $newAuthor->fill($data)->save();
@@ -62,13 +68,11 @@ class AuthorController extends Controller
         session()->put('system_message', 'Author Added Successfully');
         return redirect()->route('admin_authors_page');
     }
-
     public function savePhoto($photo, $author, $field)
     {
         // Generate unique filename
         $photoName = $author->id . '_' . $field . '_' . Str::uuid();
         $relativePath = 'photo/author/' . $photoName;
-
         // Delete old photo if exists
         if (!empty($author->$field)) {
             $oldPath = 'photo/author/' . $author->$field;
@@ -76,32 +80,25 @@ class AuthorController extends Controller
                 Storage::disk('public')->delete($oldPath);
             }
         }
-
         // Read + crop + resize + encode
         $image = Image::read($photo)
             ->cover(256, 256)
             ->toJpeg(90);
-
         // Save new photo to storage
         Storage::disk('public')->put($relativePath, (string) $image);
-
         // Update DB (store only filename if you prefer)
         $author->$field = $photoName;
         $author->save();
     }
-
     public function deletePhoto($author, $field)
     {
         if (!$author->$field) return false;
-
         $path = 'photo/author/' . $author->$field;
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
-
         $author->$field = null;
         $author->save();
-
         return true;
     }
     public function deleteAuthor()
@@ -124,12 +121,18 @@ class AuthorController extends Controller
     }
     public function storeEditedAuthor(Author $authorForEdit, Request $request)
     {
-        $data = request()->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'min:5', 'max:50'],
             'email' => ['required', 'email'],
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['name']);
+        $slug = Str::slug($data['name']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Author::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['updated_at'] = now();
 
         $authorForEdit->fill($data)->save();

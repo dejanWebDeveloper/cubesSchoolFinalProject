@@ -21,7 +21,7 @@
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
-                                <p>{{ $importantPost->text }}</p>
+                                <p>{{ $importantPost->preheading }}</p>
                                 <footer class="post-footer d-flex align-items-center">
                                     <a href="{{route('blog_author_page', ['id'=>$importantPost->author->id, 'slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
@@ -65,7 +65,7 @@
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
-                                <p>{{ $importantPost->text }}</p>
+                                <p>{{ $importantPost->preheading }}</p>
                                 <footer class="post-footer d-flex align-items-center">
                                     <a href="{{route('blog_author_page', ['id'=>$importantPost->author->id, 'slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">
@@ -103,7 +103,7 @@
                                         <h2 class="h4">{{ $importantPost->heading }}</h2>
                                     </a>
                                 </header>
-                                <p>{{ $importantPost->text }}</p>
+                                <p>{{ $importantPost->preheading }}</p>
                                 <footer class="post-footer d-flex align-items-center">
                                     <a href="{{route('blog_author_page', ['id'=>$importantPost->author->id, 'slug'=>$importantPost->author->slug])}}" class="author d-flex align-items-center flex-wrap">
                                         <div class="avatar">

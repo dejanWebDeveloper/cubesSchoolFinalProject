@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         @if(session()->has('system_message'))
-                            <div class="alert alert-success" role="alert">
+                            <div id="system-message" class="alert alert-success" role="alert">
                                 {{session()->pull('system_message')}}
                             </div>
                         @endif
@@ -311,6 +311,17 @@
 
                 });
             });
+        });
+        //system-message disappear after 2s
+        document.addEventListener('DOMContentLoaded', function () {
+            const msg = document.getElementById('system-message');
+            if(msg){
+                setTimeout(() => {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = 0;
+                    setTimeout(() => msg.remove(), 500); // uklanja iz DOM-a nakon fade out
+                }, 2000);
+            }
         });
     </script>
 @endpush

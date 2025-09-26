@@ -53,7 +53,7 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             @if(session()->has('system_message'))
-                                <div class="alert alert-success" role="alert">
+                                <div id="system-message" class="alert alert-success" role="alert">
                                     {{session()->pull('system_message')}}
                                 </div>
                             @endif
@@ -126,7 +126,7 @@
                             <table id="posts-table" class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
+                                    <th class="text-center">#</th>
                                     <th class="text-center">Photo</th>
                                     <th style="width: 20%;">Heading</th>
                                     <th class="text-center">Enable</th>
@@ -361,17 +361,17 @@
                 },
                 order: [[9, "desc"]],
                 columns: [
-                    {data: "id", name: "id"},
-                    {data: "photo", name: "Photo", orderable: false, searchable: false},
+                    {data: "id", name: "id", className: 'text-center'},
+                    {data: "photo", name: "Photo", orderable: false, searchable: false, className: 'text-center'},
                     {data: "heading", name: "Heading"},
-                    {data: "enable", name: "Enable", orderable: false},
-                    {data: "important", name: "Important", orderable: false},
-                    {data: "category", name: "Category"},
-                    {data: "comments", name: "Comments", searchable: false},
-                    {data: "views", name: "Views", searchable: false},
-                    {data: "author", name: "Author"},
-                    {data: "created_at", name: "Created_at", searchable: false},
-                    {data: "actions", name: "Actions", orderable: false, searchable: false}
+                    {data: "enable", name: "Enable", orderable: false, className: 'text-center'},
+                    {data: "important", name: "Important", orderable: false, className: 'text-center'},
+                    {data: "category", name: "Category", className: 'text-center'},
+                    {data: "comments", name: "Comments", searchable: false, className: 'text-center'},
+                    {data: "views", name: "Views", searchable: false, className: 'text-center'},
+                    {data: "author", name: "Author", className: 'text-center'},
+                    {data: "created_at", name: "Created_at", searchable: false, className: 'text-center'},
+                    {data: "actions", name: "Actions", orderable: false, searchable: false, className: 'text-center'}
                 ],
                 pageLength: 15,
                 lengthMenu: [5, 10, 15, 40, 100]
@@ -526,6 +526,17 @@
                     }
                 });
             });
+        });
+        //system-message disappear after 2s
+        document.addEventListener('DOMContentLoaded', function () {
+            const msg = document.getElementById('system-message');
+            if(msg){
+                setTimeout(() => {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = 0;
+                    setTimeout(() => msg.remove(), 500); // uklanja iz DOM-a nakon fade out
+                }, 2000);
+            }
         });
     </script>
 @endpush

@@ -93,12 +93,17 @@ class PostController extends Controller
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['heading']);
+        $slug = Str::slug($data['heading']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['enable'] = 1;
         $data['important'] = 0;
         $data['created_at'] = now();
-        //comment this because upload picture with ckEDITOR can't work
-        //$data['text'] = strip_tags($data['text']);
+        $data['text'] = strip_tags($data['text'], '<img>');
         $newPost = new Post();
         $newPost->fill($data)->save();
         //table tags
@@ -221,12 +226,17 @@ class PostController extends Controller
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['heading']);
+        $slug = Str::slug($data['heading']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['enable'] = 1;
         $data['important'] = 0;
         $data['created_at'] = now();
-        //comment this because upload picture with ckEDITOR can't work
-        //$data['text'] = strip_tags($data['text']);
+        $data['text'] = strip_tags($data['text'], '<img>');
         $postForEdit->fill($data)->save();
         //table tags
         $postForEdit->tags()->sync($data['tags']);

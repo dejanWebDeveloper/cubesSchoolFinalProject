@@ -21,7 +21,7 @@
                 </div>
                 <a href="{{route('blog_post_page', ['id'=>$tagPost->id, 'slug'=>$tagPost->slug])}}">
                     <h3 class="h4">{{$tagPost->heading}}</h3></a>
-                <p class="text-muted">{{$tagPost->text}}</p>
+                <p class="text-muted">{{$tagPost->preheading}}</p>
                 <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['id'=>$tagPost->author->id, 'slug'=>$tagPost->author->slug])}}"
                                                                          class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{$tagPost->author->authorImageUrl()}}" alt="..." class="img-fluid">

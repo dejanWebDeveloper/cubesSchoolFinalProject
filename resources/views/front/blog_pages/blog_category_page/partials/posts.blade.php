@@ -21,7 +21,7 @@
                 </div>
                 <a href="{{route('blog_post_page', ['id'=>$categoryPost->id, 'slug'=>$categoryPost->slug])}}">
                     <h3 class="h4">{{$categoryPost->heading}}</h3></a>
-                <p class="text-muted">{{$categoryPost->text}}</p>
+                <p class="text-muted">{{$categoryPost->preheading}}</p>
                 <footer class="post-footer d-flex align-items-center"><a href="{{route('blog_author_page', ['id'=>$categoryPost->author->id, 'slug'=>$categoryPost->author->slug])}}"
                                                                          class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{$categoryPost->author->authorImageUrl()}}" alt="..." class="img-fluid">

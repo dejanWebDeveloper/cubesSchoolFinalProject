@@ -121,11 +121,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Choose New Photo</label>
-                                            <input id="photo-input1" name="first-photo" type="file"
-                                                   class="form-control @error('first-photo') is-invalid @enderror"
-                                                   placeholder="User photo" value="{{old('first-photo')}}">
+                                            <input id="photo-input1" name="profile_photo" type="file"
+                                                   class="form-control @error('profile_photo') is-invalid @enderror"
+                                                   placeholder="User photo" value="{{old('profile_photo')}}">
                                             <div>
-                                                @error('first-photo')
+                                                @error('profile_photo')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>

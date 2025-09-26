@@ -33,7 +33,7 @@ class TagController extends Controller
     public function storeTag()
     {
         $data = request()->validate([
-            'name' => ['required', 'string', 'between:5,30']
+            'name' => ['required', 'string', 'between:5,30', 'unique:tags,name']
         ]);
         $data['slug'] = Str::slug($data['name']);
         $data['created_at'] = now();

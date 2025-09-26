@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -31,7 +30,7 @@ class UserController extends Controller
     public function datatable(Request $request)
     {
         $query = User::query();
-
+        //search entry on the page
         if ($request->name) {
             $query->where('name', 'like', "%{$request->name}%");
         }
@@ -44,7 +43,6 @@ class UserController extends Controller
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-
         return DataTables::of($query)
             ->editColumn('status', fn($row) => $row->status
                 ? '<span class="badge badge-success">Enabled</span>'
@@ -66,7 +64,7 @@ class UserController extends Controller
             'email' => ['required', 'email', 'unique:users,email'],
             'phone' => ['required', 'string', 'max:20'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'first-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
+            'profile_photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
         $data['password'] = Hash::make($data['password']);
         $data['status'] = 1;
@@ -74,48 +72,46 @@ class UserController extends Controller
         $newUser = new User();
         $newUser->fill($data)->save();
         //saving photo
-        if (request()->hasFile('first-photo')) { //if has file
-            $photo = request()->file('first-photo'); //save file to $photo
+        if (request()->hasFile('profile_photo')) { //if has file
+            $photo = request()->file('profile_photo'); //save file to $photo
             //helper methode
             $this->savePhoto($photo, $newUser, 'profile_photo');
         }
         session()->put('system_message', 'User Added Successfully');
         return redirect()->route('admin_users_page');
     }
-
     public function savePhoto($photo, $user, $field)
     {
         // Generate unique filename
-        $photoName = $user->id . '_' . $field . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-
+        $photoName = $user->id . '_' . $field . '_' . Str::uuid();
+        $relativePath = 'photo/user/' . $photoName;
         // Delete old photo if exists
-        if ($user->$field) {
-            $oldPath = 'photo/user' . $user->$field;
+        if (!empty($user->$field)) {
+            $oldPath = 'photo/user/' . $user->$field;
             if (Storage::disk('public')->exists($oldPath)) {
                 Storage::disk('public')->delete($oldPath);
             }
         }
-
+        // Read + crop + resize + encode
+        $image = Image::read($photo)
+            ->cover(256, 256)
+            ->toJpeg(90);
         // Save new photo to storage
-        $path = $photo->storeAs('photo/user', $photoName, 'public');
-
-        // Update DB
-        $user->$field = basename($path);
+        Storage::disk('public')->put($relativePath, (string) $image);
+        // Update DB (store only filename if you prefer)
+        $user->$field = $photoName;
         $user->save();
     }
 
     public function deletePhoto($user, $field)
     {
         if (!$user->$field) return false;
-
-        $path = 'photo/user' . $user->$field;
+        $path = 'photo/user/' . $user->$field;
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
-
         $user->$field = null;
         $user->save();
-
         return true;
     }
     public function editUser()
@@ -128,33 +124,28 @@ class UserController extends Controller
     }
     public function storeEditedUser(Request $request)
     {
-        $data = request()->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'min:5', 'max:50'],
             'phone' => ['required', 'string', 'max:20'],
-            'first-photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
+            'profile_photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
         $data['updated_at'] = now();
         $userForEdit = Auth::user();
         $userForEdit->fill($data)->save();
         //saving photo
-        if ($request->hasFile('first-photo')) {
+        if ($request->hasFile('profile_photo')) {
             $this->deletePhoto($userForEdit, 'profile_photo');
-            $this->savePhoto($request->file('first-photo'), $userForEdit, 'profile_photo');
+            $this->savePhoto($request->file('profile_photo'), $userForEdit, 'profile_photo');
         }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
             $this->deletePhoto($userForEdit, 'profile_photo');
-            if ($userForEdit->profile_photo) {
-                Storage::disk('public')->delete('photo/user' . $userForEdit->profile_photo);
-                $userForEdit->profile_photo = null;
-                $userForEdit->save();
-            }
         }
         session()->put('system_message', 'User Data Edited Successfully');
         return redirect()->route('admin_users_page');
     }
     public function storeEditedUserPassword(Request $request)
     {
-        $data = request()->validate([
+        $data = $request->validate([
             'old_password' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);

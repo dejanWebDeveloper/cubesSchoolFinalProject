@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -40,15 +38,15 @@ class CategoryController extends Controller
             ->rawColumns(['actions'])
             ->toJson();
     }
-    public function storeCategory()
+    public function storeCategory(Request $request)
     {
-        $data = request()->validate([
-            'name' => ['required', 'string', 'between:5,50'],
+        $data = $request->validate([
+            'name' => ['required', 'string', 'between:5,50', 'unique:categories,name'],
             'description' => ['required', 'string', 'between:15,100'],
             'priority' => ['nullable', 'integer', 'between:1,10']
         ]);
         $data['slug'] = Str::slug($data['name']);
-        $lastCategory = Category::orderByDesc('priority')->firstOrFail();
+        $lastCategory = Category::orderByDesc('priority')->first();
         if (!$data['priority']){
             $data['priority'] = $lastCategory->priority + 1;
         }else{
@@ -58,21 +56,17 @@ class CategoryController extends Controller
                 ->orderByDesc('priority')
                 ->get();
             if (in_array($data['priority'], $categoryPriorities)){
-
                 foreach ($incrementCategories as $incrementCategory){
                     $incrementCategory->priority += 1;
                     $incrementCategory->save();
                 }
-
-            }else{
+            }/*else{
                 $data['priority'] = $lastCategory->priority + 1;
-            }
-
+            }*/
         }
         $data['created_at'] = now();
         $newCategory = new Category();
         $newCategory->fill($data)->save();
-
         session()->put('system_message', 'Category Added Successfully');
         return redirect()->route('admin_categories_page');
     }

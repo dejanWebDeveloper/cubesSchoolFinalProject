@@ -27,6 +27,7 @@
                     </div>
                     <a href="{{route('blog_post_page', ['id'=>$post->id, 'slug'=>$post->slug])}}">
                         <h3 class="h4">{!! $highlight($post->heading, $query) !!}</h3></a>
+                    <p class="text-muted">{!! $highlight($post->preheading, $query) !!}</p>
                     <p class="text-muted">{!! $highlight(Str::limit($post->text, 120), $query) !!}</p>
                     <footer class="post-footer d-flex align-items-center">
                         <a href="{{route('blog_author_page', ['id'=>$post->author->id, 'slug'=>$post->author->slug])}}" class="author d-flex align-items-center flex-wrap">

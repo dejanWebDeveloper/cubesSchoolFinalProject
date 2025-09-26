@@ -28,7 +28,7 @@
                         <a href="{{route('blog_post_page', ['id'=>$latestPostSlider->id, 'slug'=>$latestPostSlider->slug])}}">
                             <h3 class="h4">{{ $latestPostSlider->heading }}</h3>
                         </a>
-                        <p class="text-muted">{{ $latestPostSlider->text }}</p>
+                        <p class="text-muted">{{ $latestPostSlider->preheading }}</p>
                     </div>
                 </div>
             @endforeach

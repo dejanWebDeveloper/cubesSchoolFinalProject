@@ -84,10 +84,10 @@
                                             <label>Choose New Photo</label>
                                             <input type="hidden" id="delete_photo1" name="delete_photo1" value="0">
                                             <input id="photo-input1"
-                                                   name="first-photo"
+                                                   name="profile_photo"
                                                    type="file"
-                                                   class="form-control @error('first-photo') is-invalid @enderror">
-                                            @error('first-photo')
+                                                   class="form-control @error('profile_photo') is-invalid @enderror">
+                                            @error('profile_photo')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -152,7 +152,7 @@
                 reader.onload = function (e) {
                     preview1.src = e.target.result;
                     preview1.style.display = 'block';
-                    deleteField.value = 1;
+                    deleteField.value = 0;
                 }
                 reader.readAsDataURL(input.files[0]);
             }

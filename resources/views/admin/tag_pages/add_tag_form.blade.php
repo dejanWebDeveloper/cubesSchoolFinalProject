@@ -37,7 +37,7 @@
                                         <div class="form-group">
                                             <label>Name</label>
                                             <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                                   placeholder="Name of Tag" value="{{old('name')}}">
+                                                   placeholder="Enter Name" value="{{old('name')}}">
                                             <div>
                                                 @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>

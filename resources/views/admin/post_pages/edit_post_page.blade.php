@@ -50,7 +50,7 @@
                                             <label>Heading</label>
                                             <input name="heading" type="text"
                                                    class="form-control @error('heading') is-invalid @enderror"
-                                                   placeholder="Heading of Post"
+                                                   placeholder="Enter Heading"
                                                    value="{{old('heading', $postForEdit->heading)}}">
                                             <div>
                                                 @error('heading')
@@ -62,7 +62,7 @@
                                             <label>Preheading</label>
                                             <input name="preheading" type="text"
                                                    class="form-control @error('preheading') is-invalid @enderror"
-                                                   placeholder="Preheading of Post"
+                                                   placeholder="Enter Preheading"
                                                    value="{{old('preheading', $postForEdit->preheading)}}">
                                             <div>
                                                 @error('preheading')

@@ -79,7 +79,13 @@ class IndexController extends Controller
             'button_name' => ['required', 'string', 'min:3', 'max:15'],
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['heading']);
+        $slug = Str::slug($data['heading']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (SliderData::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['position'] = 1;
         $data['status'] = 1;
         $data['created_at'] = now();
@@ -156,7 +162,13 @@ class IndexController extends Controller
             'button_name' => ['required', 'string', 'min:3', 'max:15'],
             'background' => ['file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['slug'] = Str::slug($data['heading']);
+        $slug = Str::slug($data['heading']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (SliderData::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter++;
+        }
+        $data['slug'] = $slug;
         $data['status'] = $sliderForEdit->status;
         $data['position'] = $sliderForEdit->position;
         $data['updated_at'] = now();

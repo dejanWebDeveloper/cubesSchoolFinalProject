@@ -43,11 +43,11 @@
                             <table id="comments-table" class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
+                                    <th class="text-center">#</th>
                                     <th>Comment</th>
                                     <th>Post</th>
-                                    <th>PostId</th>
-                                    <th>Enable</th>
+                                    <th class="text-center">PostId</th>
+                                    <th class="text-center">Enable</th>
                                     <th class="text-center">Created At</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -153,13 +153,13 @@
                         },
                         order: [[5, "desc"]],
                         columns: [
-                            {data: "id", name: "id"},
+                            {data: "id", name: "id", className: 'text-center'},
                             {data: "comment", name: "Comment"},
                             {data: "post", name: "Post", orderable: false},
-                            {data: "post_id", name: "PostId", searchable: false},
-                            {data: "enable", name: "Enable", searchable: false, orderable: false},
-                            {data: "created_at", name: "Created_at", searchable: false},
-                            {data: "actions", name: "Actions", orderable: false, searchable: false}
+                            {data: "post_id", name: "PostId", searchable: false, className: 'text-center'},
+                            {data: "enable", name: "Enable", searchable: false, orderable: false, className: 'text-center'},
+                            {data: "created_at", name: "Created_at", searchable: false, className: 'text-center'},
+                            {data: "actions", name: "Actions", orderable: false, searchable: false, className: 'text-center'}
                         ],
                         pageLength: 10,
                         lengthMenu: [5, 10, 20, 40]

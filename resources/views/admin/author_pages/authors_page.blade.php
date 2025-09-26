@@ -25,7 +25,7 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             @if(session()->has('system_message'))
-                                <div class="alert alert-success" role="alert">
+                                <div id="system-message" class="alert alert-success" role="alert">
                                     {{session()->pull('system_message')}}
                                 </div>
                             @endif
@@ -59,7 +59,7 @@
                             <table id="authors-table" class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 10px">#</th>
+                                    <th class="text-center">#</th>
                                     <th class="text-center">Photo</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -143,12 +143,12 @@
                 },
                 order: [[4, "desc"]],
                 columns: [
-                    {data: "id", name: "id"},
-                    {data: "profile_photo", name: "Photo", orderable: false, searchable: false},
+                    {data: "id", name: "id", className: 'text-center'},
+                    {data: "profile_photo", name: "Photo", orderable: false, searchable: false, className: 'text-center'},
                     {data: "name", name: "Name"},
                     {data: "email", name: "Email"},
-                    {data: "created_at", name: "Created_at", searchable: false},
-                    {data: "actions", name: "Actions", orderable: false, searchable: false}
+                    {data: "created_at", name: "Created_at", searchable: false, className: 'text-center'},
+                    {data: "actions", name: "Actions", orderable: false, searchable: false, className: 'text-center'}
                 ],
                 pageLength: 10,
                 lengthMenu: [5, 10, 20]
@@ -189,6 +189,17 @@
                     }
                 });
             });
+        });
+        //system-message disappear after 2s
+        document.addEventListener('DOMContentLoaded', function () {
+            const msg = document.getElementById('system-message');
+            if(msg){
+                setTimeout(() => {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = 0;
+                    setTimeout(() => msg.remove(), 500); // uklanja iz DOM-a nakon fade out
+                }, 2000);
+            }
         });
     </script>
 @endpush

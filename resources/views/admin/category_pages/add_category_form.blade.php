@@ -37,7 +37,7 @@
                                         <div class="form-group">
                                             <label>Name</label>
                                             <input name="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                                   placeholder="Name of Category" value="{{old('name')}}">
+                                                   placeholder="Enter Name" value="{{old('name')}}">
                                             <div>
                                                 @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -47,7 +47,7 @@
                                         <div class="form-group">
                                             <label>Description</label>
                                             <input name="description" type="text" class="form-control @error('description') is-invalid @enderror"
-                                                   placeholder="Description of Category " value="{{old('description')}}">
+                                                   placeholder="Enter Description" value="{{old('description')}}">
                                             <div>
                                                 @error('description')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             <label>Priority</label>
                                             <input name="priority" type="number" class="form-control @error('priority') is-invalid @enderror"
-                                                   placeholder="Priority of Category" value="{{old('priority')}}">
+                                                   placeholder="Enter Priority" value="{{old('priority')}}">
                                             <div>
                                                 @error('priority')
                                                 <div class="alert alert-danger">{{ $message }}</div>
