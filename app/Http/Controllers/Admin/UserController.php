@@ -194,6 +194,6 @@ class UserController extends Controller
         $data['password'] = Hash::make($data['password']);
         $data['updated_at'] = now();
         $userForResetPassword->fill($data)->save();
-        return redirect()->route('login');
+        return redirect()->route('admin_index_page');
     }
 }

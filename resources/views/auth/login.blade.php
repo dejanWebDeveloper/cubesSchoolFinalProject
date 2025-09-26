@@ -60,9 +60,9 @@
                         </div>
                     </div>
                 </form>
-                @if (Route::has('admin_users_edit_user_reset_password_page'))
+                @if (Route::has('forgotten_password'))
                     <p class="mb-1">
-                        <a class="text-decoration-none" href="{{ route('admin_users_edit_user_reset_password_page') }}">{{ __('I forgot my password') }}</a>
+                        <a class="text-decoration-none" href="{{ route('forgotten_password') }}">{{ __('I forgot my password') }}</a>
                     </p>
                 @endif
             </div>

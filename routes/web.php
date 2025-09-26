@@ -7,6 +7,8 @@ Route::get('/', [\App\Http\Controllers\Front\IndexController::class, 'index'])->
 
 Route::get('/contact', [\App\Http\Controllers\Front\ContactController::class, 'contact'])->name('contact_page');
 Route::post('send-email', [\App\Http\Controllers\Front\ContactController::class, 'sendEmail'])->name('send_email');
+Route::get('/reset-forgotten-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'forgottenPassword'])->name('forgotten_password');
+Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetForgottenPassword'])->name('reset_forgotten_password');
 
 Route::prefix('/blog')->name('blog_')->group(function () {
     Route::get('/', [\App\Http\Controllers\Front\BlogController::class, 'blog'])->name('page');
@@ -44,7 +46,7 @@ Route::middleware('auth')->prefix('admin')->name('admin_')->group(function () {
             Route::get('/password', [\App\Http\Controllers\Admin\UserController::class, 'editUserPassword'])->name('password_page');
             Route::post('/store-edited-user', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUser'])->name('data');
             Route::post('/store-edited-user-password', [\App\Http\Controllers\Admin\UserController::class, 'storeEditedUserPassword'])->name('password');
-            Route::get('/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPasswordPage'])->name('reset_password_page');
+            Route::get('/reset-forgotten-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPasswordPage'])->name('reset_password_page');
             Route::post('/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetUserPassword'])->name('reset_user_password');
         });
 
