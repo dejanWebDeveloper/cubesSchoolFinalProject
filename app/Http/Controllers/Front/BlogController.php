@@ -110,7 +110,6 @@ class BlogController extends Controller
         ], 201);
     }
 
-
     public function blogTag($id, $slug)
     {
         $tag = Tag::where('slug', $slug)->where('id', $id)->firstOrFail();

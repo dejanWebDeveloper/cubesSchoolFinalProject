@@ -188,7 +188,7 @@
                         $('#categories-table').DataTable().ajax.reload(null, false);
                     },
                     error: function(xhr) {
-                        console.log(xhr.responseJSON); // ovde ćeš videti koja validacija pada
+                        console.log(xhr.responseJSON); // validation?
                         toastr.error('Error: ' + JSON.stringify(xhr.responseJSON));
                     }
                 });
@@ -201,7 +201,7 @@
                 setTimeout(() => {
                     msg.style.transition = "opacity 0.5s ease";
                     msg.style.opacity = 0;
-                    setTimeout(() => msg.remove(), 500); // uklanja iz DOM-a nakon fade out
+                    setTimeout(() => msg.remove(), 500);
                 }, 2000);
             }
         });

@@ -86,7 +86,7 @@ class AuthorController extends Controller
             ->toJpeg(90);
         // Save new photo to storage
         Storage::disk('public')->put($relativePath, (string) $image);
-        // Update DB (store only filename if you prefer)
+        // Update DB
         $author->$field = $photoName;
         $author->save();
     }

@@ -140,7 +140,7 @@
         function clearImage1() {
             document.getElementById("photo-input1").value = "";  // reset file input
             document.getElementById("photoPreview1").src = "#"; // reset src
-            document.getElementById("photoPreview1").style.display = "none"; // sakrij preview
+            document.getElementById("photoPreview1").style.display = "none"; // hide preview
         }
         $(document).ready(function () {
             $('#store-slider').validate({

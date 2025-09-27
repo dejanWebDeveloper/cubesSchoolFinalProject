@@ -153,21 +153,13 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('admin_comments_page')}}" class="nav-link">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p>
-                            Comments on Posts
+                            Post Comments
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('admin_comments_page')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Comments List</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </nav>

@@ -60,9 +60,7 @@ class CategoryController extends Controller
                     $incrementCategory->priority += 1;
                     $incrementCategory->save();
                 }
-            }/*else{
-                $data['priority'] = $lastCategory->priority + 1;
-            }*/
+            }
         }
         $data['created_at'] = now();
         $newCategory = new Category();

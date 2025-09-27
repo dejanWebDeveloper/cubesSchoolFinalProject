@@ -256,9 +256,9 @@
                 }
             });
             $.validator.addMethod("pwcheck", function (value) {
-                return /[A-Z]/.test(value)   // veliko slovo
-                    && /[0-9]/.test(value)   // broj
-                    && /[!@#$%^&*]/.test(value); // specijalni znak
+                return /[A-Z]/.test(value)   // Uppercase
+                    && /[0-9]/.test(value)   // number
+                    && /[!@#$%^&*]/.test(value); // special character
             });
         });
     </script>

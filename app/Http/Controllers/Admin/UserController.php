@@ -129,16 +129,18 @@ class UserController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'profile_photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg', 'max:1000']
         ]);
-        $data['updated_at'] = now();
-        $userForEdit = Auth::user();
-        $userForEdit->fill($data)->save();
+        //problem with fill() because this methode don't change password
+        Auth::user()->name = $request->name;
+        Auth::user()->phone = $request->phone;
+        Auth::user()->updated_at = now();
+        Auth::user()->save();
         //saving photo
         if ($request->hasFile('profile_photo')) {
-            $this->deletePhoto($userForEdit, 'profile_photo');
-            $this->savePhoto($request->file('profile_photo'), $userForEdit, 'profile_photo');
+            $this->deletePhoto(Auth::user(), 'profile_photo');
+            $this->savePhoto($request->file('profile_photo'), Auth::user(), 'profile_photo');
         }
         if ($request->has('delete_photo1') && $request->delete_photo1) {
-            $this->deletePhoto($userForEdit, 'profile_photo');
+            $this->deletePhoto(Auth::user(), 'profile_photo');
         }
         session()->put('system_message', 'User Data Edited Successfully');
         return redirect()->route('admin_users_page');

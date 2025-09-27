@@ -202,9 +202,6 @@
                     }
                 },
                 "errorClass": "is-invalid",
-                errorPlacement: function (error, element) {
-                    error.insertAfter(element);
-                }
             });
             $.validator.addMethod("pwcheck", function (value) {
                 return /[A-Z]/.test(value)

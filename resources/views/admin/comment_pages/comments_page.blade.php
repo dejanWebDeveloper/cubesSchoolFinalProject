@@ -224,7 +224,7 @@
                                 // hide modal
                                 $('#enable-modal').modal('hide');
                                 toastr.success('Comment Successfully Enabled.');
-                                // Reload celog DataTables umesto ručnog uklanjanja reda
+                                // Reload DataTables
                                 $('#comments-table').DataTable().ajax.reload(null, false);
                             }
                         });
