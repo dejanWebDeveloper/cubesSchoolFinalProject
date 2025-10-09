@@ -112,4 +112,32 @@ class Post extends Model
         // Reset index
         File::put($indexFile, json_encode([]));
     }
+    public static function clearBlogCacheForPost($postId)
+    {
+        $indexFile = storage_path('framework/cache/index.json');
+
+        if (!File::exists($indexFile)) {
+            return;
+        }
+
+        $index = json_decode(File::get($indexFile), true) ?: [];
+        $updatedIndex = [];
+
+        foreach ($index as $key) {
+            if (
+                str_contains($key, "singlePost_{$postId}") ||
+                str_contains($key, "blogPosts_page_") ||
+                str_contains($key, "authorPosts_page_") ||
+                str_contains($key, "categoryPosts_page_") ||
+                str_contains($key, "tagPosts_page_")
+            ) {
+                Cache::forget($key);
+            } else {
+                $updatedIndex[] = $key;
+            }
+        }
+
+        File::put($indexFile, json_encode($updatedIndex));
+    }
+
 }

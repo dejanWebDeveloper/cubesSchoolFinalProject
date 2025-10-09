@@ -87,19 +87,27 @@ class BlogController extends Controller
             session([$sessionKey => true]);
         }
         $singlePostTags = $singlePost->tags()->get();
-        $prevPost = Post::where('id', '<', $singlePost->id)
-            ->where('enable', 1)
-            ->orderBy('id', 'desc')
-            ->first();
-        $nextPost = Post::where('id', '>', $singlePost->id)
-            ->where('enable', 1)
-            ->orderBy('id', 'asc')
-            ->first();
+        $cacheKeyPrev = "prevPost_{$id}";
+        $prevPost = Cache::remember($cacheKeyPrev, 300, function () use ($id, $singlePost) {
+           return Post::where('id', '<', $singlePost->id)
+                ->where('enable', 1)
+                ->orderBy('id', 'desc')
+                ->first();
+        });
+        $cacheKeyNext = "nextPost_{$id}";
+        $nextPost = Cache::remember($cacheKeyPrev, 300, function () use ($id, $singlePost) {
+           return Post::where('id', '>', $singlePost->id)
+                ->where('enable', 1)
+                ->orderBy('id', 'asc')
+                ->first();
+        });
         $comments = PostComment::where('post_id', $singlePost->id)
             ->where('enable', 1)
             ->orderBy('created_at', 'asc')
             ->get();
         Post::addCacheKeyToIndex($cacheKey);
+        Post::addCacheKeyToIndex($cacheKeyPrev);
+        Post::addCacheKeyToIndex($cacheKeyNext);
         return view('front.blog_pages.blog_post_page.blog_post_page', compact(
             'singlePost',
             'singlePostTags',
@@ -124,7 +132,7 @@ class BlogController extends Controller
         $newComment = new PostComment();
         $newComment->fill($data);
         $newComment->save();
-
+        Post::clearBlogCacheForPost($data['post_id']);
         return response()->json([
             'message' => 'Your comment has been submitted successfully!',
             'comment' => $newComment // optional: return comment if you want to append it via JS
