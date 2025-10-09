@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\PostRepository;
-use App\Repositories\SliderDataRepository;
+use App\Repositories\Front\PostRepository;
+use App\Repositories\Front\SliderDataRepository;
 
 class IndexController extends Controller
 {

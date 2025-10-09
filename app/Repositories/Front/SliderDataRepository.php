@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Front;
 
-use App\Models\Post;
 use App\Models\SliderData;
 use Illuminate\Support\Facades\Cache;
 

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Repositories\PostRepository;
+use App\Repositories\Front\PostRepository;
 use App\Rules\ReCaptcha;
 use Illuminate\Http\Request;
 
