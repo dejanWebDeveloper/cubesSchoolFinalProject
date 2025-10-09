@@ -10,27 +10,39 @@ use App\Models\PostComment;
 use App\Models\Tag;
 use App\Rules\ReCaptcha;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class BlogController extends Controller
 {
     public function blog()
     {
-        $blogPosts = Post::standardRequest()
-            ->withCount('comments')
-            ->paginate(12);
+        $page = request('page', 1);
+        $cacheKey = "blogPosts_page_{$page}";
+        $blogPosts = Cache::remember($cacheKey, 600, function () {
+            return Post::standardRequest()
+                ->withCount('comments')
+                ->paginate(12);
+        });
+        Post::addCacheKeyToIndex($cacheKey);
+
         return view('front.blog_pages.blog_page.blog_page', compact('blogPosts'));
     }
+
 
     public function blogAuthor($id, $slug)
     {
         $author = Author::where('slug', $slug)->where('id', $id)->firstOrFail();
-        $authorPosts = Post::with('author')
-            ->withCount('comments')
-            ->where('author_id', $author->id)
-            ->where('enable', 1)
-            ->orderBy('created_at', 'desc')
-            ->paginate(4);
+        $page = request('page', 1);
+        $cacheKey = "authorPosts_page_{$page}";
+        $authorPosts = Cache::remember($cacheKey, 400, function () use ($author) {
+            return Post::with('author')
+                ->withCount('comments')
+                ->where('author_id', $author->id)
+                ->where('enable', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(4);
+        });
+        Post::addCacheKeyToIndex($cacheKey);
         return view('front.blog_pages.blog_author_page.blog_author_page', compact(
             'authorPosts',
             'author'
@@ -40,12 +52,17 @@ class BlogController extends Controller
     public function blogCategory($id, $slug)
     {
         $category = Category::where('slug', $slug)->where('id', $id)->firstOrFail();
-        $categoryPosts = Post::with('category')
-            ->withCount('comments')
-            ->where('category_id', $category->id)
-            ->where('enable', 1)
-            ->orderBy('created_at', 'desc')
-            ->paginate(4);
+        $page = request('page', 1);
+        $cacheKey = "categoryPosts_page_{$page}";
+        $categoryPosts = Cache::remember($cacheKey, 400, function () use ($category) {
+            return Post::with('category')
+                ->withCount('comments')
+                ->where('category_id', $category->id)
+                ->where('enable', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(4);
+        });
+        Post::addCacheKeyToIndex($cacheKey);
         return view('front.blog_pages.blog_category_page.blog_category_page', compact(
             'category',
             'categoryPosts'
@@ -54,12 +71,15 @@ class BlogController extends Controller
 
     public function blogPost($id, $slug)
     {
-        $singlePost = Post::withCount(['comments'=>function ($query) {
-            $query->where('enable', 1);
-        }])->where('slug', $slug)
-            ->where('id', $id)
-            ->where('enable', 1)
-            ->firstOrFail();
+        $cacheKey = "singlePost_{$id}";
+        $singlePost = Cache::remember($cacheKey, 300, function () use ($id, $slug) {
+            return Post::withCount(['comments' => function ($query) {
+                $query->where('enable', 1);
+            }])->where('slug', $slug)
+                ->where('id', $id)
+                ->where('enable', 1)
+                ->firstOrFail();
+        });
         //increment views
         $sessionKey = 'post_' . $singlePost->id . '_viewed';
         if (!session()->has($sessionKey)) {
@@ -79,6 +99,7 @@ class BlogController extends Controller
             ->where('enable', 1)
             ->orderBy('created_at', 'asc')
             ->get();
+        Post::addCacheKeyToIndex($cacheKey);
         return view('front.blog_pages.blog_post_page.blog_post_page', compact(
             'singlePost',
             'singlePostTags',
@@ -113,12 +134,17 @@ class BlogController extends Controller
     public function blogTag($id, $slug)
     {
         $tag = Tag::where('slug', $slug)->where('id', $id)->firstOrFail();
-        $tagPosts = $tag->posts()
-            ->with('category', 'author')
-            ->withCount('comments')
-            ->where('enable', 1)
-            ->orderBy('created_at', 'desc')
-            ->paginate(4);
+        $page = request('page', 1);
+        $cacheKey = "tagPosts_page_{$page}";
+        $tagPosts = Cache::remember($cacheKey, 400, function () use ($tag) {
+            return $tag->posts()
+                ->with('category', 'author')
+                ->withCount('comments')
+                ->where('enable', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(4);
+        });
+        Post::addCacheKeyToIndex($cacheKey);
         return view('front.blog_pages.blog_tag_page.blog_tag_page', compact(
             'tag',
             'tagPosts'
@@ -128,13 +154,17 @@ class BlogController extends Controller
     public function blogSearch(Request $request)
     {
         $query = $request->input('search');
+        $page = request('page', 1);
 
-        $results = Post::withCount('comments')
-            ->where('heading', 'like', '%' . $query . '%')
-            ->orWhere('preheading', 'like', '%' . $query . '%')
-            ->orWhere('text', 'like', '%' . $query . '%')
-            ->paginate(4);
-
+        $cacheKey = "searchResults_" . md5($query) . "_page_{$page}";
+        $results = Cache::remember($cacheKey, 300, function () use ($query) {
+            return Post::withCount('comments')
+                ->where('heading', 'like', '%' . $query . '%')
+                ->orWhere('preheading', 'like', '%' . $query . '%')
+                ->orWhere('text', 'like', '%' . $query . '%')
+                ->paginate(4);
+        });
+        Post::addCacheKeyToIndex($cacheKey);
         return view('front.blog_pages.blog_search_page.blog_search_page', compact(
             'results',
             'query'
