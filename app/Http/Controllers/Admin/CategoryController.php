@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use App\Repositories\Admin\CategoryRepository;
 
 class CategoryController extends Controller
 {
+    protected $categories;
+    public function __construct(CategoryRepository $categories)
+    {
+        $this->categories = $categories;
+    }
     public  function  index()
     {
         return view('admin.category_pages.categories_page');
@@ -19,16 +24,10 @@ class CategoryController extends Controller
     {
         return view('admin.category_pages.add_category_form');
     }
-    public function datatable(Request $request)
+    public function datatable()
     {
-        $query = Category::query();
+        $query = $this->categories->getFilteredCategory();
 
-        if ($request->name) {
-            $query->where('name', 'like', "%{$request->name}%");
-        }
-        if ($request->description) {
-            $query->where('description', 'like', "%{$request->description}%");
-        }
         return DataTables::of($query)
             ->addColumn('name', fn($row) => $row->name)
             ->addColumn('description', fn($row) => $row->description)
@@ -45,26 +44,7 @@ class CategoryController extends Controller
             'description' => ['required', 'string', 'between:15,100'],
             'priority' => ['nullable', 'integer', 'between:1,10']
         ]);
-        $data['slug'] = Str::slug($data['name']);
-        $lastCategory = Category::orderByDesc('priority')->first();
-        if (!$data['priority']){
-            $data['priority'] = $lastCategory->priority + 1;
-        }else{
-            $categories = Category::all();
-            $categoryPriorities = $categories->pluck('priority')->toArray();
-            $incrementCategories = Category::where('priority', '>=', $data['priority'])
-                ->orderByDesc('priority')
-                ->get();
-            if (in_array($data['priority'], $categoryPriorities)){
-                foreach ($incrementCategories as $incrementCategory){
-                    $incrementCategory->priority += 1;
-                    $incrementCategory->save();
-                }
-            }
-        }
-        $data['created_at'] = now();
-        $newCategory = new Category();
-        $newCategory->fill($data)->save();
+        $this->categories->store($data);
         session()->put('system_message', 'Category Added Successfully');
         return redirect()->route('admin_categories_page');
     }
@@ -73,15 +53,8 @@ class CategoryController extends Controller
         $data = request()->validate([
             'category_for_delete_id' => ['required', 'integer', 'exists:categories,id']
         ]);
-        $category = Category::findOrFail($data['category_for_delete_id']);
-        $category->delete();
-        $incrementCategories = Category::where('priority', '>', $category->priority)
-            ->orderByDesc('priority') // DESC ključ: obrnutim redosledom izbegava conflict
-            ->get();
-        foreach ($incrementCategories as $incrementCategory) {
-            $incrementCategory->priority -= 1;
-            $incrementCategory->save();
-        }
+        $this->categories->delete($data);
+
         return response()->json(['success' => 'Category Deleted Successfully']);
     }
     public function editCategory($id, $slug)
@@ -98,25 +71,8 @@ class CategoryController extends Controller
             'description' => ['required', 'string', 'between:15,100'],
             'priority' => ['nullable', 'integer', 'between:1,10']
         ]);
-        $data['slug'] = Str::slug($data['name']);
-        $lastCategory = Category::orderByDesc('priority')->firstOrFail();
-        if (!$data['priority']){
-            $data['priority'] = $lastCategory->priority + 1;
-        }else {
-            $categories = Category::all();
-            $categoryPriorities = $categories->pluck('priority')->toArray();
-            if (in_array($data['priority'], $categoryPriorities)) {
-                $incrementCategories = Category::where('priority', '>=', $data['priority'])
-                    ->orderByDesc('priority')
-                    ->get();
-                foreach ($incrementCategories as $incrementCategory) {
-                    $incrementCategory->priority += 1;
-                    $incrementCategory->save();
-                }
-            }
-        }
-        $data['updated_at'] = now();
-        $categoryForEdit->fill($data)->save();
+        $this->categories->edit($data, $categoryForEdit);
+
         session()->put('system_message', 'Category Edited Successfully');
         return redirect()->route('admin_categories_page');
     }
