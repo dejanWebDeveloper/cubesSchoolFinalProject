@@ -59,7 +59,7 @@ class CategoryController extends Controller
     }
     public function editCategory($id, $slug)
     {
-        $categoryForEdit = Category::where('slug', $slug)->where('id', $id)->firstOrFail();
+        $categoryForEdit = $this->categories->editPage($id, $slug);
         return view('admin.category_pages.edit_category_page', compact(
             'categoryForEdit'
         ));

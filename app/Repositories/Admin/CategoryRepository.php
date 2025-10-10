@@ -56,6 +56,10 @@ class CategoryRepository
             $incrementCategory->save();
         }
     }
+    public function editPage($id, $slug)
+    {
+        return Category::where('slug', $slug)->where('id', $id)->firstOrFail();
+    }
     public function edit($data, Category $categoryForEdit)
     {
         $data['slug'] = Str::slug($data['name']);
