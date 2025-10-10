@@ -5,9 +5,15 @@ namespace App\Repositories\Admin;
 
 use App\Models\Author;
 use Illuminate\Support\Str;
+use App\Services\PhotoService;
 
 class AuthorRepository
 {
+    protected $photoService;
+    public function __construct(PhotoService $photoService)
+    {
+        $this->photoService = $photoService;
+    }
     public function getFilteredAuthors(array $filters = [])
     {
         $query = Author::query();
@@ -48,5 +54,11 @@ class AuthorRepository
         $data['updated_at'] = now();
         $authorForEdit->fill($data)->save();
         return $authorForEdit;
+    }
+    public function deleteAuthor($data)
+    {
+        $author = Author::findOrFail($data['author_for_delete_id']);
+        $this->photoService->delete($author, 'profile_photo');
+        $author->delete();
     }
 }

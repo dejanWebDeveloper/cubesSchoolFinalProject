@@ -70,9 +70,7 @@ class AuthorController extends Controller
         $data = request()->validate([
             'author_for_delete_id' => ['required', 'numeric', 'exists:authors,id'],
         ]);
-        $author = Author::findOrFail($data['author_for_delete_id']);
-        $this->photoService->delete($author, 'profile_photo');
-        $author->delete();
+        $this->authors->deleteAuthor($data);
         return response()->json(['success' => 'Author Deleted Successfully']);
     }
 
