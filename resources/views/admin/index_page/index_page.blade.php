@@ -29,7 +29,7 @@
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>{{$numberOfUsers}}</h3>
+                            <h3>{{$dashboard['numberOfUsers']}}</h3>
 
                             <p>USERS</p>
                         </div>
@@ -44,7 +44,7 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{$numberOfAuthors}}</h3>
+                            <h3>{{$dashboard['numberOfAuthors']}}</h3>
 
                             <p>AUTHORS</p>
                         </div>
@@ -59,7 +59,7 @@
                     <!-- small box -->
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>{{$numberOfPosts}}</h3>
+                            <h3>{{$dashboard['numberOfPosts']}}</h3>
 
                             <p>POSTS</p>
                         </div>
@@ -72,7 +72,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>{{$numberOfCategories}}</h3>
+                            <h3>{{$dashboard['numberOfCategories']}}</h3>
 
                             <p>CATEGORIES</p>
                         </div>
@@ -85,7 +85,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box bg-blue">
                         <div class="inner">
-                            <h3>{{$numberOfTags}}</h3>
+                            <h3>{{$dashboard['numberOfTags']}}</h3>
 
                             <p>TAGS</p>
                         </div>
@@ -98,7 +98,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box bg-fuchsia">
                         <div class="inner">
-                            <h3>{{$numberOfComments}}</h3>
+                            <h3>{{$dashboard['numberOfComments']}}</h3>
 
                             <p>COMMENTS</p>
                         </div>
