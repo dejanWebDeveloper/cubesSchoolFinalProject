@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostComment;
-use App\Models\Tag;
 use App\Repositories\Admin\PostRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Storage;
 use App\Services\PhotoService;
 
 class PostController extends Controller
