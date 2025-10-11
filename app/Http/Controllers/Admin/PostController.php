@@ -8,55 +8,40 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\Tag;
+use App\Repositories\Admin\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PhotoService;
 
 class PostController extends Controller
 {
+    protected $content;
+    protected $photoService;
+
+    public function __construct(PostRepository $content, PhotoService $photoService)
+    {
+        $this->content = $content;
+        $this->photoService = $photoService;
+    }
+
     public function index()
     {
-        $categories = Category::all();
-        $authors = Author::all();
-        $tags = Tag::all();
-        return view('admin.post_pages.posts_page', compact('categories', 'authors', 'tags'));
+        $postContent = $this->content->postContent();
+        return view('admin.post_pages.posts_page', compact('postContent'));
     }
 
     public function addPost()
     {
-        $categories = Category::all();
-        $authors = Author::all();
-        $tags = Tag::all();
-        return view('admin.post_pages.add_post_form', compact('categories', 'authors', 'tags'));
+        $addPostContent = $this->content->postContent();
+        return view('admin.post_pages.add_post_form', compact('addPostContent'));
     }
 
     public function datatable(Request $request)
     {
-        $query = Post::withCount('comments')->with(['category', 'author']);
-
-        if ($request->heading) {
-            $query->where('heading', 'like', "%{$request->heading}%");
-        }
-        if ($request->category_id) {
-            $query->where('category_id', $request->category_id);
-        }
-        if ($request->author_id) {
-            $query->where('author_id', $request->author_id);
-        }
-        if ($request->enable !== null && $request->enable !== '') {
-            $query->where('enable', $request->enable);
-        }
-        if ($request->important !== null && $request->important !== '') {
-            $query->where('important', $request->important);
-        }
-        if ($request->filled('tags_id')) {
-            $query->whereHas('tags', function ($q) use ($request) {
-                $q->whereIn('tags.id', $request->tags_id);
-            });
-        }
-
+        $query = $this->content->dataTable($request);
 
         return DataTables::of($query)
             ->addColumn('photo', fn($row) => "<img src='" . e($row->imageUrl()) . "' width='100' class='img-rounded' />"
@@ -93,97 +78,15 @@ class PostController extends Controller
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
-        $slug = Str::slug($data['heading']);
-        $originalSlug = $slug;
-        $counter = 1;
-        while (Post::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter++;
-        }
-        $data['slug'] = $slug;
-        $data['enable'] = 1;
-        $data['important'] = 0;
-        $data['created_at'] = now();
-        $data['text'] = strip_tags($data['text'], '<img>');
-        $newPost = new Post();
-        $newPost->fill($data)->save();
-        //table tags
-        $newPost->tags()->sync($data['tags']);
-
+        $newPost = $this->content->savePost($data);
         //saving photo
         if (request()->hasFile('first-photo')) { //if has file
             $photo = request()->file('first-photo'); //save file to $photo
             //helper methode
-            $this->savePhoto($photo, $newPost, 'photo');
+            $this->photoService->savePostPhoto($photo, $newPost, 'photo');
         }
-
         session()->put('system_message', 'Post Added Successfully');
         return redirect()->route('admin_posts_page');
-    }
-    public function savePhoto($photo, $post, $field)
-    {
-        // Generate unique filenames
-        $baseName = $post->id . '_' . $field . '_' . Str::uuid();
-        $extension = $photo->getClientOriginalExtension();
-
-        $photoName = $baseName . '.' . $extension;
-        $photoThumbName = $baseName . '_thumb.' . $extension;
-
-        // Delete old photo + thumb if they exist
-        if ($post->$field) {
-            $oldPath = 'photo/' . $post->$field;
-            if (Storage::disk('public')->exists($oldPath)) {
-                Storage::disk('public')->delete($oldPath);
-            }
-        }
-        if ($post->additional_photo) {
-            $oldThumbPath = 'photo/' . $post->additional_photo;
-            if (Storage::disk('public')->exists($oldThumbPath)) {
-                Storage::disk('public')->delete($oldThumbPath);
-            }
-        }
-
-        // Save normal photo
-        $photo->storeAs('photo', $photoName, 'public');
-
-        // Create + save thumbnail
-        $thumbPath = 'photo/' . $photoThumbName;
-        $image = Image::read($photo)
-            ->cover(256, 256)   // crop + resize
-            ->toJpeg(90);       // compress
-        Storage::disk('public')->put($thumbPath, (string) $image);
-
-        // Update DB with relative paths
-        $post->$field = $photoName;
-        $post->additional_photo = $photoThumbName;
-        $post->save();
-    }
-
-    public function deletePhoto($post, $field)
-    {
-        if (!$post->$field) {
-            return false;
-        }
-
-        // Delete main photo
-        $path = 'photo/' . $post->$field;
-        if (Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
-        }
-
-        // Delete thumbnail if exists
-        if ($post->additional_photo) {
-            $thumbPath = 'photo/' . $post->additional_photo;
-            if (Storage::disk('public')->exists($thumbPath)) {
-                Storage::disk('public')->delete($thumbPath);
-            }
-        }
-
-        // Clear DB fields
-        $post->$field = null;
-        $post->additional_photo = null;
-        $post->save();
-
-        return true;
     }
 
     public function deletePost()
@@ -191,26 +94,21 @@ class PostController extends Controller
         $data = request()->validate([
             'post_for_delete_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
-        $post = Post::findOrFail($data['post_for_delete_id']);
-        // Delete associated photos before removing DB record
-        $this->deletePhoto($post, 'photo');
-        // Detach tags
-        $post->tags()->sync([]);
-        // Finally delete the post
-        $post->delete();
+        $this->content->deletePost($data);
+        PostComment::where('post_id', $data['post_for_delete_id'])->delete();
         return response()->json(['success' => 'Post Deleted Successfully']);
     }
+
     public function editPost($id, $slug)
     {
-        $postForEdit = Post::where('slug', $slug)->where('id', $id)->firstOrFail();
-        $categories = Category::all();
+        $postForEdit = $this->content->editPost($id, $slug);
+        /*$categories = Category::all();
         $authors = Author::all();
-        $tags = Tag::all();
+        $tags = Tag::all();*/
+        $contentForEdit = $this->content->postContent();
         return view('admin.post_pages.edit_post_page', compact(
             'postForEdit',
-            'categories',
-            'authors',
-            'tags'
+            'contentForEdit'
         ));
     }
 
@@ -226,89 +124,66 @@ class PostController extends Controller
             'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
             'text' => ['required', 'string', 'min:20', 'max:1000']
         ]);
-        $slug = Str::slug($data['heading']);
-        $originalSlug = $slug;
-        $counter = 1;
-        while (Post::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter++;
-        }
-        $data['slug'] = $slug;
-        $data['enable'] = 1;
-        $data['important'] = 0;
-        $data['created_at'] = now();
-        $data['text'] = strip_tags($data['text'], '<img>');
-        $postForEdit->fill($data)->save();
-        //table tags
-        $postForEdit->tags()->sync($data['tags']);
+        $postForEdit = $this->content->saveEditedPost($data, $postForEdit);
 
         //saving photo
         if ($request->hasFile('first-photo')) {
-            $this->deletePhoto($postForEdit, 'photo');
-            $this->savePhoto($request->file('first-photo'), $postForEdit, 'photo');
+            $this->photoService->deletePostPhoto($postForEdit, 'photo');
+            $this->photoService->savePostPhoto($request->file('first-photo'), $postForEdit, 'photo');
         }
 
         if ($request->has('delete_photo1') && $request->delete_photo1) {
-            if ($postForEdit->photo) {
-                Storage::disk('public')->delete('photo/' . $postForEdit->photo);
-                $postForEdit->photo = null;
-                $postForEdit->save();
-            }
+            $this->content->deletePhotoJS($postForEdit);
         }
 
         session()->put('system_message', 'Post Edited Successfully');
         return redirect()->route('admin_posts_page');
     }
+
     public function disablePost()
     {
         $data = request()->validate([
             'post_for_disable_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
-        $post = Post::findOrFail($data['post_for_disable_id']);
-        $post->enable = 0;
-        $post->save();
+        $this->content->disableOnePost($data);
         return response()->json(['success' => 'Post Disabled Successfully']);
     }
+
     public function enablePost()
     {
         $data = request()->validate([
             'post_for_enable_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
-        $post = Post::findOrFail($data['post_for_enable_id']);
-        $post->enable = 1;
-        $post->save();
+        $this->content->enableOnePost($data);
         return response()->json(['success' => 'Post Enabled Successfully']);
     }
+
     public function unimportantPost()
     {
         $data = request()->validate([
             'post_be_unimportant_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
-        $post = Post::findOrFail($data['post_be_unimportant_id']);
-        $post->important = 0;
-        $post->save();
+        $this->content->unimportant($data);
         return response()->json(['success' => 'Post Change Status Successfully']);
     }
+
     public function importantPost()
     {
         $data = request()->validate([
             'post_be_important_id' => ['required', 'numeric', 'exists:posts,id'],
         ]);
-        $post = Post::findOrFail($data['post_be_important_id']);
-        $post->important = 1;
-        $post->save();
+        $this->content->important($data);
         return response()->json(['success' => 'Post Change Status Successfully']);
     }
+
     public function displayComments()
     {
         return view('admin.comment_pages.comments_page');
     }
+
     public function datatableComments(Request $request)
     {
-        $query = PostComment::query();
-
-        if ($request->post_id) {
-            $query->where('post_id', $request->post_id);
-        }
+        $query = $this->content->dataTableComments($request);
 
         return DataTables::of($query)
             ->addColumn('comment', fn($row) => $row->comment)
@@ -323,24 +198,22 @@ class PostController extends Controller
             ->rawColumns(['enable', 'actions'])
             ->toJson();
     }
+
     public function disableComment()
     {
         $data = request()->validate([
             'comment_for_disable_id' => ['required', 'numeric', 'exists:post_comments,id'],
         ]);
-        $postComment = PostComment::findOrFail($data['comment_for_disable_id']);
-        $postComment->enable = 0;
-        $postComment->save();
+        $this->content->disableOneComment($data);
         return response()->json(['success' => 'Comment Disabled Successfully']);
     }
+
     public function enableComment()
     {
         $data = request()->validate([
             'comment_for_enable_id' => ['required', 'numeric', 'exists:post_comments,id'],
         ]);
-        $postComment = PostComment::findOrFail($data['comment_for_enable_id']);
-        $postComment->enable = 1;
-        $postComment->save();
+        $this->content->enableOneComment($data);
         return response()->json(['success' => 'Comment Enabled Successfully']);
     }
 }

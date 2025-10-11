@@ -68,7 +68,7 @@
                                         <label>Category</label>
                                         <select id="select-category" name="category_id" class="form-control">
                                             <option></option>
-                                            @foreach($categories as $category)
+                                            @foreach($postContent['categories'] as $category)
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
                                             @endforeach
                                         </select>
@@ -77,7 +77,7 @@
                                         <label>Author</label>
                                         <select id="select-author" name="author_id" class="form-control">
                                             <option></option>
-                                            @foreach($authors as $author)
+                                            @foreach($postContent['authors'] as $author)
                                                 <option value="{{$author->id}}">{{$author->name}}</option>
                                             @endforeach
                                         </select>
@@ -85,7 +85,7 @@
                                     <div class="col-md-2 form-group">
                                         <label>Tags</label>
                                         <select id="select-tags" name="tags_id[]" class="form-control" multiple>
-                                            @foreach($tags as $tag)
+                                            @foreach($postContent['tags'] as $tag)
                                                 <option value="{{$tag->id}}">{{$tag->name}}</option>
                                             @endforeach
                                         </select>

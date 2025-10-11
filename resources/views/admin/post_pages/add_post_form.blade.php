@@ -74,7 +74,7 @@
                                             <label>Post Category</label>
                                             <select id="select-category" class="form-control" name="category_id">
                                                 <option></option>
-                                                @foreach($categories as $category)
+                                                @foreach($addPostContent['categories'] as $category)
                                                     <option @if($category->id == old('category')) selected
                                                             @endif value="{{$category->id}}">{{$category->name}}</option>
                                                 @endforeach
@@ -90,7 +90,7 @@
                                             <select id="select-author" name="author_id"
                                                     class="form-control @error('author') is-invalid @enderror">
                                                 <option></option>
-                                                @foreach($authors as $author)
+                                                @foreach($addPostContent['authors'] as $author)
                                                     <option @if($author->id == old('author')) selected
                                                             @endif value="{{$author->id}}">{{$author->name}}</option>
                                                 @endforeach
@@ -107,7 +107,7 @@
                                                     name="tags[]"
                                                     id="select-tags"
                                                     multiple>
-                                                @foreach($tags as $tag)
+                                                @foreach($addPostContent['tags'] as $tag)
                                                     <option value="{{ $tag->id }}"
                                                         {{ collect(old('tags', []))->contains($tag->id) ? 'selected' : '' }}>
                                                         {{ $tag->name }}

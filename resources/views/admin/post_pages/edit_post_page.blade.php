@@ -74,7 +74,7 @@
                                             <label>Post Category</label>
                                             <select id="select-category" class="form-control" name="category_id">
                                                 <option value="">-- Select Category --</option>
-                                                @foreach($categories as $category)
+                                                @foreach($contentForEdit['categories'] as $category)
                                                     <option value="{{ $category->id }}"
                                                         {{ old('category_id', $postForEdit->category_id ?? '') == $category->id ? 'selected' : '' }}>
                                                         {{ $category->name }}
@@ -94,7 +94,7 @@
                                                     name="author_id"
                                                     class="form-control @error('author_id') is-invalid @enderror">
                                                 <option value="">-- Select Author --</option>
-                                                @foreach($authors as $author)
+                                                @foreach($contentForEdit['authors'] as $author)
                                                     <option value="{{ $author->id }}"
                                                         {{ old('author_id', $postForEdit->author_id ?? '') == $author->id ? 'selected' : '' }}>
                                                         {{ $author->name }}
@@ -114,7 +114,7 @@
                                                     name="tags[]"
                                                     id="select-tags"
                                                     multiple>
-                                                @foreach($tags as $tag)
+                                                @foreach($contentForEdit['tags'] as $tag)
                                                     <option value="{{ $tag->id }}"
                                                         {{ in_array($tag->id, old('tags', $postForEdit->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
                                                         {{ $tag->name }}

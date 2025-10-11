@@ -72,4 +72,70 @@ class PhotoService
 
         return true;
     }
+    public function savePostPhoto($photo, $post, $field)
+    {
+        // Generate unique filenames
+        $baseName = $post->id . '_' . $field . '_' . Str::uuid();
+        $extension = $photo->getClientOriginalExtension();
+
+        $photoName = $baseName . '.' . $extension;
+        $photoThumbName = $baseName . '_thumb.' . $extension;
+
+        // Delete old photo + thumb if they exist
+        if ($post->$field) {
+            $oldPath = 'photo/' . $post->$field;
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+        if ($post->additional_photo) {
+            $oldThumbPath = 'photo/' . $post->additional_photo;
+            if (Storage::disk('public')->exists($oldThumbPath)) {
+                Storage::disk('public')->delete($oldThumbPath);
+            }
+        }
+
+        // Save normal photo
+        $photo->storeAs('photo', $photoName, 'public');
+
+        // Create + save thumbnail
+        $thumbPath = 'photo/' . $photoThumbName;
+        $image = Image::read($photo)
+            ->cover(256, 256)   // crop + resize
+            ->toJpeg(90);       // compress
+        Storage::disk('public')->put($thumbPath, (string)$image);
+
+        // Update DB with relative paths
+        $post->$field = $photoName;
+        $post->additional_photo = $photoThumbName;
+        $post->save();
+    }
+
+    public function deletePostPhoto($post, $field)
+    {
+        if (!$post->$field) {
+            return false;
+        }
+
+        // Delete main photo
+        $path = 'photo/' . $post->$field;
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+
+        // Delete thumbnail if exists
+        if ($post->additional_photo) {
+            $thumbPath = 'photo/' . $post->additional_photo;
+            if (Storage::disk('public')->exists($thumbPath)) {
+                Storage::disk('public')->delete($thumbPath);
+            }
+        }
+
+        // Clear DB fields
+        $post->$field = null;
+        $post->additional_photo = null;
+        $post->save();
+
+        return true;
+    }
 }
