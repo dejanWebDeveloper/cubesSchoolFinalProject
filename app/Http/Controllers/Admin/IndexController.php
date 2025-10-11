@@ -3,17 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\PostComment;
 use App\Models\SliderData;
-use App\Models\Tag;
-use App\Models\User;
 use App\Repositories\Admin\IndexRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use App\Services\PhotoService;
 
