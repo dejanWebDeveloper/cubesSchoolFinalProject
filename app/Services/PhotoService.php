@@ -138,4 +138,38 @@ class PhotoService
 
         return true;
     }
+    public function saveUserPhoto($photo, $user, $field)
+    {
+        // Generate unique filename
+        $photoName = $user->id . '_' . $field . '_' . Str::uuid();
+        $relativePath = 'photo/user/' . $photoName;
+        // Delete old photo if exists
+        if (!empty($user->$field)) {
+            $oldPath = 'photo/user/' . $user->$field;
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+        // Read + crop + resize + encode
+        $image = Image::read($photo)
+            ->cover(256, 256)
+            ->toJpeg(90);
+        // Save new photo to storage
+        Storage::disk('public')->put($relativePath, (string) $image);
+        // Update DB (store only filename if you prefer)
+        $user->$field = $photoName;
+        $user->save();
+    }
+
+    public function deleteUserPhoto($user, $field)
+    {
+        if (!$user->$field) return false;
+        $path = 'photo/user/' . $user->$field;
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+        $user->$field = null;
+        $user->save();
+        return true;
+    }
 }
