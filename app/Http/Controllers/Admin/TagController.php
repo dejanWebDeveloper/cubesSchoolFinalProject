@@ -5,12 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Repositories\Admin\TagRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class TagController extends Controller
 {
+    protected $tags;
+    public function __construct(TagRepository $tags)
+    {
+        $this->tags = $tags;
+    }
     public function index()
     {
         return view('admin.tag_pages.tags_page');
@@ -19,9 +25,9 @@ class TagController extends Controller
     {
         return view('admin.tag_pages.add_tag_form');
     }
-    public function datatable(Request $request)
+    public function datatable()
     {
-        $query = Tag::query();
+        $query = $this->tags->dataTableTags();
 
         return DataTables::of($query)
             ->addColumn('name', fn($row) => $row->name)
@@ -35,10 +41,7 @@ class TagController extends Controller
         $data = request()->validate([
             'name' => ['required', 'string', 'between:5,30', 'unique:tags,name']
         ]);
-        $data['slug'] = Str::slug($data['name']);
-        $data['created_at'] = now();
-        $newTag = new Tag();
-        $newTag->fill($data)->save();
+        $this->tags->saveTag($data);
 
         session()->put('system_message', 'Tag Added Successfully');
         return redirect()->route('admin_tags_page');
@@ -48,13 +51,7 @@ class TagController extends Controller
         $data = request()->validate([
             'tag_for_delete_id' => ['required', 'integer', 'exists:tags,id']
         ]);
-
-        $tag = Tag::findOrFail($data['tag_for_delete_id']);
-
-        // Detach all related posts first
-        $tag->posts()->detach();
-        $tag->delete();
-
+        $this->tags->deleteOneTag($data);
         return response()->json(['success' => 'Tag Deleted Successfully']);
     }
 }
