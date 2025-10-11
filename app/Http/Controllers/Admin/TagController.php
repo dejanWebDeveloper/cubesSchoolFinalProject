@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Tag;
 use App\Repositories\Admin\TagRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class TagController extends Controller
