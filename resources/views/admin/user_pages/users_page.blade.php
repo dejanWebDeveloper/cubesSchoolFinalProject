@@ -27,7 +27,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Search Users</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_users_add_user')}}" class="btn btn-success">
+                                <a href="{{route('admin.users.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add new User
                                 </a>
@@ -114,7 +114,7 @@
     <div class="modal fade" id="disable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="disable-user" method="post" action="{{route('admin_users_disable_user')}}">
+                <form id="disable-user" method="post" action="{{route('admin.users.disable.user')}}">
                     @csrf
                     <input type="hidden" name="user_for_disable_id" value="">
                     <div class="modal-header">
@@ -145,7 +145,7 @@
     <div class="modal fade" id="enable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="enable-user" method="post" action="{{route('admin_users_enable_user')}}">
+                <form id="enable-user" method="post" action="{{route('admin.users.enable.user')}}">
                     @csrf
                     <input type="hidden" name="user_for_enable_id" value="">
                     <div class="modal-header">
@@ -194,7 +194,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_users_datatable') }}",
+                    url: "{{ route('admin.users.datatable') }}",
                     type: "post",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -242,7 +242,7 @@
                 let userId = $("#disable-modal [name='user_for_disable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_users_disable_user') }}",
+                    url: "{{ route('admin.users.disable.user') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -272,7 +272,7 @@
                 let userId = $("#enable-modal [name='user_for_enable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_users_enable_user') }}",
+                    url: "{{ route('admin.users.enable.user') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",

@@ -27,7 +27,7 @@
                                 <h5>{{$user->name}}</h5>
                                 <p>Blogger</p>
                                 <a class="text-decoration-none text-white"
-                                   href="{{route('admin_users_edit_user_page')}}"><i class="far fa-edit mb-5"></i></a>
+                                   href="{{route('admin.users.edit')}}"><i class="far fa-edit mb-5"></i></a>
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body p-4">

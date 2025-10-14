@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_sliders_page')}}">Slider Data</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.sliders.index')}}">Slider Data</a></li>
                         <li class="breadcrumb-item active">Slider Form</li>
                     </ol>
                 </div>
@@ -29,9 +29,10 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="edit-slider" enctype="multipart/form-data"
-                              action="{{route('admin_sliders_edit_slider', ['sliderForEdit'=>$sliderForEdit])}}"
+                              action="{{route('admin.sliders.update', ['slider'=>$sliderForEdit->id])}}"
                               method="post">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -114,7 +115,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_sliders_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.sliders.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
                         <li class="breadcrumb-item active">Posts</li>
                     </ol>
                 </div>
@@ -44,7 +44,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Search Products</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_posts_add_post')}}" class="btn btn-success">
+                                <a href="{{route('admin.posts.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add New Post
                                 </a>
@@ -161,7 +161,7 @@
     <div class="modal fade" id="disable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="disable-post" method="post" action="{{route('admin_posts_disable_post')}}">
+                <form id="disable-post" method="post" action="{{route('admin.posts.disable.post')}}">
                     @csrf
                     <input type="hidden" name="post_for_disable_id" value="">
                     <div class="modal-header">
@@ -192,7 +192,7 @@
     <div class="modal fade" id="enable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="enable-post" method="post" action="{{route('admin_posts_enable_post')}}">
+                <form id="enable-post" method="post" action="{{route('admin.posts.enable.post')}}">
                     @csrf
                     <input type="hidden" name="post_for_enable_id" value="">
                     <div class="modal-header">
@@ -223,7 +223,7 @@
     <div class="modal fade" id="unimportant-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="be_unimportant-post" method="post" action="{{route('admin_posts_be_unimportant_post')}}">
+                <form id="be_unimportant-post" method="post" action="{{route('admin.posts.be.unimportant.post')}}">
                     @csrf
                     <input type="hidden" name="post_be_unimportant_id" value="">
                     <div class="modal-header">
@@ -254,7 +254,7 @@
     <div class="modal fade" id="important-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="be_important-post" method="post" action="{{route('admin_posts_be_important_post')}}">
+                <form id="be_important-post" method="post" action="{{route('admin.posts.be.important.post')}}">
                     @csrf
                     <input type="hidden" name="post_be_important_id" value="">
                     <div class="modal-header">
@@ -285,8 +285,9 @@
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="delete-post" method="post" action="{{route('admin_posts_delete_post')}}">
+                <form id="delete-post" method="post" action="#">
                     @csrf
+                    @method('DELETE')
                     <input type="hidden" name="post_for_delete_id" value="">
                     <div class="modal-header">
                         <h4 class="modal-title">Delete Post</h4>
@@ -304,10 +305,9 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
+
     <!-- /.modal -->
 @endsection
 @push('footer_script')
@@ -347,7 +347,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_posts_datatable') }}",
+                    url: "{{ route('admin.posts.datatable') }}",
                     type: "post",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -396,7 +396,7 @@
                 let postId = $("#disable-modal [name='post_for_disable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_posts_disable_post') }}",
+                    url: "{{ route('admin.posts.disable.post') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -424,7 +424,7 @@
                 let postId = $("#enable-modal [name='post_for_enable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_posts_enable_post') }}",
+                    url: "{{ route('admin.posts.enable.post') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -452,7 +452,7 @@
                 let postId = $("#unimportant-modal [name='post_be_unimportant_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_posts_be_unimportant_post') }}",
+                    url: "{{ route('admin.posts.be.unimportant.post') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -480,7 +480,7 @@
                 let postId = $("#important-modal [name='post_be_important_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_posts_be_important_post') }}",
+                    url: "{{ route('admin.posts.be.important.post') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -497,35 +497,45 @@
             });
             //delete post
             // Open modal and enter data
-            $('#posts-table').on('click', "[data-action='delete']", function () {
-                let id = $(this).attr('data-id');
-                let name = $(this).attr('data-name');
+            // Kada se klikne delete dugme u tabeli
+            $(document).on('click', 'button[data-action="delete"]', function () {
+                let postId = $(this).data('id');
+                let postName = $(this).data('name');
 
-                $("#delete-modal [name='post_for_delete_id']").val(id);
-                $('#delete-modal p#post_for_delete_name').html(name);
+                // Ubaci vrednosti u modal
+                $("#delete-modal [name='post_for_delete_id']").val(postId);
+                $("#delete-modal #post_for_delete_name").text(postName);
             });
 
-            // Click on button for delete
+// Kada se submituje forma za brisanje
             $('#delete-post').on('submit', function (e) {
                 e.preventDefault();
-                let postId = $("#delete-modal [name='post_for_delete_id']").val(); // take ID from hidden modal input
+
+                let postId = $("#delete-modal [name='post_for_delete_id']").val();
+
+                // Laravel route sa placeholderom :id
+                let url = "{{ route('admin.posts.destroy', ':id') }}";
+                url = url.replace(':id', postId);
 
                 $.ajax({
-                    url: "{{ route('admin_posts_delete_post') }}",
-                    type: "post",
+                    url: url,
+                    type: "DELETE",
                     data: {
-                        _token: "{{ csrf_token() }}",
-                        post_for_delete_id: postId
+                        _token: "{{ csrf_token() }}"
                     },
                     success: function () {
-                        // hide modal
                         $('#delete-modal').modal('hide');
-                        toastr.success('Post Successfully Deleted.');
-                        // Reload celog DataTables umesto ručnog uklanjanja reda
+                        toastr.success('Post successfully deleted.');
                         $('#posts-table').DataTable().ajax.reload(null, false);
+                    },
+                    error: function (xhr) {
+                        toastr.error('Error deleting post.');
+                        console.error(xhr.responseText);
                     }
                 });
             });
+
+
         });
         //system-message disappear after 2s
         document.addEventListener('DOMContentLoaded', function () {

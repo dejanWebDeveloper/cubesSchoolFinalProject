@@ -22,7 +22,7 @@
                             <div class="card-tools">
                             </div>
                             <div class="card-tools">
-                                <a href="{{route('admin_sliders_add_slider')}}" class="btn btn-success">
+                                <a href="{{route('admin.sliders.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add New Slider Data
                                 </a>
@@ -70,7 +70,7 @@
     <div class="modal fade" id="disable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="disable-slider" method="post" action="{{route('admin_sliders_disable_slider')}}">
+                <form id="disable-slider" method="post" action="{{route('admin.sliders.disable.slider')}}">
                     @csrf
                     <input type="hidden" name="slider_for_disable_id" value="">
                     <div class="modal-header">
@@ -101,7 +101,7 @@
     <div class="modal fade" id="enable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="enable-slider" method="post" action="{{route('admin_sliders_enable_slider')}}">
+                <form id="enable-slider" method="post" action="{{route('admin.sliders.enable.slider')}}">
                     @csrf
                     <input type="hidden" name="slider_for_enable_id" value="">
                     <div class="modal-header">
@@ -130,7 +130,7 @@
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="delete-slider" method="post" action="{{route('admin_sliders_delete_slider')}}">
+                <form id="delete-slider" method="post" action="#">
                     @csrf
                     <input type="hidden" name="slider_for_delete_id" value="">
                     <div class="modal-header">
@@ -178,7 +178,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_sliders_datatable') }}",
+                    url: "{{ route('admin.sliders.datatable') }}",
                     type: "POST",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -216,7 +216,7 @@
 
                 // Send new position to server
                 $.ajax({
-                    url: "{{ route('admin_sliders_slider_sort') }}",
+                    url: "{{ route('admin.sliders.slider.sort') }}",
                     method: "POST",
                     data: {
                         order: order,
@@ -241,7 +241,7 @@
                 let sliderId = $("#disable-modal [name='slider_for_disable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_sliders_disable_slider') }}",
+                    url: "{{ route('admin.sliders.disable.slider') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -267,7 +267,7 @@
                 let sliderId = $("#enable-modal [name='slider_for_enable_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_sliders_enable_slider') }}",
+                    url: "{{ route('admin.sliders.enable.slider') }}",
                     type: "post",
                     data: {
                         _token: "{{ csrf_token() }}",
@@ -283,6 +283,7 @@
             });
             //delete slider
             // Open modal and enter data
+            // Open modal and enter data
             $('#sliders-table').on('click', "[data-action='delete']", function () {
                 let id = $(this).attr('data-id');
                 let name = $(this).attr('data-name');
@@ -291,26 +292,30 @@
                 $('#delete-modal p#slider_for_delete_name').html(name);
             });
 
-            // Click on button for delete
+// Click on button for delete
             $('#delete-slider').on('submit', function (e) {
                 e.preventDefault();
                 let sliderId = $("#delete-modal [name='slider_for_delete_id']").val(); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_sliders_delete_slider') }}",
-                    type: "post",
+                    url: `/admin/sliders/${sliderId}`,
+                    type: "DELETE",
                     data: {
-                        _token: "{{ csrf_token() }}",
-                        slider_for_delete_id: sliderId
+                        _token: "{{ csrf_token() }}"
                     },
                     success: function () {
                         $('#delete-modal').modal('hide');
                         toastr.success('Slider Successfully Deleted.');
-                        table.ajax.reload(null, false);
+                        $('#sliders-table').DataTable().ajax.reload(null, false);
+                    },
+                    error: function (xhr) {
+                        $('#delete-modal').modal('hide');
+                        toastr.error(xhr.responseJSON?.error || 'Something went wrong!');
+                        console.error(xhr.responseText); // 🔍 vidiš tačno gde puca ako ima grešku u Laravelu
                     }
-
                 });
             });
+
         });
         //system-message disappear after 2s
         document.addEventListener('DOMContentLoaded', function () {

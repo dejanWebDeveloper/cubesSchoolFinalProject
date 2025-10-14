@@ -18,7 +18,7 @@
                         <div class="card-header">
                             <h3 class="card-title">All Tags</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_tags_add_tag')}}" class="btn btn-success">
+                                <a href="{{route('admin.tags.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add new Tag
                                 </a>
@@ -63,7 +63,7 @@
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="delete-tag" method="post" action="{{route('admin_tags_delete_tag')}}">
+                <form id="delete-tag" method="post" action="#">
                     @csrf
                     <input type="hidden" name="tag_for_delete_id" value="">
                     <div class="modal-header">
@@ -107,7 +107,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_tags_datatable') }}",
+                    url: "{{ route('admin.tags.datatable') }}",
                     type: "post",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -144,8 +144,8 @@
                 let tagId = parseInt($("#delete-modal [name='tag_for_delete_id']").val());
 
                 $.ajax({
-                    url: "{{ route('admin_tags_delete_tag') }}",
-                    type: "post",
+                    url: `/admin/tags/${tagId}`,
+                    type: "DELETE",
                     data: {
                         _token: "{{ csrf_token() }}",
                         tag_for_delete_id: tagId

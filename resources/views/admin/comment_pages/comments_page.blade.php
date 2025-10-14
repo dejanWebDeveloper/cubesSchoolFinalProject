@@ -74,7 +74,7 @@
     <div class="modal fade" id="disable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="disable-comment" method="post" action="{{route('admin_comments_disable_comment')}}">
+                <form id="disable-comment" method="post" action="{{route('admin.comments.disable.comment')}}">
                     @csrf
                     <input type="hidden" name="comment_for_disable_id" value="">
                     <div class="modal-header">
@@ -103,7 +103,7 @@
     <div class="modal fade" id="enable-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="enable-comment" method="post" action="{{route('admin_comments_enable_comment')}}">
+                <form id="enable-comment" method="post" action="{{route('admin.comments.enable.comment')}}">
                     @csrf
                     <input type="hidden" name="comment_for_enable_id" value="">
                     <div class="modal-header">
@@ -144,7 +144,7 @@
                         serverSide: true,
                         processing: true,
                         ajax: {
-                            url: "{{ route('admin_comments_datatable_comments') }}",
+                            url: "{{ route('admin.comments.datatable.comments') }}",
                             type: "post",
                             data: function (d) {
                                 d._token = "{{ csrf_token() }}";
@@ -184,7 +184,7 @@
                         let commentId = $("#disable-modal [name='comment_for_disable_id']").val(); // take ID from hidden modal input
 
                         $.ajax({
-                            url: "{{ route('admin_comments_disable_comment') }}",
+                            url: "{{ route('admin.comments.disable.comment') }}",
                             type: "post",
                             data: {
                                 _token: "{{ csrf_token() }}",
@@ -214,7 +214,7 @@
                         let commentId = $("#enable-modal [name='comment_for_enable_id']").val(); // take ID from hidden modal input
 
                         $.ajax({
-                            url: "{{ route('admin_comments_enable_comment') }}",
+                            url: "{{ route('admin.comments.enable.comment') }}",
                             type: "post",
                             data: {
                                 _token: "{{ csrf_token() }}",

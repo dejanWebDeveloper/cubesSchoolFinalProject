@@ -11,7 +11,7 @@
                 <p class="login-box-msg">You are only one step a way from your new password, recover your password
                     now.</p>
 
-                <form id="reset-password" action="{{route('admin_users_edit_user_reset_user_password')}}" method="post">
+                <form id="reset-password" action="{{route('admin.users.edit.user.reset.user.password')}}" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input name="email" type="email"

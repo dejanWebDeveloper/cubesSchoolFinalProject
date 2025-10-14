@@ -9,7 +9,7 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Change your password</p>
                 <form role="form" id="edit-user-password"
-                      action="{{route('admin_users_edit_user_password')}}"
+                      action="{{route('admin.users.edit.user.password')}}"
                       method="post">
                     @csrf
                     <div class="input-group mb-3">
@@ -65,9 +65,9 @@
                         </div>
                     </div>
                 </form>
-                @if (Route::has('admin_users_edit_user_reset_password_page'))
+                @if (Route::has('admin.users.edit.user.reset.password.page'))
                     <p class="mb-1">
-                        <a class="text-decoration-none" href="{{ route('admin_users_edit_user_reset_password_page') }}">{{ __('I forgot my password') }}</a>
+                        <a class="text-decoration-none" href="{{ route('admin.users.edit.user.reset.password.page') }}">{{ __('I forgot my password') }}</a>
                     </p>
                 @endif
             </div>

@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_tags_page')}}">Tags</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.tags.index')}}">Tags</a></li>
                         <li class="breadcrumb-item active">Tags Form</li>
                     </ol>
                 </div>
@@ -29,7 +29,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" id="store-tag" enctype="multipart/form-data" action="{{route('admin_tags_store_tag')}}" method="post">
+                        <form role="form" id="store-tag" enctype="multipart/form-data" action="{{route('admin.tags.store')}}" method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -50,7 +50,7 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_tags_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.tags.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

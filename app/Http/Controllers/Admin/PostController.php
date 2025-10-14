@@ -27,11 +27,103 @@ class PostController extends Controller
         return view('admin.post_pages.posts_page', compact('postContent'));
     }
 
-    public function addPost()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         $addPostContent = $this->content->postContent();
         return view('admin.post_pages.add_post_form', compact('addPostContent'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = request()->validate([
+            'heading' => ['required', 'string', 'min:20', 'max:255'],
+            'preheading' => ['required', 'string', 'min:50', 'max:500'],
+            'category_id' => ['numeric', 'exists:categories,id'],
+            'author_id' => ['required', 'numeric', 'exists:authors,id'],
+            'tags' => ['required', 'array', 'min:2'],
+            'tags.*' => ['required', 'numeric', 'exists:tags,id'],
+            'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
+            'text' => ['required', 'string', 'min:20', 'max:1000']
+        ]);
+        $newPost = $this->content->savePost($data);
+        //saving photo
+        if (request()->hasFile('first-photo')) { //if has file
+            $photo = request()->file('first-photo'); //save file to $photo
+            //helper methode
+            $this->photoService->savePostPhoto($photo, $newPost, 'photo');
+        }
+        session()->put('system_message', 'Post Added Successfully');
+        return redirect()->route('admin.posts.index');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id, $slug)
+    {
+        $postForEdit = $this->content->editPost($id, $slug);
+        $contentForEdit = $this->content->postContent();
+        return view('admin.post_pages.edit_post_page', compact(
+            'postForEdit',
+            'contentForEdit'
+        ));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Post $postForEdit)
+    {
+        $data = request()->validate([
+            'heading' => ['required', 'string', 'min:20', 'max:255'],
+            'preheading' => ['required', 'string', 'min:50', 'max:500'],
+            'category_id' => ['numeric', 'exists:categories,id'],
+            'author_id' => ['required', 'numeric', 'exists:authors,id'],
+            'tags' => ['required', 'array', 'min:2'],
+            'tags.*' => ['required', 'numeric', 'exists:tags,id'],
+            'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
+            'text' => ['required', 'string', 'min:20', 'max:1000']
+        ]);
+        $postForEdit = $this->content->saveEditedPost($data, $postForEdit);
+
+        //saving photo
+        if ($request->hasFile('first-photo')) {
+            $this->photoService->deletePostPhoto($postForEdit, 'photo');
+            $this->photoService->savePostPhoto($request->file('first-photo'), $postForEdit, 'photo');
+        }
+
+        if ($request->has('delete_photo1') && $request->delete_photo1) {
+            $this->content->deletePhotoJS($postForEdit);
+        }
+
+        session()->put('system_message', 'Post Edited Successfully');
+        return redirect()->route('admin.posts.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $this->content->deletePost(['post_for_delete_id' => $id]);
+        PostComment::where('post_id', $id)->delete();
+        return response()->json(['success' => 'Post Deleted Successfully']);
+    }
+
 
     public function datatable(Request $request)
     {
@@ -58,80 +150,6 @@ class PostController extends Controller
             )
             ->rawColumns(['photo', 'actions', 'important', 'enable'])
             ->toJson();
-    }
-
-    public function storePost()
-    {
-        $data = request()->validate([
-            'heading' => ['required', 'string', 'min:20', 'max:255'],
-            'preheading' => ['required', 'string', 'min:50', 'max:500'],
-            'category_id' => ['numeric', 'exists:categories,id'],
-            'author_id' => ['required', 'numeric', 'exists:authors,id'],
-            'tags' => ['required', 'array', 'min:2'],
-            'tags.*' => ['required', 'numeric', 'exists:tags,id'],
-            'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
-            'text' => ['required', 'string', 'min:20', 'max:1000']
-        ]);
-        $newPost = $this->content->savePost($data);
-        //saving photo
-        if (request()->hasFile('first-photo')) { //if has file
-            $photo = request()->file('first-photo'); //save file to $photo
-            //helper methode
-            $this->photoService->savePostPhoto($photo, $newPost, 'photo');
-        }
-        session()->put('system_message', 'Post Added Successfully');
-        return redirect()->route('admin_posts_page');
-    }
-
-    public function deletePost()
-    {
-        $data = request()->validate([
-            'post_for_delete_id' => ['required', 'numeric', 'exists:posts,id'],
-        ]);
-        $this->content->deletePost($data);
-        PostComment::where('post_id', $data['post_for_delete_id'])->delete();
-        return response()->json(['success' => 'Post Deleted Successfully']);
-    }
-
-    public function editPost($id, $slug)
-    {
-        $postForEdit = $this->content->editPost($id, $slug);
-        /*$categories = Category::all();
-        $authors = Author::all();
-        $tags = Tag::all();*/
-        $contentForEdit = $this->content->postContent();
-        return view('admin.post_pages.edit_post_page', compact(
-            'postForEdit',
-            'contentForEdit'
-        ));
-    }
-
-    public function storeEditedPost(Post $postForEdit, Request $request)
-    {
-        $data = request()->validate([
-            'heading' => ['required', 'string', 'min:20', 'max:255'],
-            'preheading' => ['required', 'string', 'min:50', 'max:500'],
-            'category_id' => ['numeric', 'exists:categories,id'],
-            'author_id' => ['required', 'numeric', 'exists:authors,id'],
-            'tags' => ['required', 'array', 'min:2'],
-            'tags.*' => ['required', 'numeric', 'exists:tags,id'],
-            'first-photo' => ['file', 'mimes:jpeg,png,jpg', 'max:1000'],
-            'text' => ['required', 'string', 'min:20', 'max:1000']
-        ]);
-        $postForEdit = $this->content->saveEditedPost($data, $postForEdit);
-
-        //saving photo
-        if ($request->hasFile('first-photo')) {
-            $this->photoService->deletePostPhoto($postForEdit, 'photo');
-            $this->photoService->savePostPhoto($request->file('first-photo'), $postForEdit, 'photo');
-        }
-
-        if ($request->has('delete_photo1') && $request->delete_photo1) {
-            $this->content->deletePhotoJS($postForEdit);
-        }
-
-        session()->put('system_message', 'Post Edited Successfully');
-        return redirect()->route('admin_posts_page');
     }
 
     public function disablePost()

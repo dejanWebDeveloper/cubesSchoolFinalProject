@@ -16,7 +16,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Search Authors</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_authors_add_author')}}" class="btn btn-success">
+                                <a href="{{route('admin.authors.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add new Author
                                 </a>
@@ -89,7 +89,7 @@
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="delete-author" method="post" action="{{route('admin_authors_delete_author')}}">
+                <form id="delete-author" method="post" action="#">
                     @csrf
                     <input type="hidden" name="author_for_delete_id" value="">
                     <div class="modal-header">
@@ -133,7 +133,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_authors_datatable') }}",
+                    url: "{{ route('admin.authors.datatable') }}",
                     type: "post",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -160,35 +160,42 @@
             });
             //delete post
             // Open modal and enter data
+            // Otvaranje modala i čuvanje ID autora
             $('#authors-table').on('click', "[data-action='delete']", function () {
-                let id = $(this).attr('data-id');
-                let name = $(this).attr('data-name');
+                let id = $(this).data('id');      // koristi .data() za sigurnije dohvaćanje
+                let name = $(this).data('name');
 
-                $("#delete-modal [name='author_for_delete_id']").val(id);
-                $('#delete-modal p#author_for_delete_name').html(name);
+                $("#delete-modal").data('author-id', id); // čuvamo ID u samom modalu
+                $('#delete-modal p#author_for_delete_name').text(name);
+                $('#delete-modal').modal('show');
             });
 
-            // Click on button for delete
+// Submit delete forme
             $('#delete-author').on('submit', function (e) {
                 e.preventDefault();
-                let authorId = $("#delete-modal [name='author_for_delete_id']").val(); // take ID from hidden modal input
+
+                let authorId = $('#delete-modal').data('author-id');
 
                 $.ajax({
-                    url: "{{ route('admin_authors_delete_author') }}",
-                    type: "post",
+                    url: `/admin/authors/${authorId}`, // resource destroy URL
+                    type: 'POST',                      // POST + _method = DELETE radi bolje
                     data: {
                         _token: "{{ csrf_token() }}",
-                        author_for_delete_id: authorId
+                        _method: 'DELETE'              // Laravel prepoznaje ovo kao DELETE
                     },
-                    success: function () {
-                        // hide modal
+                    success: function(response) {
                         $('#delete-modal').modal('hide');
-                        toastr.success('Author Successfully Deleted.');
-                        // Reload celog DataTables umesto ručnog uklanjanja reda
+                        toastr.success(response.success);
                         $('#authors-table').DataTable().ajax.reload(null, false);
+                    },
+                    error: function(xhr) {
+                        $('#delete-modal').modal('hide');
+                        let msg = xhr.responseJSON?.error || xhr.responseText || 'Something went wrong!';
+                        toastr.error(msg);
                     }
                 });
             });
+
         });
         //system-message disappear after 2s
         document.addEventListener('DOMContentLoaded', function () {

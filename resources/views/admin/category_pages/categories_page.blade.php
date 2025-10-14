@@ -16,7 +16,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Search Categories</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_categories_add_category')}}" class="btn btn-success">
+                                <a href="{{route('admin.categories.create')}}" class="btn btn-success">
                                     <i class="fas fa-plus-square"></i>
                                     Add new Category
                                 </a>
@@ -89,7 +89,7 @@
     <div class="modal fade" id="delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="delete-category" method="post" action="{{route('admin_categories_delete_category')}}">
+                <form id="delete-category" method="post" action="#">
                     @csrf
                     <input type="hidden" name="category_for_delete_id" value="">
                     <div class="modal-header">
@@ -133,7 +133,7 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('admin_categories_datatable') }}",
+                    url: "{{ route('admin.categories.datatable') }}",
                     type: "post",
                     data: function (d) {
                         d._token = "{{ csrf_token() }}";
@@ -174,8 +174,8 @@
                 let categoryId = parseInt($("#delete-modal [name='category_for_delete_id']").val()); // take ID from hidden modal input
 
                 $.ajax({
-                    url: "{{ route('admin_categories_delete_category') }}",
-                    type: "post",
+                    url: "/admin/categories/${categoryId}",
+                    type: "DELETE",
                     data: {
                         _token: "{{ csrf_token() }}",
                         category_for_delete_id: categoryId

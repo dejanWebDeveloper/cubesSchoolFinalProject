@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_users_page')}}">Users</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.users.index')}}">Users</a></li>
                         <li class="breadcrumb-item active">User Form</li>
                     </ol>
                 </div>
@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Change your profile info</h3>
                             <div class="card-tools">
-                                <a href="{{route('admin_users_edit_user_password_page')}}"
+                                <a href="{{route('admin.users.edit.user.password.page')}}"
                                    class="btn btn-outline-warning">
                                     <i class="fas fa-lock-open"></i>
                                     Change Password
@@ -36,16 +36,17 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="edit-user" enctype="multipart/form-data"
-                              action="{{route('admin_users_edit_user_data')}}"
+                              action="{{route('admin.users.update', ['user' => $user->id ])}}"
                               method="post">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Email</label>
                                             <div>
-                                                <strong>{{Auth::user()->email}}</strong>
+                                                <strong>{{$user->email}}</strong>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -53,7 +54,7 @@
                                             <input name="name" type="text"
                                                    class="form-control @error('name') is-invalid @enderror"
                                                    placeholder="Name of User"
-                                                   value="{{old('name', Auth::user())}}">
+                                                   value="{{old('name', $user->name)}}">
                                             <div>
                                                 @error('name')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -66,8 +67,8 @@
                                             <div class="input-group">
                                                 <input name="phone" type="text"
                                                        class="form-control @error('phone') is-invalid @enderror"
-                                                       placeholder="Phone of Author"
-                                                       value="{{old('phone', Auth::user())}}">
+                                                       placeholder="Phone of User"
+                                                       value="{{old('phone', $user->phone)}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">
                                                      <i class="fas fa-phone"></i>
@@ -107,7 +108,7 @@
                                                     <div class="text-center">
                                                         <div class="text-center">
                                                             <img id="photoPreview1"
-                                                                 src="{{ Auth::user()->userImageUrl() }}"
+                                                                 src="{{ $user->userImageUrl() }}"
                                                                  alt="Preview"
                                                                  style="padding-top: 10px; width: 305px;">
                                                         </div>
@@ -123,7 +124,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_users_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.users.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

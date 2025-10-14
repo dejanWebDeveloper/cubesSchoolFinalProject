@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_categories_page')}}">Categories</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.categories.index')}}">Categories</a></li>
                         <li class="breadcrumb-item active">Category Form</li>
                     </ol>
                 </div>
@@ -29,9 +29,10 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="edit-category" enctype="multipart/form-data"
-                              action="{{route('admin_categories_edit_category', ['categoryForEdit'=>$categoryForEdit])}}"
+                              action="{{route('admin.categories.update', ['category'=>$categoryForEdit->id])}}"
                               method="post">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -77,7 +78,7 @@
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_categories_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.categories.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

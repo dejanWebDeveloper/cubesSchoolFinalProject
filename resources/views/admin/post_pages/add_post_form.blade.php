@@ -22,8 +22,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_posts_page')}}">Posts</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.posts.index')}}">Posts</a></li>
                         <li class="breadcrumb-item active">Post Form</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="store-post" enctype="multipart/form-data"
-                              action="{{route('admin_posts_store_post')}}" method="post">
+                              action="{{route('admin.posts.store')}}" method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -171,7 +171,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_posts_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.posts.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

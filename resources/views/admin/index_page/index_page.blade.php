@@ -36,7 +36,7 @@
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="{{route('admin_users_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.users.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -51,7 +51,7 @@
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="{{route('admin_authors_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.authors.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -66,7 +66,7 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="{{route('admin_posts_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.posts.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6">
@@ -79,7 +79,7 @@
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a href="{{route('admin_categories_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.categories.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6">
@@ -92,7 +92,7 @@
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a href="{{route('admin_tags_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.tags.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6">
@@ -105,7 +105,7 @@
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
                         </div>
-                        <a href="{{route('admin_comments_page')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{route('admin.comments.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>

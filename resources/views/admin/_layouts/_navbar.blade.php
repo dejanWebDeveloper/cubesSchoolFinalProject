@@ -15,7 +15,7 @@
                 <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <a href="{{route('admin_users_user_profile')}}" class="dropdown-item">
+                <a href="{{route('admin.users.profile')}}" class="dropdown-item">
                     <!-- Message Start -->
                     @auth()
                     <div class="media align-items-center">
@@ -30,7 +30,7 @@
                     <!-- Message End -->
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="{{route('admin_users_user_profile')}}" class="dropdown-item">
+                <a href="{{route('admin.users.profile')}}" class="dropdown-item">
                     <i class="fas fa-user"></i> Your Profile
                 </a>
                 <div class="dropdown-divider"></div>

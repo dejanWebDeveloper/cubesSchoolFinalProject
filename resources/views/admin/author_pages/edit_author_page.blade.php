@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('admin_index_page')}}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('admin_authors_page')}}">Authors</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.index.index')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.authors.index')}}">Authors</a></li>
                         <li class="breadcrumb-item active">Author Form</li>
                     </ol>
                 </div>
@@ -29,9 +29,10 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form role="form" id="edit-author" enctype="multipart/form-data"
-                              action="{{route('admin_authors_edit_author', ['authorForEdit'=>$authorForEdit])}}"
+                              action="{{route('admin.authors.update', ['author'=>$authorForEdit->id])}}"
                               method="post">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -102,7 +103,7 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{route('admin_authors_page')}}" class="btn btn-outline-secondary">Cancel</a>
+                                <a href="{{route('admin.authors.index')}}" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>
