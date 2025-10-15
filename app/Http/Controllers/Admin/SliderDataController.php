@@ -104,22 +104,16 @@ class SliderDataController extends Controller
      */
     public function destroy(string $id)
     {
-        // Pokušaj da pronađeš slider po ID-u
         $slider = SliderData::find($id);
 
         if (!$slider) {
-            // Vraćamo JSON grešku ako slider ne postoji
             return response()->json([
                 'error' => 'Slider not found'
             ], 404);
         }
-
-        // Obrisi sliku ako postoji
         if (isset($this->photoService)) {
             $this->photoService->deleteSliderPhoto($slider, 'background');
         }
-
-        // Obrisi zapis
         $slider->delete();
 
         return response()->json(['success' => 'Slider Deleted Successfully']);
